@@ -107,9 +107,8 @@ for event in calendar.events:
         [sort_key, time_label, field, team1, color1, team2, color2, group, division]
     )
 
-# --- Excel Output ---
-downloads_path = r"C:\Users\dbm19\Downloads"
-excel_file = os.path.join(downloads_path, "non_core_games.xlsx")
+# --- Excel Output (optional, saved to repo root) ---
+excel_file = "non_core_games.xlsx"
 wb = Workbook()
 wb.remove(wb.active)
 
@@ -205,18 +204,13 @@ def write_html(filename, game_date, games):
 
         f.write("</body></html>")
 
-# Write full archive
-html_file = os.path.join(downloads_path, "non_core_games.html")
-for game_date in sorted(games_by_date.keys()):
-    write_html(html_file, game_date, games_by_date[game_date])
-
 # Write public-facing HTML for next Saturday
 today = datetime.now(local_tz).date()
 days_until_saturday = (5 - today.weekday()) % 7
 next_saturday = today + timedelta(days=days_until_saturday)
 
 if next_saturday in games_by_date:
-    html_week_file = os.path.join(downloads_path, "this_week.html")
+    html_week_file = "index.html"
     write_html(html_week_file, next_saturday, games_by_date[next_saturday])
     print(f"✅ This week's layout saved to: {html_week_file}")
 else:

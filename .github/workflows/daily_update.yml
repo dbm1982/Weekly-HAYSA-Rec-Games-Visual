@@ -23,7 +23,7 @@ jobs:
         pip install requests ics pytz openpyxl
 
     - name: Run layout generator
-      run: python generate_layout.py
+      run: python "Weekly Visual Rec Schedule.py"
 
     - name: Commit and push updated HTML
       run: |

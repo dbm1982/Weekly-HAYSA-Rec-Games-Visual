@@ -242,7 +242,7 @@ def write_html(filename, game_date, games):
 
 
 # --- Final Output ---
-html_file = "printable_schedule.html"
+html_file = "index.html"
 
 days_until_saturday = (5 - today.weekday()) % 7
 next_saturday = today + timedelta(days=days_until_saturday)
@@ -252,3 +252,4 @@ if next_saturday in games_by_date:
     print(f"✅ Printable HTML saved to: {html_file}")
 else:
     print("⚠️ No games found for the upcoming Saturday.")
+

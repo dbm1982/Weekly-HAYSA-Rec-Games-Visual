@@ -9,7 +9,8 @@ from openpyxl.styles import PatternFill
 # --- iCal Feed ---
 ical_url = "http://tmsdln.com/19hyx"
 local_tz = pytz.timezone("America/New_York")
-cutoff_date = datetime(2025, 9, 6).date()
+today = datetime.now(local_tz).date()
+cutoff_date = today  # dynamic cutoff for GitHub workflows
 
 # --- Color Map ---
 color_map = {
@@ -88,18 +89,15 @@ for event in calendar.events:
 
     if "Practice" in name:
         continue
-
     if any(k in name for k in ["3/4", "5/6", "7/8"]) and "vs." in name:
         continue
+    if "vs." not in name:
+        continue
 
-    if "vs." in name:
-        team1_raw, team2_raw = name.split("vs.")
-        team1, color1 = parse_team(team1_raw.strip())
-        team2, color2 = parse_team(team2_raw.strip())
-        group = extract_group(team1_raw.strip()) or extract_group(team2_raw.strip())
-    else:
-        continue  # Skip non-match events
-
+    team1_raw, team2_raw = name.split("vs.")
+    team1, color1 = parse_team(team1_raw.strip())
+    team2, color2 = parse_team(team2_raw.strip())
+    group = extract_group(team1_raw.strip()) or extract_group(team2_raw.strip())
     field = format_field(location)
     division = extract_division(description)
 
@@ -107,7 +105,7 @@ for event in calendar.events:
         [sort_key, time_label, field, team1, color1, team2, color2, group, division]
     )
 
-# --- Excel Output (optional, saved to repo root) ---
+# --- Excel Output (optional) ---
 excel_file = "non_core_games.xlsx"
 wb = Workbook()
 wb.remove(wb.active)
@@ -134,49 +132,87 @@ def write_html(filename, game_date, games):
     with open(filename, "w", encoding="utf-8") as f:
         f.write("<html><head><style>\n")
         f.write("""
-        body { font-family: sans-serif; padding: 20px; }
-        .time-group { margin-bottom: 40px; }
-        .time-group h2 { margin-bottom: 10px; }
-        .match-row { display: flex; flex-wrap: wrap; gap: 20px; }
-        .match-wrapper { margin-bottom: 50px; position: relative; }
-        .division-label {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #888;
-            text-align: center;
+        @page {
+            size: landscape;
+            margin: 0.25in;
         }
-        .group-label {
-            margin-bottom: 5px;
-            font-size: 0.8em;
-            color: #444;
+        body {
+            font-family: sans-serif;
+            padding: 10px;
+            background: #fff;
+        }
+        button {
+            margin-bottom: 10px;
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+        .time-group {
+            margin-bottom: 20px;
+        }
+        .time-group h2 {
+            margin-bottom: 6px;
+            font-size: 1em;
+        }
+        .match-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .match-wrapper {
+            margin-bottom: 30px;
+            position: relative;
+            page-break-inside: avoid;
+        }
+        .division-label, .group-label {
+            font-size: 0.75em;
             text-align: center;
+            margin-bottom: 3px;
         }
         .match-block {
             display: flex;
-            width: 300px;
-            height: 80px;
-            border: 2px solid #ccc;
+            width: 240px;
+            height: 60px;
+            border: 1px solid #000;
             font-weight: bold;
-            color: #333;
+            color: #000;
+            background-color: #fff;
         }
         .team-left, .team-right {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 5px;
+            padding: 4px;
+            font-size: 0.85em;
+            color: #000;
         }
-        .team-left { border-right: 1px solid #aaa; }
+        .team-left {
+            border-right: 1px solid #000;
+        }
         .field-label {
             position: absolute;
-            bottom: -20px;
+            bottom: -16px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.75em;
+            color: #000;
+        }
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                font-size: 10pt;
+                color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            button {
+                display: none;
+            }
         }
         """)
         f.write("</style></head><body>\n")
+        f.write("<button onclick='window.print()'>🖨️ Print Schedule</button>\n")
         f.write(f"<h1>{game_date.strftime('%A, %B %d, %Y')}</h1>\n")
 
         time_groups = defaultdict(list)
@@ -199,19 +235,20 @@ def write_html(filename, game_date, games):
                     <div class="field-label">{field}</div>
                 </div>
                 """)
-                f.write("</div>\n")
-            f.write("</div></div>\n")
+                f.write("</div>\n")  # closes match-wrapper
+            f.write("</div></div>\n")  # closes match-row and time-group
 
         f.write("</body></html>")
 
-# Write public-facing HTML for next Saturday
-today = datetime.now(local_tz).date()
+
+# --- Final Output ---
+html_file = "printable_schedule.html"
+
 days_until_saturday = (5 - today.weekday()) % 7
 next_saturday = today + timedelta(days=days_until_saturday)
 
 if next_saturday in games_by_date:
-    html_week_file = "index.html"
-    write_html(html_week_file, next_saturday, games_by_date[next_saturday])
-    print(f"✅ This week's layout saved to: {html_week_file}")
+    write_html(html_file, next_saturday, games_by_date[next_saturday])
+    print(f"✅ Printable HTML saved to: {html_file}")
 else:
     print("⚠️ No games found for the upcoming Saturday.")

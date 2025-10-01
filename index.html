@@ -1,47 +1,85 @@
 <html><head><style>
 
-        body { font-family: sans-serif; padding: 20px; }
-        .time-group { margin-bottom: 40px; }
-        .time-group h2 { margin-bottom: 10px; }
-        .match-row { display: flex; flex-wrap: wrap; gap: 20px; }
-        .match-wrapper { margin-bottom: 50px; position: relative; }
-        .division-label {
-            margin-bottom: 5px;
-            font-size: 0.85em;
-            color: #888;
-            text-align: center;
+        @page {
+            size: landscape;
+            margin: 0.25in;
         }
-        .group-label {
-            margin-bottom: 5px;
-            font-size: 0.8em;
-            color: #444;
+        body {
+            font-family: sans-serif;
+            padding: 10px;
+            background: #fff;
+        }
+        button {
+            margin-bottom: 10px;
+            padding: 6px 12px;
+            font-size: 0.9em;
+        }
+        .time-group {
+            margin-bottom: 20px;
+        }
+        .time-group h2 {
+            margin-bottom: 6px;
+            font-size: 1em;
+        }
+        .match-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+        .match-wrapper {
+            margin-bottom: 30px;
+            position: relative;
+            page-break-inside: avoid;
+        }
+        .division-label, .group-label {
+            font-size: 0.75em;
             text-align: center;
+            margin-bottom: 3px;
         }
         .match-block {
             display: flex;
-            width: 300px;
-            height: 80px;
-            border: 2px solid #ccc;
+            width: 240px;
+            height: 60px;
+            border: 1px solid #000;
             font-weight: bold;
-            color: #333;
+            color: #000;
+            background-color: #fff;
         }
         .team-left, .team-right {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 5px;
+            padding: 4px;
+            font-size: 0.85em;
+            color: #000;
         }
-        .team-left { border-right: 1px solid #aaa; }
+        .team-left {
+            border-right: 1px solid #000;
+        }
         .field-label {
             position: absolute;
-            bottom: -20px;
+            bottom: -16px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.9em;
-            color: #666;
+            font-size: 0.75em;
+            color: #000;
+        }
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                font-size: 10pt;
+                color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            button {
+                display: none;
+            }
         }
         </style></head><body>
+<button onclick='window.print()'>🖨️ Print Schedule</button>
 <h1>Saturday, October 04, 2025</h1>
 <div class='time-group'><h2>8:30 AM</h2><div class='match-row'>
 <div class='match-wrapper'>

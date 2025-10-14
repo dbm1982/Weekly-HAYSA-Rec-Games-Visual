@@ -24,8 +24,11 @@ jobs:
       run: |
         pip install requests ics pytz openpyxl
 
-    - name: Run layout generator
+    - name: Run original layout generator
       run: python "Weekly Visual Rec Schedule.py"
+
+    - name: Run enhanced layout generator
+      run: python "Weekly Visual Rec Schedule Enhanced.py"
 
     - name: Commit and push updated HTML
       env:
@@ -33,8 +36,8 @@ jobs:
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
-        git add index.html
-        git diff --cached --quiet || git commit -m "🔄 Daily update: game layout"
+        git add index.html map_overlay_image.html map_overlay_enhanced.html
+        git diff --cached --quiet || git commit -m "🔄 Daily update: original + enhanced overlays"
         git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
         git push origin main
 

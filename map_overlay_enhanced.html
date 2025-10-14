@@ -1,0 +1,174 @@
+<html><head><style>
+
+    body {
+        font-family: sans-serif;
+        background: #fff;
+        padding: 20px;
+    }
+    .map-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .map-column {
+        flex: 1;
+        min-width: 300px;
+        text-align: center;
+    }
+    .map-container {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+    }
+    .field-map {
+        width: 100%;
+        display: block;
+    }
+    .match-overlay {
+        position: absolute;
+        font-size: 0.65em;
+        background: white;
+        border: 0.5px solid black;
+        text-align: center;
+        padding: 4px 2px;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        transform-origin: center;
+        line-height: 1.2em;
+    }
+    .team-left, .team-right {
+        font-weight: bold;
+        padding: 6px 2px;
+        color: #000;
+        line-height: 1.4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: clamp(0.5em, 1.2vw, 0.85em);
+        max-width: 100%;
+    }
+    .diagonal-text {
+        transform: rotate(-45deg);
+        transform-origin: center;
+        font-size: 0.6em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+    .team-left {
+        background-color: #eee;
+        border-bottom: 1px solid #ccc;
+    }
+    .team-right {
+        background-color: #eee;
+    }
+    .division-label {
+        font-size: 0.75em;
+        font-weight: bold;
+        color: #333;
+        margin-top: 2px;
+        line-height: 1.2em;
+    }
+    </style></head><body>
+<h1>📍 Matchups for Saturday, October 18</h1>
+<div class='map-grid'>
+<div class='map-column'><h2>8:30 AM</h2>
+<div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
+<div class='match-overlay' style='left:60.0%; top:15.3%; width:16.0%; height:15.0%; transform:none;'>
+<div class='team-left' style='padding:10px 2px; background-color:#FCB03A'>O'Neill</div>
+<div class='team-right' style='padding:10px 2px; background-color:#E88989'>Casavant</div>
+<div class='division-label'>3/4 Girls</div>
+</div>
+<div class='match-overlay' style='left:40.0%; top:15.3%; width:16.3%; height:15.0%; transform:none;'>
+<div class='team-left' style='padding:10px 2px; background-color:#429964'>Fernald</div>
+<div class='team-right' style='padding:10px 2px; background-color:#4996D1'>Dauphinee</div>
+<div class='division-label'>3/4 Girls</div>
+</div>
+<div class='match-overlay' style='left:37.5%; top:63%; width:25%; height:9.3%; transform:rotate(4.5deg);'>
+<div style='display:flex; flex-direction:row; height:66%;'>
+<div class='team-left' style='flex:1; background-color:#FCB03A'>Kirby</div>
+<div class='team-right' style='flex:1; background-color:#E88989'>Berry</div>
+</div>
+<div class='division-label'>3/4 Boys</div>
+</div>
+<div class='match-overlay' style='left:15%; top:70%; width:16.2%; height:15%; transform:rotate(7.5deg);'>
+<div class='team-left' style='padding:10px 2px; background-color:#4996D1'>Burden</div>
+<div class='team-right' style='padding:10px 2px; background-color:#429964'>Zangla</div>
+<div class='division-label'>3/4 Boys</div>
+</div>
+</div></div>
+<div class='map-column'><h2>9:45 AM</h2>
+<div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
+<div class='match-overlay' style='left:37.5%; top:63%; width:25%; height:9.3%; transform:rotate(4.5deg);'>
+<div style='display:flex; flex-direction:row; height:66%;'>
+<div class='team-left' style='flex:1; background-color:#E88989'>Collins</div>
+<div class='team-right' style='flex:1; background-color:#4996D1'>Guilbeault</div>
+</div>
+<div class='division-label'>5/6/7 Boys</div>
+</div>
+<div class='match-overlay' style='left:15%; top:70%; width:16.2%; height:15%; transform:rotate(7.5deg);'>
+<div class='team-left' style='padding:10px 2px; background-color:#429964'>Onwumere</div>
+<div class='team-right' style='padding:10px 2px; background-color:#FCB03A'>Johnson</div>
+<div class='division-label'>5/6/7 Boys</div>
+</div>
+<div class='match-overlay' style='left:60.0%; top:15.3%; width:16.0%; height:15.0%; transform:none;'>
+<div class='team-left' style='padding:10px 2px; background-color:#FCB03A'>Gracie</div>
+<div class='team-right' style='padding:10px 2px; background-color:#E88989'>Morris</div>
+<div class='division-label'>5/6/7 Girls</div>
+</div>
+<div class='match-overlay' style='left:40.0%; top:15.3%; width:16.3%; height:15.0%; transform:none;'>
+<div class='team-left' style='padding:10px 2px; background-color:#4996D1'>Fernald</div>
+<div class='team-right' style='padding:10px 2px; background-color:#429964'>Berry</div>
+<div class='division-label'>5/6/7 Girls</div>
+</div>
+</div></div>
+<div class='map-column'><h2>11:00 AM</h2>
+<div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
+<div class='match-overlay' style='left:37.5%; top:63%; width:20%; height:5.6%; transform:rotate(4.5deg);'>
+<div class='team-left' style='padding:6px 2px; background-color:#429964'>Quintanilla</div>
+<div class='team-right' style='padding:6px 2px; background-color:#4996D1'>Perry</div>
+<div class='division-label'>1/2 Boys</div>
+</div>
+<div class='match-overlay' style='left:60%; top:15.3%; width:16.0%; height:9.0%; transform:none;'>
+<div style='display:flex; flex-direction:row; height:66%;'>
+<div class='team-left' style='flex:1; background-color:#FCB03A'>Caron</div>
+<div class='team-right' style='flex:1; background-color:#4996D1'>Harris</div>
+</div>
+<div class='division-label'>1/2 Girls</div>
+</div>
+<div class='match-overlay' style='left:40.0%; top:15.3%; width:16.3%; height:9.0%; transform:none;'>
+<div style='display:flex; flex-direction:row; height:66%;'>
+<div class='team-left' style='flex:1; background-color:#FCB03A'>Maiden</div>
+<div class='team-right' style='flex:1; background-color:#4996D1'>Conley</div>
+</div>
+<div class='division-label'>Kindergarten</div>
+</div>
+<div class='match-overlay' style='left:60.0%; top:25.2%; width:16.0%; height:9.0%; transform:none;'>
+<div style='display:flex; flex-direction:row; height:66%;'>
+<div class='team-left' style='flex:1; background-color:#E88989'>Casavant</div>
+<div class='team-right' style='flex:1; background-color:#429964'>Baker</div>
+</div>
+<div class='division-label'>1/2 Girls</div>
+</div>
+<div class='match-overlay' style='left:40.0%; top:25.2%; width:16.3%; height:9.0%; transform:none;'>
+<div style='display:flex; flex-direction:row; height:66%;'>
+<div class='team-left' style='flex:1; background-color:#E88989'>Theodore</div>
+<div class='team-right' style='flex:1; background-color:#429964'>Decoste</div>
+</div>
+<div class='division-label'>Kindergarten</div>
+</div>
+<div class='match-overlay' style='left:55.5%; top:64%; width:20%; height:5.6%; transform:rotate(4.7deg);'>
+<div class='team-left' style='padding:6px 2px; background-color:#FCB03A'>Burden</div>
+<div class='team-right' style='padding:6px 2px; background-color:#E88989'>Henry</div>
+<div class='division-label'>1/2 Boys</div>
+</div>
+</div></div>
+</div></body></html>

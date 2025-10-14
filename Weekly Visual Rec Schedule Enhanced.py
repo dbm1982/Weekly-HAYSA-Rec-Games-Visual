@@ -25,8 +25,8 @@ field_positions = {
     "Field 2B":  { "x": 60, "y": 15.3, "width": 16.0, "height": 15.0 },
     "Field 3":   { "x": 15, "y": 70, "width": 16.2, "height": 15, "rotate": 7.5 },
     "Field 4":   { "x": 37.5, "y": 63, "width": 25, "height": 9.3, "rotate": 4.5 },
-    "Field 4A":  { "x": 37.5, "y": 63, "width": 20, "height": 9.3, "rotate": 4.5 },
-    "Field 4B":  { "x": 55.5, "y": 64, "width": 20, "height": 9.3, "rotate": 4.7 },
+    "Field 4A":  { "x": 37.5, "y": 63, "width": 18, "height": 9.3, "rotate": 4.5 },
+    "Field 4B":  { "x": 55.5, "y": 64, "width": 18, "height": 9.3, "rotate": 4.5 },
 }
 
 # --- Team Colors ---

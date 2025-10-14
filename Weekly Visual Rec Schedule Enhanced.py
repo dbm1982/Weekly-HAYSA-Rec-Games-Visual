@@ -17,16 +17,19 @@ enlarged_blocks_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys
 
 # --- Field Coordinates ---
 field_positions = {
-    "Field 1":   { "x": 40.0, "y": 14.7, "width": 16.3, "height": 15.0 },
-    "Field 1A":  { "x": 40.0, "y": 24.2, "width": 17, "height": 14.0 },
-    "Field 1B":  { "x": 40.0, "y": 14.7, "width": 17, "height": 14.0 },
-    "Field 2":   { "x": 60.0, "y": 14.7, "width": 16.3, "height": 15.0 },
-    "Field 2A":  { "x": 60.0, "y": 24.2, "width": 17.0, "height": 14.0 },
-    "Field 2B":  { "x": 60, "y": 14.7, "width": 17.0, "height": 14.0 },
+    "Field 1":   { "x": 40.0, "y": 15.7, "width": 16.5, "height": 15.0 },
+    "Field 2":   { "x": 60.0, "y": 15.7, "width": 16.5, "height": 15.0 },
     "Field 3":   { "x": 14, "y": 68, "width": 17, "height": 17, "rotate": 7.5 },
     "Field 4":   { "x": 37.5, "y": 63, "width": 27, "height": 9.3, "rotate": 4.8 },
-    "Field 4A":  { "x": 37.5, "y": 63, "width": 20, "height": 10, "rotate": 4.8 },
-    "Field 4B":  { "x": 56.5, "y": 64, "width": 20, "height": 10, "rotate": 4.8 },
+    
+    "Field 1A":  { "x": 40.0, "y": 22.2, "width": 17.0, "height": 13.0 },
+    "Field 2A":  { "x": 60.0, "y": 22.2, "width": 17.0, "height": 13.0 },
+
+    "Field 1B":  { "x": 40.0, "y": 14.7, "width": 17.0, "height": 13.0 },
+    "Field 2B":  { "x": 60, "y": 14.7, "width": 17.0, "height": 13.0 },
+    
+    "Field 4A":  { "x": 36.5, "y": 62.5, "width": 20, "height": 10.5, "rotate": 4.9 },
+    "Field 4B":  { "x": 55.5, "y": 63.5, "width": 20, "height": 10.5, "rotate": 4.9 },
 }
 
 # --- Team Colors ---

@@ -205,11 +205,14 @@ with open(output_html, "w", encoding="utf-8") as f:
                 f.write(f"<div class='{right_class}' style='{block_style} {font_size} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
 
             f.write(f"<div class='division-label'>{matchup['division']}</div>\n")
+            
             f.write("</div>\n")
+    
+        f.write("</div>\n")
+        f.write("</div>\n")
 
-            f.write("</div></div>\n")
-
-            f.write("</div></body></html>\n")
+    f.write("</div>\n")
+    f.write("</div></body></html>\n")
 
 print(f"✅ Overlay saved to: {output_html}")
 webbrowser.open(output_html)

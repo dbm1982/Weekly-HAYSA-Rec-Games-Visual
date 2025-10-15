@@ -1,24 +1,36 @@
 <html><head><style>
 body { font-family: sans-serif; background: #fff; padding: 20px; }
-    .map-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; }
-    .map-column { flex: 1; min-width: 300px; text-align: center; }
-    .map-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
-    .field-map { width: 100%; display: block; }
-    .match-overlay { position: absolute; font-size: 0.65em; background: white; border: 0.5px solid black;
-        text-align: center; padding: 4px 2px; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); transform-origin: center;
-        line-height: 1.2em; }
-    .team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; line-height: 1.4em;
-        display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;
-        text-overflow: ellipsis; font-size: clamp(0.5em, 1.2vw, 0.85em); max-width: 100%; }
-    .diagonal-text { transform: rotate(-45deg); transform-origin: center; font-size: 0.6em; white-space: nowrap;
-        overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; justify-content: center;
-        height: 100%; }
-    .team-left { background-color: #eee; border-bottom: 1px solid #ccc; }
-    .team-right { background-color: #eee; }
-    .division-label { font-size: 0.75em; font-weight: bold; color: #333; margin-top: 2px; line-height: 1.2em; }
-    </style></head><body>
+.map-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; }
+.map-column { flex: 1; min-width: 300px; text-align: center; }
+.map-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
+.field-map { width: 100%; display: block; }
+.match-overlay { position: absolute; font-size: 0.65em; background: white; border: 0.5px solid black;
+    text-align: center; padding: 4px 2px; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); transform-origin: center;
+    line-height: 1.2em; }
+.team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; line-height: 1.4em;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;
+    text-overflow: ellipsis; font-size: clamp(0.5em, 1.2vw, 0.85em); max-width: 100%; }
+.diagonal-text { transform: rotate(-45deg); transform-origin: center; font-size: 0.6em; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; justify-content: center;
+    height: 100%; }
+.team-left { background-color: #eee; border-bottom: 1px solid #ccc; }
+.team-right { background-color: #eee; }
+.division-label { font-size: 0.75em; font-weight: bold; color: #333; margin-top: 2px; line-height: 1.2em; }
+
+@media print {
+    body { background: white; padding: 0; margin: 0; }
+    .map-grid { gap: 0; }
+    .map-column { page-break-inside: avoid; }
+    button, hr { display: none; }
+    .match-overlay { box-shadow: none; border: 1px solid #000; }
+    .field-map { max-width: 100%; }
+}
+</style></head><body>
 <h1>📍 Matchups for Saturday, October 18</h1>
-<p style='font-size:0.75em; font-style:italic; color:#666;'>            Last updated: Tuesday, October 14 at 09:16 PM</p>
+<p style='font-size:0.75em; font-style:italic; color:#666;'>Last updated: Tuesday, October 14 at 10:23 PM</p>
+<button onclick="window.print()" style="margin:10px 0; padding:6px 12px; font-size:0.9em; cursor:pointer;">
+    🖨️ Print Schedule
+    </button>
 <div class='map-grid'>
 <div class='map-column'><h2>8:30 AM</h2>
 <div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
@@ -115,4 +127,4 @@ body { font-family: sans-serif; background: #fff; padding: 20px; }
 </div>
 </div>
 </div>
-</div></body></html>
+</body></html>

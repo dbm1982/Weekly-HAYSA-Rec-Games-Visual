@@ -141,6 +141,7 @@ with open(output_html, "w", encoding="utf-8") as f:
     """)
     f.write("</style></head><body>\n")
     f.write(f"<h1>📍 Matchups for {next_saturday.strftime('%A, %B %d')}</h1>\n")
+    f.write(f"<p style='font-size:0.85em; color:#666;'>Last updated: {datetime.now(local_tz).strftime('%A, %B %d at %I:%M %p')}</p>\n")
     f.write("<div class='map-grid'>\n")
 
     for block in sorted(games_by_block.keys(), key=time_sort_key):

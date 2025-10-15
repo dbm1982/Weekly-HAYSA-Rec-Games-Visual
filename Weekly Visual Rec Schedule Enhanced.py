@@ -147,6 +147,13 @@ with open(output_html, "w", encoding="utf8") as f:
     button, hr { display: none; }
     .match-overlay { box-shadow: none; border: 1px solid #000; }
     .field-map { max-width: 100%; }
+
+    /* ✅ Force background colors and text colors to print */
+    .team-left, .team-right {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: #000 !important;
+    }
 }
 """)
     f.write("</style></head><body>\n")

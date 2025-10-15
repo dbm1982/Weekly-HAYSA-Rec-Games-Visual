@@ -119,8 +119,10 @@ for m in matchups:
 image_path = "assets/field_map.jpeg"
 output_html = "map_overlay_enhanced.html"
 
-f.write("<html><head><style>\n")
-f.write("""body { font-family: sans-serif; background: #fff; padding: 20px; }
+with open(output_html, "w", encoding="utf8") as f:
+    f.write("<html><head><style>\n")
+    f.write("""body { font-family: sans-serif; background: #fff; padding: 20px; }
+
 .map-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; }
 .map-column { flex: 1; min-width: 300px; text-align: center; }
 .map-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
@@ -128,6 +130,12 @@ f.write("""body { font-family: sans-serif; background: #fff; padding: 20px; }
 .match-overlay { position: absolute; font-size: 0.65em; background: white; border: 0.5px solid black;
     text-align: center; padding: 4px 2px; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); transform-origin: center;
     line-height: 1.2em; }
+.team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; line-height: 1.4em;
+    display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;
+    text-overflow: ellipsis; font-size: clamp(0.5em, 1.2vw, 0.85em); max-width: 100%; }
+.diagonal-text { transform: rotate(-45deg); transform-origin: center; font-size: 0.6em; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; justify-content: center;
+    height: 100%; }
 .team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; line-height: 1.4em;
     display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;
     text-overflow: ellipsis; font-size: clamp(0.5em, 1.2vw, 0.85em); max-width: 100%; }
@@ -148,21 +156,18 @@ f.write("""body { font-family: sans-serif; background: #fff; padding: 20px; }
 }
 """)
 f.write("</style></head><body>\n")
+f.write("<div class='map-grid'>\n")
 
+for block in sorted(games_by_block.keys(), key=time_sort_key):
+    f.write(f"<div class='map-column'><h2>{block}</h2>\n")
+    f.write(f"<div class='map-container'><img src='{image_path}' class='field-map'>\n")
 
-
-    f.write("<div class='map-grid'>\n")
-
-    for block in sorted(games_by_block.keys(), key=time_sort_key):
-        f.write(f"<div class='map-column'><h2>{block}</h2>\n")
-        f.write(f"<div class='map-container'><img src='{image_path}' class='field-map'>\n")
-
-        for matchup in games_by_block[block]:
-            field = matchup["field"]
-            pos = field_positions.get(field)
-            if not pos:
-                print(f"⚠️ Skipping {field} — no coordinates defined")
-                continue
+    for matchup in games_by_block[block]:
+        field = matchup["field"]
+        pos = field_positions.get(field)
+        if not pos:
+            print(f"⚠️ Skipping {field} — no coordinates defined")
+            continue
 
             # Base height logic
             is_full = matchup["division"] in full_block_divisions

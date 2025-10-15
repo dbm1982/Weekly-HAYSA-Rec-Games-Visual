@@ -24,10 +24,17 @@ body { font-family: sans-serif; background: #fff; padding: 20px; }
     button, hr { display: none; }
     .match-overlay { box-shadow: none; border: 1px solid #000; }
     .field-map { max-width: 100%; }
+
+    /* ✅ Force background colors and text colors to print */
+    .team-left, .team-right {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: #000 !important;
+    }
 }
 </style></head><body>
 <h1>📍 Matchups for Saturday, October 18</h1>
-<p style='font-size:0.75em; font-style:italic; color:#666;'>Last updated: Tuesday, October 14 at 10:23 PM</p>
+<p style='font-size:0.75em; font-style:italic; color:#666;'>Last updated: Tuesday, October 14 at 10:29 PM</p>
 <button onclick="window.print()" style="margin:10px 0; padding:6px 12px; font-size:0.9em; cursor:pointer;">
     🖨️ Print Schedule
     </button>

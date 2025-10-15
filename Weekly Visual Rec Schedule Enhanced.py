@@ -174,6 +174,12 @@ with open(output_html, "w", encoding="utf-8") as f:
             width = f"{pos['width']}%"
             rotation = pos.get("rotate", 0)
             transform = f"rotate({rotation}deg)" if rotation else "none"
+            
+            # Shrink font size for 11:00 AM matchups on tight fields
+            shrink_font = matchup["time"] == "11:00 AM" and field in {"Field 1A", "Field 1B", "Field 2A", "Field 2B"}
+            font_size = "font-size:0.55em;" if shrink_font else ""
+
+
 
             f.write(f"<div class='match-overlay' style='left:{left}; top:{top}; width:{width}; height:{height}; transform:{transform};'>\n")
 
@@ -183,23 +189,27 @@ with open(output_html, "w", encoding="utf-8") as f:
             left_class = "team-left diagonal-text" if is_diagonal else "team-left"
             right_class = "team-right diagonal-text" if is_diagonal else "team-right"
 
+            # Shrink font size for 11:00 AM matchups on tight fields
+            shrink_font = matchup["time"] == "11:00 AM" and field in {"Field 1A", "Field 1B", "Field 2A", "Field 2B"}
+            font_size = "font-size:0.55em;" if shrink_font else ""
+
             if field in side_by_side_fields:
                 block_height = "80%" if enlarged else "66%"
                 f.write(f"<div style='display:flex; flex-direction:row; height:{block_height};'>\n")
-                f.write(f"<div class='{left_class}' style='flex:1; background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
-                f.write(f"<div class='{right_class}' style='flex:1; background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
+                f.write(f"<div class='{left_class}' style='flex:1; {font_size} background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
+                f.write(f"<div class='{right_class}' style='flex:1; {font_size} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
                 f.write("</div>\n")
             else:
                 block_style = "padding:10px 2px;" if enlarged else "padding:6px 2px;"
-                f.write(f"<div class='{left_class}' style='{block_style} background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
-                f.write(f"<div class='{right_class}' style='{block_style} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
+                f.write(f"<div class='{left_class}' style='{block_style} {font_size} background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
+                f.write(f"<div class='{right_class}' style='{block_style} {font_size} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
 
             f.write(f"<div class='division-label'>{matchup['division']}</div>\n")
             f.write("</div>\n")
 
-        f.write("</div></div>\n")
+            f.write("</div></div>\n")
 
-    f.write("</div></body></html>\n")
+            f.write("</div></body></html>\n")
 
 print(f"✅ Overlay saved to: {output_html}")
 webbrowser.open(output_html)

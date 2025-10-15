@@ -129,6 +129,19 @@ with open(output_html, "w", encoding="utf-8") as f:
     .match-overlay { position: absolute; font-size: 0.65em; background: white; border: 0.5px solid black;
         text-align: center; padding: 4px 2px; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); transform-origin: center;
         line-height: 1.2em; }
+    f.write("""
+    @media print {
+        body { background: white; padding: 0; margin: 0; }
+        .map-grid { gap: 0; }
+        .map-column { page-break-inside: avoid; }
+        button, hr { display: none; }
+        .match-overlay { box-shadow: none; border: 1px solid #000; }
+        .field-map { max-width: 100%; }
+    }
+    """)
+
+
+    
     .team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; line-height: 1.4em;
         display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;
         text-overflow: ellipsis; font-size: clamp(0.5em, 1.2vw, 0.85em); max-width: 100%; }
@@ -142,6 +155,13 @@ with open(output_html, "w", encoding="utf-8") as f:
     f.write("</style></head><body>\n")
     f.write(f"<h1>📍 Matchups for {next_saturday.strftime('%A, %B %d')}</h1>\n")
     f.write(f"<p style='font-size:0.75em; font-style:italic; color:#666;'>            Last updated: {datetime.now(local_tz).strftime('%A, %B %d at %I:%M %p')}</p>\n")
+    f.write("""
+    <button onclick="window.print()" style="margin:10px 0; padding:6px 12px; font-size:0.9em; cursor:pointer;">
+    🖨️ Print Schedule
+    </button>
+    """)
+
+
     f.write("<div class='map-grid'>\n")
 
     for block in sorted(games_by_block.keys(), key=time_sort_key):

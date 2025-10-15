@@ -19,7 +19,7 @@ enlarged_blocks_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys
 field_positions = {
     "Field 1":   { "x": 40.0, "y": 16.5, "width": 16.5, "height": 15.0 },
     "Field 2":   { "x": 60.0, "y": 16.5, "width": 16.5, "height": 15.0 },
-    "Field 3":   { "x": 15, "y": 76, "width": 14.5, "height": 19, "rotate": 7.5 },
+    "Field 3":   { "x": 15, "y": 75.5, "width": 14.5, "height": 19, "rotate": 7.5 },
     "Field 4":   { "x": 39.5, "y": 69, "width": 27, "height": 9.3, "rotate": 4.8 },
 
     "Field 1B":  { "x": 40.0, "y": 15.7, "width": 17.0, "height": 13.0 }, "Field 2B":  { "x": 60.0, "y": 15.7, "width": 17.0, "height": 13.0 },

@@ -8,8 +8,8 @@ import pytz
 ical_url = "http://tmsdln.com/19hyx"
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
-next_saturday = today + timedelta((4 - today.weekday()) % 7)
-allowed_times = {"5:15 PM", "6:30 PM", "7:45 PM"}
+next_saturday = today + timedelta((5 - today.weekday()) % 7)
+allowed_times = {"8:30 AM", "9:45 AM", "11:00 AM", "11:30 AM"}
 full_block_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys"}
 side_by_side_fields = {"Field 1A", "Field 1B", "Field 2A", "Field 2B", "Field 4"}
 enlarged_blocks_fields = {"Field 1", "Field 2", "Field 3"}

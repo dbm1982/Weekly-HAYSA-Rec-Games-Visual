@@ -11,10 +11,11 @@ ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc0
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 
-# --- Travel Towns (for second filter) ---
+# --- Travel Towns (second filter) ---
 travel_towns = {
     "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
-    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington"
+    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington",
+    "Quincy"  # Added because ICS contains Quincy Travel games
 }
 
 # --- Field Map Coordinates ---
@@ -112,13 +113,17 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
-    # ⭐ Travel filter #1 — team names
+    # ⭐ Travel filter #1 — team names containing "Travel"
+    if "Travel" in team1_raw or "Travel" in team2_raw:
+        continue
+
+    # ⭐ Travel filter #2 — team names matching towns
     if team1_raw in travel_towns or team2_raw in travel_towns:
         continue
 
     division = extract_division(description)
 
-    # ⭐ Travel filter #2 — division
+    # ⭐ Travel filter #3 — division contains "Travel"
     if "Travel" in division:
         continue
 

@@ -1,22 +1,17 @@
-import requests, ssl, re, webbrowser
+import requests, ssl, re
 from ics import Calendar
 from datetime import datetime, timedelta
 from collections import defaultdict
 import pytz
+import random
 
-# --- Config ---
+# --- ICS Feed ---
 ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt%40import.calendar.google.com/public/basic.ics"
 
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 
-# --- Field Map Settings ---
-allowed_times = {"8:30 AM", "9:45 AM", "11:00 AM", "11:30 AM"}
-full_block_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys"}
-side_by_side_fields = {"Field 1A", "Field 1B", "Field 2A", "Field 2B", "Field 4"}
-enlarged_blocks_fields = {"Field 1", "Field 2", "Field 3"}
-enlarged_blocks_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys"}
-
+# --- Field Map Coordinates ---
 field_positions = {
     "Field 1":   { "x": 40.0, "y": 16.5, "width": 17.5, "height": 15.0 },
     "Field 2":   { "x": 60.0, "y": 16.5, "width": 17.5, "height": 15.0 },
@@ -30,16 +25,9 @@ field_positions = {
     "Field 4B":  { "x": 55.5, "y": 69, "width": 20, "height": 10.5, "rotate": 4.9 },
 }
 
-color_map = {
-    "Blue": "#4996D1",
-    "Red": "#E88989",
-    "Green": "#429964",
-    "Orange": "#FCB03A"
-}
-
 # --- Helpers ---
 def parse_team(raw_team):
-    match = re.match(r".*?\((.*?)\s*-\s*(.*?)\)", raw_team)
+    match = re.match(r".*?`\((.*?)\s*-\s*(.*?)\)`", raw_team)
     if match:
         coach = match.group(1).strip()
         color = match.group(2).strip()
@@ -68,6 +56,45 @@ def format_field(raw_field):
 
 def time_sort_key(t):
     return datetime.strptime(t, "%I:%M %p")
+
+# --- Auto Color Detection ---
+def build_color_map(future_games):
+    known_colors = {
+        "Blue": "#4996D1",
+        "Red": "#E88989",
+        "Green": "#429964",
+        "Orange": "#FCB03A",
+        "Berry": "#E8DAEF",
+        "Gray": "#F2F3F4",
+        "Black": "#000000",
+        "White": "#FFFFFF",
+        "Yellow": "#FFEB3B",
+        "Purple": "#9B59B6",
+        "Maroon": "#800000",
+        "Teal": "#008080",
+        "Pink": "#FFC0CB",
+        "Gold": "#FFD700",
+        "Silver": "#C0C0C0",
+        "Navy": "#001F3F",
+        "Royal Blue": "#4169E1",
+        "Light Blue": "#ADD8E6",
+        "Dark Green": "#006400",
+    }
+
+    auto_map = {}
+
+    for date, games in future_games.items():
+        for g in games:
+            c1 = g["color1"]
+            c2 = g["color2"]
+            for c in (c1, c2):
+                if c not in auto_map:
+                    auto_map[c] = known_colors.get(
+                        c,
+                        "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
+                    )
+
+    return auto_map
 
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -112,9 +139,11 @@ for event in calendar.events:
         "division": division
     })
 
+# --- Auto Color Map ---
+color_map = build_color_map(future_games)
+
 # --- Determine upcoming Saturday ---
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
-
 games_this_sat = future_games.get(next_saturday, [])
 
 # --- Determine next date with games ---
@@ -143,7 +172,7 @@ with open(output_html, "w", encoding="utf8") as f:
     """)
     f.write("</style></head><body>\n")
 
-    # --- Small message if no games this Saturday ---
+    # Small message if no games this Saturday
     if not games_this_sat:
         f.write(f"""
         <p style="color:#666; font-style:italic; font-size:0.85em;">
@@ -151,7 +180,7 @@ with open(output_html, "w", encoding="utf8") as f:
         </p>
         """)
 
-    # --- Next game day heading ---
+    # Next game day heading
     if next_game_date:
         f.write(f"<h1>Next game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
     else:
@@ -159,7 +188,7 @@ with open(output_html, "w", encoding="utf8") as f:
         f.write("</body></html>")
         exit(0)
 
-    # --- Render next game day map ---
+    # Render next game day map
     games = future_games[next_game_date]
     games_by_block = defaultdict(list)
     for m in games:
@@ -185,8 +214,8 @@ with open(output_html, "w", encoding="utf8") as f:
             transform = f"rotate({rotation}deg)" if rotation else "none"
 
             f.write(f"<div class='match-overlay' style='left:{left}; top:{top}; width:{width}; height:{height}; transform:{transform};'>\n")
-            f.write(f"<div class='team-left' style='background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
-            f.write(f"<div class='team-right' style='background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
+            f.write(f"<div class='team-left' style='background-color:{color_map.get(matchup['color1'])}'>{matchup['team1']}</div>\n")
+            f.write(f"<div class='team-right' style='background-color:{color_map.get(matchup['color2'])}'>{matchup['team2']}</div>\n")
             f.write(f"<div class='division-label'>{matchup['division']}</div>\n")
             f.write("</div>\n")
 
@@ -194,4 +223,4 @@ with open(output_html, "w", encoding="utf8") as f:
 
     f.write("</div></body></html>")
 
-print(f"✅ Overlay saved to: {output_html}")
+print(f"Overlay saved to: {output_html}")

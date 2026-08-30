@@ -11,6 +11,12 @@ ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc0
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 
+# --- Travel Towns (for second filter) ---
+travel_towns = {
+    "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
+    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington"
+}
+
 # --- Field Map Coordinates ---
 field_positions = {
     "Field 1":   { "x": 40.0, "y": 16.5, "width": 17.5, "height": 15.0 },
@@ -35,7 +41,9 @@ def parse_team(raw_team):
     return raw_team.strip(), "Gray"
 
 def extract_division(description):
-    match = re.search(r"(\d+(?:/\d+)*\s+(Boys|Girls))", description or "")
+    if not description:
+        return ""
+    match = re.search(r"(\d+(?:/\d+)*\s+(Boys|Girls)(?:\s+Travel)?)", description)
     if match:
         return match.group(1)
     if "Kindergarten" in description:
@@ -60,58 +68,36 @@ def time_sort_key(t):
 # --- Auto Color Detection ---
 def build_color_map(future_games):
     known_colors = {
-        "Blue": "#4996D1",
-        "Red": "#E88989",
-        "Green": "#429964",
-        "Orange": "#FCB03A",
-        "Berry": "#E8DAEF",
-        "Gray": "#F2F3F4",
-        "Black": "#000000",
-        "White": "#FFFFFF",
-        "Yellow": "#FFEB3B",
-        "Purple": "#9B59B6",
-        "Maroon": "#800000",
-        "Teal": "#008080",
-        "Pink": "#FFC0CB",
-        "Gold": "#FFD700",
-        "Silver": "#C0C0C0",
-        "Navy": "#001F3F",
-        "Royal Blue": "#4169E1",
-        "Light Blue": "#ADD8E6",
-        "Dark Green": "#006400",
+        "Blue": "#4996D1", "Red": "#E88989", "Green": "#429964",
+        "Orange": "#FCB03A", "Berry": "#E8DAEF", "Gray": "#F2F3F4",
+        "Black": "#000000", "White": "#FFFFFF", "Yellow": "#FFEB3B",
+        "Purple": "#9B59B6", "Maroon": "#800000", "Teal": "#008080",
+        "Pink": "#FFC0CB", "Gold": "#FFD700", "Silver": "#C0C0C0",
+        "Navy": "#001F3F", "Royal Blue": "#4169E1",
+        "Light Blue": "#ADD8E6", "Dark Green": "#006400",
     }
 
     auto_map = {}
-
     for date, games in future_games.items():
         for g in games:
-            c1 = g["color1"]
-            c2 = g["color2"]
-            for c in (c1, c2):
+            for c in (g["color1"], g["color2"]):
                 if c not in auto_map:
                     auto_map[c] = known_colors.get(
-                        c,
-                        "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
+                        c, "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
                     )
-
     return auto_map
 
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
 ics_text = requests.get(ical_url).text
-
-if "<!DOCTYPE html>" in ics_text[:200]:
-    raise Exception("ICS feed returned HTML instead of ICS.")
-
 calendar = Calendar(ics_text)
 
-# --- Extract all future REC games ---
+# --- Extract REC games only ---
 future_games = defaultdict(list)
 
 for event in calendar.events:
     local_start = event.begin.datetime.astimezone(local_tz)
     game_date = local_start.date()
-
     if game_date < today:
         continue
 
@@ -122,16 +108,24 @@ for event in calendar.events:
     if "Practice" in name or "vs." not in name:
         continue
 
-    time_label = local_start.strftime("%I:%M %p").lstrip("0")
     team1_raw, team2_raw = name.split("vs.")
-    team1, color1 = parse_team(team1_raw.strip())
-    team2, color2 = parse_team(team2_raw.strip())
-    field = format_field(location)
+    team1_raw = team1_raw.strip()
+    team2_raw = team2_raw.strip()
+
+    # ⭐ Travel filter #1 — team names
+    if team1_raw in travel_towns or team2_raw in travel_towns:
+        continue
+
     division = extract_division(description)
 
-    # ⭐ Skip Travel games
+    # ⭐ Travel filter #2 — division
     if "Travel" in division:
         continue
+
+    time_label = local_start.strftime("%I:%M %p").lstrip("0")
+    team1, color1 = parse_team(team1_raw)
+    team2, color2 = parse_team(team2_raw)
+    field = format_field(location)
 
     future_games[game_date].append({
         "time": time_label,
@@ -146,16 +140,12 @@ for event in calendar.events:
 # --- Auto Color Map ---
 color_map = build_color_map(future_games)
 
-# --- Determine upcoming Saturday ---
+# --- Determine next REC Saturday ---
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
 games_this_sat = future_games.get(next_saturday, [])
 
 # --- Determine next REC game day ---
-next_game_date = None
-for d in sorted(future_games.keys()):
-    if future_games[d]:
-        next_game_date = d
-        break
+next_game_date = next((d for d in sorted(future_games) if future_games[d]), None)
 
 # --- HTML Output ---
 output_html = "map_overlay_enhanced.html"
@@ -176,27 +166,19 @@ with open(output_html, "w", encoding="utf8") as f:
     """)
     f.write("</style></head><body>\n")
 
-    # Small message if no Rec games this Saturday
     if not games_this_sat:
-        f.write(f"""
-        <p style="color:#666; font-style:italic; font-size:0.85em;">
-            No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}
-        </p>
-        """)
+        f.write(f"<p style='color:#666;font-style:italic;font-size:0.85em;'>No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}</p>")
 
-    # Next REC game day heading
-    if next_game_date:
-        f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
-    else:
-        f.write("<h1>No upcoming REC games found.</h1>")
-        f.write("</body></html>")
+    if not next_game_date:
+        f.write("<h1>No upcoming REC games found.</h1></body></html>")
         exit(0)
 
-    # Render next REC game day map
+    f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+
     games = future_games[next_game_date]
     games_by_block = defaultdict(list)
-    for m in games:
-        games_by_block[m["time"]].append(m)
+    for g in games:
+        games_by_block[g["time"]].append(g)
 
     f.write("<div class='map-grid'>\n")
 
@@ -204,24 +186,23 @@ with open(output_html, "w", encoding="utf8") as f:
         f.write(f"<div class='map-column'><h2>{block}</h2>\n")
         f.write(f"<div class='map-container'><img src='{image_path}' class='field-map'>\n")
 
-        for matchup in games_by_block[block]:
-            field = matchup["field"]
-            pos = field_positions.get(field)
+        for g in games_by_block[block]:
+            pos = field_positions.get(g["field"])
             if not pos:
                 continue
 
-            height = f"{pos['height']}%"
             left = f"{pos['x']}%"
             top = f"{pos['y']}%"
             width = f"{pos['width']}%"
+            height = f"{pos['height']}%"
             rotation = pos.get("rotate", 0)
             transform = f"rotate({rotation}deg)" if rotation else "none"
 
-            f.write(f"<div class='match-overlay' style='left:{left}; top:{top}; width:{width}; height:{height}; transform:{transform};'>\n")
-            f.write(f"<div class='team-left' style='background-color:{color_map.get(matchup['color1'])}'>{matchup['team1']}</div>\n")
-            f.write(f"<div class='team-right' style='background-color:{color_map.get(matchup['color2'])}'>{matchup['team2']}</div>\n")
-            f.write(f"<div class='division-label'>{matchup['division']}</div>\n")
-            f.write("</div>\n")
+            f.write(f"<div class='match-overlay' style='left:{left};top:{top};width:{width};height:{height};transform:{transform};'>")
+            f.write(f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>")
+            f.write(f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>")
+            f.write(f"<div class='division-label'>{g['division']}</div>")
+            f.write("</div>")
 
         f.write("</div></div>\n")
 

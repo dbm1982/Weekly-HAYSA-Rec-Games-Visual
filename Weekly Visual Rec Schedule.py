@@ -105,7 +105,7 @@ if "<!DOCTYPE html>" in ics_text[:200]:
 
 calendar = Calendar(ics_text)
 
-# --- Extract all future games ---
+# --- Extract all future REC games ---
 future_games = defaultdict(list)
 
 for event in calendar.events:
@@ -129,6 +129,10 @@ for event in calendar.events:
     field = format_field(location)
     division = extract_division(description)
 
+    # ⭐ Skip Travel games
+    if "Travel" in division:
+        continue
+
     future_games[game_date].append({
         "time": time_label,
         "field": field,
@@ -146,7 +150,7 @@ color_map = build_color_map(future_games)
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
 games_this_sat = future_games.get(next_saturday, [])
 
-# --- Determine next date with games ---
+# --- Determine next REC game day ---
 next_game_date = None
 for d in sorted(future_games.keys()):
     if future_games[d]:
@@ -172,23 +176,23 @@ with open(output_html, "w", encoding="utf8") as f:
     """)
     f.write("</style></head><body>\n")
 
-    # Small message if no games this Saturday
+    # Small message if no Rec games this Saturday
     if not games_this_sat:
         f.write(f"""
         <p style="color:#666; font-style:italic; font-size:0.85em;">
-            No games scheduled for Saturday, {next_saturday.strftime('%B %d')}
+            No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}
         </p>
         """)
 
-    # Next game day heading
+    # Next REC game day heading
     if next_game_date:
-        f.write(f"<h1>Next game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+        f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
     else:
-        f.write("<h1>No upcoming games found.</h1>")
+        f.write("<h1>No upcoming REC games found.</h1>")
         f.write("</body></html>")
         exit(0)
 
-    # Render next game day map
+    # Render next REC game day map
     games = future_games[next_game_date]
     games_by_block = defaultdict(list)
     for m in games:

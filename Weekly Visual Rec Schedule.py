@@ -7,7 +7,9 @@ from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 
 # --- iCal Feed ---
-ical_url = "http://tmsdln.com/19hyx"
+# ⭐ Use Google Calendar ICS mirror (Cloudflare-safe)
+ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt@import.calendar.google.com/basic.ics"
+
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 cutoff_date = today  # dynamic cutoff for GitHub workflows
@@ -70,7 +72,14 @@ def field_sort_key(field_label):
 
 # --- Load Calendar ---
 ssl._create_default_https_context = ssl._create_unverified_context
-calendar = Calendar(requests.get(ical_url).text)
+
+ics_text = requests.get(ical_url).text
+
+# ⭐ Guard: prevent HTML from crashing ICS parser
+if "<!DOCTYPE html>" in ics_text[:200]:
+    raise Exception("ICS feed returned HTML instead of ICS. Check ICS URL or Cloudflare.")
+
+calendar = Calendar(ics_text)
 
 # --- Group Events ---
 games_by_date = defaultdict(list)
@@ -235,8 +244,8 @@ def write_html(filename, game_date, games):
                     <div class="field-label">{field}</div>
                 </div>
                 """)
-                f.write("</div>\n")  # closes match-wrapper
-            f.write("</div></div>\n")  # closes match-row and time-group
+                f.write("</div>\n")
+            f.write("</div></div>\n")
 
         f.write("</body></html>")
 
@@ -252,4 +261,3 @@ if next_saturday in games_by_date:
     print(f"✅ Printable HTML saved to: {html_file}")
 else:
     print("⚠️ No games found for the upcoming Saturday.")
-

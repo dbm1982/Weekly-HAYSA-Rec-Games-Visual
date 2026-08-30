@@ -30,17 +30,23 @@ jobs:
     - name: Run enhanced layout generator
       run: python "Weekly Visual Rec Schedule Enhanced.py"
 
+    - name: List generated files (debug)
+      run: ls -R .
+
     - name: Commit and push updated HTML
       env:
         GH_TOKEN: ${{ secrets.GH_PAT }}
       run: |
         git config --global user.name "github-actions"
         git config --global user.email "github-actions@github.com"
+
+        # Stage only the files that actually exist
         [ -f index.html ] && git add index.html
-        [ -f map_overlay_image.html ] && git add map_overlay_image.html
         [ -f map_overlay_enhanced.html ] && git add map_overlay_enhanced.html
+        [ -f map_overlay.html ] && git add map_overlay.html
 
         git diff --cached --quiet || git commit -m "🔄 Daily update: original + enhanced overlays"
+
         git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
         git push origin main
 

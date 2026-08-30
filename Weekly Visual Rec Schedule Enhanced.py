@@ -11,7 +11,6 @@ ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc0
 
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
-cutoff_date = today  # dynamic cutoff for GitHub workflows
 
 # --- Color Map ---
 color_map = {
@@ -69,52 +68,54 @@ def field_sort_key(field_label):
         return (number, suffix)
     return (999, "")
 
-# --- Load Calendar ---
+# --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
-
-print("📡 Fetching ICS feed...")
 ics_text = requests.get(ical_url).text
 
 if "<!DOCTYPE html>" in ics_text[:200]:
-    raise Exception("❌ ICS feed returned HTML instead of ICS.")
+    raise Exception("ICS feed returned HTML instead of ICS.")
 
 calendar = Calendar(ics_text)
-print("✅ ICS feed loaded successfully.")
 
-# --- Group Events ---
-games_by_date = defaultdict(list)
+# --- Extract all future games ---
+future_games = defaultdict(list)
 
 for event in calendar.events:
     local_start = event.begin.datetime.astimezone(local_tz)
     game_date = local_start.date()
 
-    if game_date <= cutoff_date:
+    if game_date < today:
         continue
 
-    time_label = local_start.strftime("%I:%M %p").lstrip("0")
-    sort_key = local_start.strftime("%H:%M")
     name = event.name
     location = event.location or ""
     description = event.description or ""
 
-    if "Practice" in name:
-        continue
-    if any(k in name for k in ["3/4", "5/6", "7/8"]) and "vs." in name:
-        continue
-    if "vs." not in name:
+    if "Practice" in name or "vs." not in name:
         continue
 
+    time_label = local_start.strftime("%I:%M %p").lstrip("0")
     team1_raw, team2_raw = name.split("vs.")
     team1, color1 = parse_team(team1_raw.strip())
     team2, color2 = parse_team(team2_raw.strip())
-
-    group = extract_group(team1_raw.strip()) or extract_group(team2_raw.strip())
     field = format_field(location)
+    group = extract_group(team1_raw.strip()) or extract_group(team2_raw.strip())
     division = extract_division(description)
 
-    games_by_date[game_date].append(
-        [sort_key, time_label, field, team1, color1, team2, color2, group, division]
+    future_games[game_date].append(
+        [time_label, field, team1, color1, team2, color2, group, division]
     )
+
+# --- Determine upcoming Saturday ---
+next_saturday = today + timedelta((5 - today.weekday()) % 7)
+games_this_sat = future_games.get(next_saturday, [])
+
+# --- Determine next date with games ---
+next_game_date = None
+for d in sorted(future_games.keys()):
+    if future_games[d]:
+        next_game_date = d
+        break
 
 # --- Excel Output ---
 excel_file = "non_core_games.xlsx"
@@ -122,14 +123,18 @@ wb = Workbook()
 ws_default = wb.active
 ws_default.title = "Placeholder"
 
-for game_date in sorted(games_by_date.keys()):
+for game_date in sorted(future_games.keys()):
+    games = future_games[game_date]
+    if not games:
+        continue
+
     ws = wb.create_sheet(title=game_date.strftime("%Y-%m-%d"))
     ws.append(["Time", "Field", "Team 1", "Team 2", "Group", "Division"])
-    sorted_games = sorted(games_by_date[game_date], key=lambda x: (x[0], field_sort_key(x[2])))
+
     row_index = 2
-    for _, time_label, field, team1, color1, team2, color2, group, division in sorted_games:
-        if division == "":
-            continue
+    for time_label, field, team1, color1, team2, color2, group, division in sorted(
+        games, key=lambda x: (datetime.strptime(x[0], "%I:%M %p"), field_sort_key(x[1]))
+    ):
         ws.append([time_label, field, team1, team2, group, division])
         fill1 = PatternFill(start_color=color_map.get(color1)[1:], end_color=color_map.get(color1)[1:], fill_type="solid")
         fill2 = PatternFill(start_color=color_map.get(color2)[1:], end_color=color_map.get(color2)[1:], fill_type="solid")
@@ -137,73 +142,49 @@ for game_date in sorted(games_by_date.keys()):
         ws[f"D{row_index}"].fill = fill2
         row_index += 1
 
-# ⭐ Remove placeholder only if real sheets exist
+# Remove placeholder if real sheets exist
 if len(wb.sheetnames) > 1:
     del wb["Placeholder"]
 else:
-    ws_default.append(["No games found after cutoff date"])
+    ws_default.append(["No games found"])
 
 wb.save(excel_file)
-print(f"📄 Excel saved: {excel_file}")
 
 # --- HTML Output ---
-def write_html(filename, game_date, games):
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write("<html><head><style>\n")
-        f.write("""
-        @page { size: landscape; margin: 0.25in; }
-        body { font-family: sans-serif; padding: 10px; background: #fff; }
-        button { margin-bottom: 10px; padding: 6px 12px; font-size: 0.9em; }
-        .time-group { margin-bottom: 20px; }
-        .time-group h2 { margin-bottom: 6px; font-size: 1em; }
-        .match-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
-        .match-wrapper { margin-bottom: 30px; position: relative; page-break-inside: avoid; }
-        .division-label, .group-label { font-size: 0.75em; text-align: center; margin-bottom: 3px; }
-        .match-block { display: flex; width: 240px; height: 60px; border: 1px solid #000; font-weight: bold; color: #000; background-color: #fff; }
-        .team-left, .team-right { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4px; font-size: 0.85em; color: #000; }
-        .team-left { border-right: 1px solid #000; }
-        .field-label { position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%); font-size: 0.75em; color: #000; }
-        @media print { body { padding: 0; margin: 0; font-size: 10pt; -webkit-print-color-adjust: exact; print-color-adjust: exact; } button { display: none; } }
-        """)
-        f.write("</style></head><body>\n")
-        f.write("<button onclick='window.print()'>🖨️ Print Schedule</button>\n")
-        f.write(f"<h1>{game_date.strftime('%A, %B %d, %Y')}</h1>\n")
-
-        time_groups = defaultdict(list)
-        for row in games:
-            time_groups[row[1]].append(row)
-
-        ordered_times = sorted(time_groups.keys(), key=lambda t: datetime.strptime(t, "%I:%M %p"))
-        for time in ordered_times:
-            f.write(f"<div class='time-group'><h2>{time}</h2><div class='match-row'>\n")
-            for _, _, field, team1, color1, team2, color2, group, division in sorted(time_groups[time], key=lambda x: field_sort_key(x[2])):
-                if division == "":
-                    continue
-                f.write("<div class='match-wrapper'>\n")
-                f.write(f"<div class='division-label'>{division}</div>\n")
-                f.write(f"<div class='group-label'>{group}</div>\n")
-                f.write(f"""
-                <div class="match-block">
-                    <div class="team-left" style="background-color:{color_map.get(color1)};">{team1}</div>
-                    <div class="team-right" style="background-color:{color_map.get(color2)};">{team2}</div>
-                    <div class="field-label">{field}</div>
-                </div>
-                """)
-                f.write("</div>\n")
-            f.write("</div></div>\n")
-
-        f.write("</body></html>")
-
-# --- Final Output ---
 html_file = "index.html"
 
-days_until_saturday = (5 - today.weekday()) % 7
-next_saturday = today + timedelta(days=days_until_saturday)
+with open(html_file, "w", encoding="utf-8") as f:
+    f.write("<html><head><style>\n")
+    f.write("""
+        body { font-family: sans-serif; padding: 20px; }
+        .match-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+        .match-wrapper { border: 1px solid #000; padding: 10px; margin-bottom: 20px; }
+        .team-left, .team-right { font-weight: bold; padding: 4px; }
+    """)
+    f.write("</style></head><body>\n")
 
-if next_saturday in games_by_date:
-    write_html(html_file, next_saturday, games_by_date[next_saturday])
-    print(f"✅ Printable HTML saved to: {html_file}")
-else:
-    with open(html_file, "w") as f:
-        f.write("<h1>No games scheduled for this Saturday.</h1>")
-    print("⚠️ No games found. Created fallback HTML.")
+    # Small message if no games this Saturday
+    if not games_this_sat:
+        f.write(f"""
+        <p style="color:#666; font-style:italic; font-size:0.85em;">
+            No games scheduled for Saturday, {next_saturday.strftime('%B %d')}
+        </p>
+        """)
+
+    # Next game day heading
+    if next_game_date:
+        f.write(f"<h1>Next game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+    else:
+        f.write("<h1>No upcoming games found.</h1>")
+        f.write("</body></html>")
+        exit(0)
+
+    # Render next game day grid
+    games = future_games[next_game_date]
+    time_groups = defaultdict(list)
+    for row in games:
+        time_groups[row[0]].append(row)
+
+    for time in sorted(time_groups.keys(), key=lambda t: datetime.strptime(t, "%I:%M %p")):
+        f.write(f"<h2>{time}</h2><div class='match-row'>\n")
+        for time_label, field, team1, color1, team2, color2, group, division in sorted(

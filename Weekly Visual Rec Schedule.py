@@ -8,7 +8,7 @@ from openpyxl.styles import PatternFill
 
 # --- iCal Feed ---
 # ⭐ Use Google Calendar ICS mirror (Cloudflare-safe)
-ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt@import.calendar.google.com/basic.ics"
+ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt%40import.calendar.google.com/public/basic.ics"
 
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()

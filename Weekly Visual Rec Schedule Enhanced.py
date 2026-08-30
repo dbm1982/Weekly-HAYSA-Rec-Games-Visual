@@ -16,7 +16,8 @@ today = datetime.now(local_tz).date()
 # --- Travel Towns (second filter) ---
 travel_towns = {
     "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
-    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington"
+    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington",
+    "Quincy"
 }
 
 # --- Helpers ---
@@ -112,13 +113,17 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
-    # ⭐ Travel filter #1 — team names
+    # ⭐ Travel filter #1 — team names containing "Travel"
+    if "Travel" in team1_raw or "Travel" in team2_raw:
+        continue
+
+    # ⭐ Travel filter #2 — team names matching towns
     if team1_raw in travel_towns or team2_raw in travel_towns:
         continue
 
     division = extract_division(description)
 
-    # ⭐ Travel filter #2 — division
+    # ⭐ Travel filter #3 — division contains "Travel"
     if "Travel" in division:
         continue
 
@@ -157,70 +162,4 @@ for game_date in sorted(future_games.keys()):
         continue
 
     ws = wb.create_sheet(title=game_date.strftime("%Y-%m-%d"))
-    ws.append(["Time", "Field", "Team 1", "Team 2", "Group", "Division"])
-
-    row_index = 2
-    for time_label, field, team1, color1, team2, color2, group, division in sorted(
-        games,
-        key=lambda x: (datetime.strptime(x[0], "%I:%M %p"), field_sort_key(x[1]))
-    ):
-        ws.append([time_label, field, team1, team2, group, division])
-        ws[f"C{row_index}"].fill = PatternFill(start_color=safe_color(color1), end_color=safe_color(color1), fill_type="solid")
-        ws[f"D{row_index}"].fill = PatternFill(start_color=safe_color(color2), end_color=safe_color(color2), fill_type="solid")
-        row_index += 1
-
-if len(wb.sheetnames) > 1:
-    del wb["Placeholder"]
-else:
-    ws_default.append(["No REC games found"])
-
-wb.save(excel_file)
-
-# --- HTML Output ---
-html_file = "index.html"
-
-with open(html_file, "w", encoding="utf-8") as f:
-    f.write("<html><head><style>\n")
-    f.write("""
-        body { font-family: sans-serif; padding: 20px; }
-        .match-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
-        .match-wrapper { border: 1px solid #000; padding: 10px; margin-bottom: 20px; }
-        .team-left, .team-right { font-weight: bold; padding: 4px; }
-        .division-label { font-size: 0.85em; margin-top: 4px; }
-    """)
-    f.write("</style></head><body>\n")
-
-    if not games_this_sat:
-        f.write(f"<p style='color:#666;font-style:italic;font-size:0.85em;'>No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}</p>")
-
-    if not next_game_date:
-        f.write("<h1>No upcoming REC games found.</h1></body></html>")
-        exit(0)
-
-    f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
-
-    games = future_games[next_game_date]
-    time_groups = defaultdict(list)
-    for row in games:
-        time_groups[row[0]].append(row)
-
-    for time in sorted(time_groups.keys(), key=lambda t: datetime.strptime(t, "%I:%M %p")):
-        f.write(f"<h2>{time}</h2><div class='match-row'>\n")
-
-        for time_label, field, team1, color1, team2, color2, group, division in sorted(
-            time_groups[time],
-            key=lambda x: field_sort_key(x[1])
-        ):
-            f.write("<div class='match-wrapper'>\n")
-            f.write(f"<div class='team-left' style='background-color:{color_map[color1]}'>{team1}</div>\n")
-            f.write(f"<div class='team-right' style='background-color:{color_map[color2]}'>{team2}</div>\n")
-            f.write(f"<div class='division-label'>{division} — {group}</div>\n")
-            f.write(f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n")
-            f.write("</div>\n")
-
-        f.write("</div>\n")
-
-    f.write("</body></html>")
-
-print(f"HTML saved to: {html_file}")
-print(f"Excel saved to: {excel_file}")
+    ws.append(["Time", "Field", "Team 1", "

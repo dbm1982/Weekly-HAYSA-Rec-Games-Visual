@@ -5,7 +5,9 @@ from collections import defaultdict
 import pytz
 
 # --- Config ---
-ical_url = "http://tmsdln.com/19hyx"
+# ⭐ Use Google Calendar ICS mirror (Cloudflare-safe)
+ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt@import.calendar.google.com/basic.ics"
+
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
@@ -71,7 +73,15 @@ def time_sort_key(t):
 
 # --- Load Calendar ---
 ssl._create_default_https_context = ssl._create_unverified_context
-calendar = Calendar(requests.get(ical_url).text)
+
+# ⭐ Fetch ICS safely
+ics_text = requests.get(ical_url).text
+
+# ⭐ Guard: prevent HTML from crashing ICS parser
+if "<!DOCTYPE html>" in ics_text[:200]:
+    raise Exception("ICS feed returned HTML instead of ICS. Check ICS URL or Cloudflare.")
+
+calendar = Calendar(ics_text)
 
 # --- Extract Matchups ---
 matchups = []
@@ -148,7 +158,6 @@ with open(output_html, "w", encoding="utf8") as f:
     .match-overlay { box-shadow: none; border: 1px solid #000; }
     .field-map { max-width: 100%; }
 
-    /* ✅ Force background colors and text colors to print */
     .team-left, .team-right {
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
@@ -210,12 +219,12 @@ with open(output_html, "w", encoding="utf8") as f:
                 f.write(f"<div class='{right_class}' style='{block_style} {font_size} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
 
             f.write(f"<div class='division-label'>{matchup['division']}</div>\n")
-            f.write("</div>\n")  # close match-overlay
+            f.write("</div>\n")
 
-        f.write("</div>\n")  # close map-container
-        f.write("</div>\n")  # close map-column
+        f.write("</div>\n")
+        f.write("</div>\n")
 
-    f.write("</div>\n")  # close map-grid
+    f.write("</div>\n")
     f.write("</body></html>\n")
 
 print(f"✅ Overlay saved to: {output_html}")

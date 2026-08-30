@@ -1,12 +1,12 @@
 import requests
 from ics import Calendar
 from datetime import datetime, timedelta
-import re, ssl, pytz, os
+import re, ssl, pytz
 from collections import defaultdict
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 
-# --- iCal Feed ---
+# --- ICS Feed ---
 ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt%40import.calendar.google.com/public/basic.ics"
 
 local_tz = pytz.timezone("America/New_York")
@@ -63,9 +63,7 @@ def format_field(raw_field):
 def field_sort_key(field_label):
     match = re.match(r"Field\s+(\d+)([A-Z]?)", field_label)
     if match:
-        number = int(match.group(1))
-        suffix = match.group(2)
-        return (number, suffix)
+        return (int(match.group(1)), match.group(2))
     return (999, "")
 
 # --- Load ICS ---
@@ -110,7 +108,7 @@ for event in calendar.events:
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
 games_this_sat = future_games.get(next_saturday, [])
 
-# --- Determine next date with games ---
+# --- Determine next date with games (C2 logic) ---
 next_game_date = None
 for d in sorted(future_games.keys()):
     if future_games[d]:
@@ -133,7 +131,8 @@ for game_date in sorted(future_games.keys()):
 
     row_index = 2
     for time_label, field, team1, color1, team2, color2, group, division in sorted(
-        games, key=lambda x: (datetime.strptime(x[0], "%I:%M %p"), field_sort_key(x[1]))
+        games,
+        key=lambda x: (datetime.strptime(x[0], "%I:%M %p"), field_sort_key(x[1]))
     ):
         ws.append([time_label, field, team1, team2, group, division])
         fill1 = PatternFill(start_color=color_map.get(color1)[1:], end_color=color_map.get(color1)[1:], fill_type="solid")
@@ -160,10 +159,11 @@ with open(html_file, "w", encoding="utf-8") as f:
         .match-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
         .match-wrapper { border: 1px solid #000; padding: 10px; margin-bottom: 20px; }
         .team-left, .team-right { font-weight: bold; padding: 4px; }
+        .division-label { font-size: 0.85em; margin-top: 4px; }
     """)
     f.write("</style></head><body>\n")
 
-    # Small message if no games this Saturday
+    # Small message if no games this Saturday (D3)
     if not games_this_sat:
         f.write(f"""
         <p style="color:#666; font-style:italic; font-size:0.85em;">
@@ -171,7 +171,7 @@ with open(html_file, "w", encoding="utf-8") as f:
         </p>
         """)
 
-    # Next game day heading
+    # Next game day heading (E1)
     if next_game_date:
         f.write(f"<h1>Next game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
     else:
@@ -187,4 +187,21 @@ with open(html_file, "w", encoding="utf-8") as f:
 
     for time in sorted(time_groups.keys(), key=lambda t: datetime.strptime(t, "%I:%M %p")):
         f.write(f"<h2>{time}</h2><div class='match-row'>\n")
+
         for time_label, field, team1, color1, team2, color2, group, division in sorted(
+            time_groups[time],
+            key=lambda x: field_sort_key(x[1])
+        ):
+            f.write("<div class='match-wrapper'>\n")
+            f.write(f"<div class='team-left' style='background-color:{color_map.get(color1)}'>{team1}</div>\n")
+            f.write(f"<div class='team-right' style='background-color:{color_map.get(color2)}'>{team2}</div>\n")
+            f.write(f"<div class='division-label'>{division} — {group}</div>\n")
+            f.write(f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n")
+            f.write("</div>\n")
+
+        f.write("</div>\n")
+
+    f.write("</body></html>")
+
+print(f"✅ HTML saved to: {html_file}")
+print(f"📄 Excel saved to: {excel_file}")

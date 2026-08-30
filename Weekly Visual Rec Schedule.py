@@ -5,20 +5,18 @@ from collections import defaultdict
 import pytz
 
 # --- Config ---
-# ⭐ Correct Google Calendar ICS feed (public, safe, no Cloudflare)
 ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt%40import.calendar.google.com/public/basic.ics"
 
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
-next_saturday = today + timedelta((5 - today.weekday()) % 7)
 
+# --- Field Map Settings ---
 allowed_times = {"8:30 AM", "9:45 AM", "11:00 AM", "11:30 AM"}
 full_block_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys"}
 side_by_side_fields = {"Field 1A", "Field 1B", "Field 2A", "Field 2B", "Field 4"}
 enlarged_blocks_fields = {"Field 1", "Field 2", "Field 3"}
 enlarged_blocks_divisions = {"3/4 Girls", "3/4 Boys", "5/6/7 Girls", "5/6/7 Boys"}
 
-# --- Field Coordinates ---
 field_positions = {
     "Field 1":   { "x": 40.0, "y": 16.5, "width": 17.5, "height": 15.0 },
     "Field 2":   { "x": 60.0, "y": 16.5, "width": 17.5, "height": 15.0 },
@@ -32,7 +30,6 @@ field_positions = {
     "Field 4B":  { "x": 55.5, "y": 69, "width": 20, "height": 10.5, "rotate": 4.9 },
 }
 
-# --- Team Colors ---
 color_map = {
     "Blue": "#4996D1",
     "Red": "#E88989",
@@ -72,29 +69,23 @@ def format_field(raw_field):
 def time_sort_key(t):
     return datetime.strptime(t, "%I:%M %p")
 
-# --- Load Calendar ---
+# --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
-
-print("📡 Fetching ICS feed...")
 ics_text = requests.get(ical_url).text
 
 if "<!DOCTYPE html>" in ics_text[:200]:
-    raise Exception("❌ ICS feed returned HTML instead of ICS. Wrong URL or access blocked.")
+    raise Exception("ICS feed returned HTML instead of ICS.")
 
 calendar = Calendar(ics_text)
-print("✅ ICS feed loaded successfully.")
 
-# --- Extract Matchups ---
-matchups = []
+# --- Extract all future games ---
+future_games = defaultdict(list)
+
 for event in calendar.events:
     local_start = event.begin.datetime.astimezone(local_tz)
     game_date = local_start.date()
 
-    if game_date != next_saturday:
-        continue
-
-    time_label = local_start.strftime("%I:%M %p").lstrip("0")
-    if time_label not in allowed_times:
+    if game_date < today:
         continue
 
     name = event.name
@@ -104,16 +95,14 @@ for event in calendar.events:
     if "Practice" in name or "vs." not in name:
         continue
 
+    time_label = local_start.strftime("%I:%M %p").lstrip("0")
     team1_raw, team2_raw = name.split("vs.")
     team1, color1 = parse_team(team1_raw.strip())
     team2, color2 = parse_team(team2_raw.strip())
     field = format_field(location)
     division = extract_division(description)
 
-    if division == "":
-        continue
-
-    matchups.append({
+    future_games[game_date].append({
         "time": time_label,
         "field": field,
         "team1": team1,
@@ -123,59 +112,59 @@ for event in calendar.events:
         "division": division
     })
 
-# --- Fallback if no games ---
-if not matchups:
-    with open("map_overlay_enhanced.html", "w") as f:
-        f.write("<h1>No games scheduled for this Saturday.</h1>")
-    print("⚠️ No games found. Created fallback HTML.")
-    exit(0)
+# --- Determine upcoming Saturday ---
+next_saturday = today + timedelta((5 - today.weekday()) % 7)
 
-# --- Group Matchups ---
-games_by_block = defaultdict(list)
-for m in matchups:
-    games_by_block[m["time"]].append(m)
+games_this_sat = future_games.get(next_saturday, [])
+
+# --- Determine next date with games ---
+next_game_date = None
+for d in sorted(future_games.keys()):
+    if future_games[d]:
+        next_game_date = d
+        break
 
 # --- HTML Output ---
-image_path = "assets/field_map.jpeg"
 output_html = "map_overlay_enhanced.html"
+image_path = "assets/field_map.jpeg"
 
 with open(output_html, "w", encoding="utf8") as f:
     f.write("<html><head><style>\n")
-    f.write("""body { font-family: sans-serif; background: #fff; padding: 20px; }
-.map-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; }
-.map-column { flex: 1; min-width: 300px; text-align: center; }
-.map-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
-.field-map { width: 100%; display: block; }
-.match-overlay { position: absolute; font-size: 0.65em; background: white; border: 0.5px solid black;
-    text-align: center; padding: 4px 2px; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); transform-origin: center;
-    line-height: 1.2em; }
-.team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; line-height: 1.4em;
-    display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap;
-    text-overflow: ellipsis; font-size: clamp(0.5em, 1.2vw, 0.85em); max-width: 100%; }
-.diagonal-text { transform: rotate(-45deg); transform-origin: center; font-size: 0.6em; white-space: nowrap;
-    overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; justify-content: center;
-    height: 100%; }
-.team-left { background-color: #eee; border-bottom: 1px solid #ccc; }
-.team-right { background-color: #eee; }
-.division-label { font-size: 0.75em; font-weight: bold; color: #333; margin-top: 2px; line-height: 1.2em; }
-@media print {
-    body { background: white; padding: 0; margin: 0; }
-    .map-grid { gap: 0; }
-    .map-column { page-break-inside: avoid; }
-    button, hr { display: none; }
-    .match-overlay { box-shadow: none; border: 1px solid #000; }
-    .field-map { max-width: 100%; }
-    .team-left, .team-right {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        color: #000 !important;
-    }
-}
-""")
+    f.write("""
+        body { font-family: sans-serif; background: #fff; padding: 20px; }
+        .map-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+        .map-column { flex: 1; min-width: 300px; text-align: center; }
+        .map-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
+        .field-map { width: 100%; display: block; }
+        .match-overlay { position: absolute; font-size: 0.65em; background: white; border: 0.5px solid black;
+            text-align: center; padding: 4px 2px; box-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; }
+        .division-label { font-size: 0.75em; font-weight: bold; margin-top: 2px; }
+    """)
     f.write("</style></head><body>\n")
-    f.write(f"<h1>📍 Matchups for {next_saturday.strftime('%A, %B %d')}</h1>\n")
-    f.write(f"<p style='font-size:0.75em; font-style:italic; color:#666;'>Last updated: {datetime.now(local_tz).strftime('%A, %B %d at %I:%M %p')}</p>\n")
-    f.write("<button onclick='window.print()'>🖨️ Print Schedule</button>\n")
+
+    # --- Small message if no games this Saturday ---
+    if not games_this_sat:
+        f.write(f"""
+        <p style="color:#666; font-style:italic; font-size:0.85em;">
+            No games scheduled for Saturday, {next_saturday.strftime('%B %d')}
+        </p>
+        """)
+
+    # --- Next game day heading ---
+    if next_game_date:
+        f.write(f"<h1>Next game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+    else:
+        f.write("<h1>No upcoming games found.</h1>")
+        f.write("</body></html>")
+        exit(0)
+
+    # --- Render next game day map ---
+    games = future_games[next_game_date]
+    games_by_block = defaultdict(list)
+    for m in games:
+        games_by_block[m["time"]].append(m)
+
     f.write("<div class='map-grid'>\n")
 
     for block in sorted(games_by_block.keys(), key=time_sort_key):
@@ -186,50 +175,23 @@ with open(output_html, "w", encoding="utf8") as f:
             field = matchup["field"]
             pos = field_positions.get(field)
             if not pos:
-                print(f"⚠️ Skipping {field} — no coordinates defined")
                 continue
 
-            is_full = matchup["division"] in full_block_divisions
-            height = f"{pos['height']}%" if is_full else f"{pos['height'] * 0.6:.1f}%"
-            if field == "Field 3" and not is_full:
-                height = f"{pos['height'] * 0.45:.1f}%"
-            if matchup["time"] == "11:00 AM" and field in {"Field 4A", "Field 4B"}:
-                height = f"{pos['height'] * 0.75:.1f}%"
-
+            height = f"{pos['height']}%"
             left = f"{pos['x']}%"
             top = f"{pos['y']}%"
             width = f"{pos['width']}%"
             rotation = pos.get("rotate", 0)
             transform = f"rotate({rotation}deg)" if rotation else "none"
 
-            shrink_font = matchup["time"] == "11:00 AM" and field in {"Field 1A", "Field 1B", "Field 2A", "Field 2B"}
-            font_size = "font-size:0.55em;" if shrink_font else ""
-
             f.write(f"<div class='match-overlay' style='left:{left}; top:{top}; width:{width}; height:{height}; transform:{transform};'>\n")
-
-            enlarged = field in enlarged_blocks_fields and matchup["division"] in enlarged_blocks_divisions
-            is_diagonal = matchup["time"] == "11:30 AM"
-            left_class = "team-left diagonal-text" if is_diagonal else "team-left"
-            right_class = "team-right diagonal-text" if is_diagonal else "team-right"
-
-            if field in side_by_side_fields:
-                block_height = "80%" if enlarged else "66%"
-                f.write(f"<div style='display:flex; flex-direction:row; height:{block_height};'>\n")
-                f.write(f"<div class='{left_class}' style='flex:1; {font_size} background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
-                f.write(f"<div class='{right_class}' style='flex:1; {font_size} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
-                f.write("</div>\n")
-            else:
-                block_style = "padding:10px 2px;" if enlarged else "padding:6px 2px;"
-                f.write(f"<div class='{left_class}' style='{block_style} {font_size} background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
-                f.write(f"<div class='{right_class}' style='{block_style} {font_size} background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
-
+            f.write(f"<div class='team-left' style='background-color:{color_map.get(matchup['color1'], '#ccc')}'>{matchup['team1']}</div>\n")
+            f.write(f"<div class='team-right' style='background-color:{color_map.get(matchup['color2'], '#ccc')}'>{matchup['team2']}</div>\n")
             f.write(f"<div class='division-label'>{matchup['division']}</div>\n")
             f.write("</div>\n")
 
-        f.write("</div>\n")
-        f.write("</div>\n")
+        f.write("</div></div>\n")
 
-    f.write("</div>\n")
-    f.write("</body></html>\n")
+    f.write("</div></body></html>")
 
 print(f"✅ Overlay saved to: {output_html}")

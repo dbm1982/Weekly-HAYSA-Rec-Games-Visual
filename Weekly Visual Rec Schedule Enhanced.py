@@ -13,6 +13,12 @@ ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc0
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 
+# --- Travel Towns (second filter) ---
+travel_towns = {
+    "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
+    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington"
+}
+
 # --- Helpers ---
 def parse_team(raw_team):
     match = re.match(r"(.+?)\s*`\((.*?)\s*-\s*(.*?)\)`", raw_team)
@@ -32,7 +38,9 @@ def extract_group(team_name):
     return ""
 
 def extract_division(description):
-    match = re.search(r"(\d+(?:/\d+)*\s+(Boys|Girls))", description or "")
+    if not description:
+        return ""
+    match = re.search(r"(\d+(?:/\d+)*\s+(Boys|Girls)(?:\s+Travel)?)", description)
     if match:
         return match.group(1)
     if "Kindergarten" in description:
@@ -60,59 +68,36 @@ def field_sort_key(field_label):
 # --- Auto Color Detection ---
 def get_color_map_from_schedule(future_games):
     known_colors = {
-        "Blue": "#4996D1",
-        "Red": "#E88989",
-        "Green": "#429964",
-        "Orange": "#FCB03A",
-        "Berry": "#E8DAEF",
-        "Gray": "#F2F3F4",
-        "Black": "#000000",
-        "White": "#FFFFFF",
-        "Yellow": "#FFEB3B",
-        "Purple": "#9B59B6",
-        "Maroon": "#800000",
-        "Teal": "#008080",
-        "Pink": "#FFC0CB",
-        "Gold": "#FFD700",
-        "Silver": "#C0C0C0",
-        "Navy": "#001F3F",
-        "Royal Blue": "#4169E1",
-        "Light Blue": "#ADD8E6",
-        "Dark Green": "#006400",
+        "Blue": "#4996D1", "Red": "#E88989", "Green": "#429964",
+        "Orange": "#FCB03A", "Berry": "#E8DAEF", "Gray": "#F2F3F4",
+        "Black": "#000000", "White": "#FFFFFF", "Yellow": "#FFEB3B",
+        "Purple": "#9B59B6", "Maroon": "#800000", "Teal": "#008080",
+        "Pink": "#FFC0CB", "Gold": "#FFD700", "Silver": "#C0C0C0",
+        "Navy": "#001F3F", "Royal Blue": "#4169E1",
+        "Light Blue": "#ADD8E6", "Dark Green": "#006400",
     }
 
     auto_map = {}
-
     for date, games in future_games.items():
         for g in games:
-            color1 = g[3]
-            color2 = g[5]
-
-            for c in (color1, color2):
+            for c in (g[3], g[5]):
                 if c not in auto_map:
                     auto_map[c] = known_colors.get(
-                        c,
-                        "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
+                        c, "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
                     )
-
     return auto_map
 
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
 ics_text = requests.get(ical_url).text
-
-if "<!DOCTYPE html>" in ics_text[:200]:
-    raise Exception("ICS feed returned HTML instead of ICS.")
-
 calendar = Calendar(ics_text)
 
-# --- Extract all future REC games ---
+# --- Extract REC games only ---
 future_games = defaultdict(list)
 
 for event in calendar.events:
     local_start = event.begin.datetime.astimezone(local_tz)
     game_date = local_start.date()
-
     if game_date < today:
         continue
 
@@ -123,17 +108,25 @@ for event in calendar.events:
     if "Practice" in name or "vs." not in name:
         continue
 
-    time_label = local_start.strftime("%I:%M %p").lstrip("0")
     team1_raw, team2_raw = name.split("vs.")
-    team1, color1 = parse_team(team1_raw.strip())
-    team2, color2 = parse_team(team2_raw.strip())
-    field = format_field(location)
-    group = extract_group(team1_raw.strip()) or extract_group(team2_raw.strip())
+    team1_raw = team1_raw.strip()
+    team2_raw = team2_raw.strip()
+
+    # ⭐ Travel filter #1 — team names
+    if team1_raw in travel_towns or team2_raw in travel_towns:
+        continue
+
     division = extract_division(description)
 
-    # ⭐ Skip Travel games
+    # ⭐ Travel filter #2 — division
     if "Travel" in division:
         continue
+
+    time_label = local_start.strftime("%I:%M %p").lstrip("0")
+    team1, color1 = parse_team(team1_raw)
+    team2, color2 = parse_team(team2_raw)
+    field = format_field(location)
+    group = extract_group(team1_raw) or extract_group(team2_raw)
 
     future_games[game_date].append(
         [time_label, field, team1, color1, team2, color2, group, division]
@@ -143,18 +136,14 @@ for event in calendar.events:
 color_map = get_color_map_from_schedule(future_games)
 
 def safe_color(c):
-    return color_map.get(c, "#DDDDDD")[1:]  # remove '#'
+    return color_map.get(c, "#DDDDDD")[1:]
 
-# --- Determine upcoming Saturday ---
+# --- Determine next REC Saturday ---
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
 games_this_sat = future_games.get(next_saturday, [])
 
 # --- Determine next REC game day ---
-next_game_date = None
-for d in sorted(future_games.keys()):
-    if future_games[d]:
-        next_game_date = d
-        break
+next_game_date = next((d for d in sorted(future_games) if future_games[d]), None)
 
 # --- Excel Output ---
 excel_file = "non_core_games.xlsx"
@@ -201,23 +190,15 @@ with open(html_file, "w", encoding="utf-8") as f:
     """)
     f.write("</style></head><body>\n")
 
-    # Small message if no Rec games this Saturday
     if not games_this_sat:
-        f.write(f"""
-        <p style="color:#666; font-style:italic; font-size:0.85em;">
-            No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}
-        </p>
-        """)
+        f.write(f"<p style='color:#666;font-style:italic;font-size:0.85em;'>No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}</p>")
 
-    # Next REC game day heading
-    if next_game_date:
-        f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
-    else:
-        f.write("<h1>No upcoming REC games found.</h1>")
-        f.write("</body></html>")
+    if not next_game_date:
+        f.write("<h1>No upcoming REC games found.</h1></body></html>")
         exit(0)
 
-    # Render next REC game day grid
+    f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+
     games = future_games[next_game_date]
     time_groups = defaultdict(list)
     for row in games:
@@ -231,8 +212,8 @@ with open(html_file, "w", encoding="utf-8") as f:
             key=lambda x: field_sort_key(x[1])
         ):
             f.write("<div class='match-wrapper'>\n")
-            f.write(f"<div class='team-left' style='background-color:{color_map.get(color1)}'>{team1}</div>\n")
-            f.write(f"<div class='team-right' style='background-color:{color_map.get(color2)}'>{team2}</div>\n")
+            f.write(f"<div class='team-left' style='background-color:{color_map[color1]}'>{team1}</div>\n")
+            f.write(f"<div class='team-right' style='background-color:{color_map[color2]}'>{team2}</div>\n")
             f.write(f"<div class='division-label'>{division} — {group}</div>\n")
             f.write(f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n")
             f.write("</div>\n")

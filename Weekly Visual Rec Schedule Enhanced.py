@@ -55,24 +55,24 @@ field_positions = {
 
 
     # -----------------------------
-    # FIELD 3 (unchanged)
+    # FIELD 3 (corrected alignment)
     # -----------------------------
-    "Field 3":  { "x": 15, "y": 75.5, "width": 14.5, "height": 19, "rotate": 7.5 },
+    "Field 3":  { "x": 17.5, "y": 72.8, "width": 13.5, "height": 18, "rotate": 7.5 },
 
 
     # -----------------------------
     # FIELD 4 (left/right)
     # -----------------------------
-    "Field 4_left":  { "x": 36.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
-    "Field 4_right": { "x": 46.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
+    "Field 4_left":  { "x": 36.5, "y": 63, "width": 10.0, "height": 7.5, "rotate": 4.9 },
+    "Field 4_right": { "x": 46.5, "y": 63, "width": 10.0, "height": 7.5, "rotate": 4.9 },
 
     # FIELD 4A → top/bottom
     "Field 4A_top":    { "x": 36.5, "y": 63,   "width": 20.0, "height": 5.0, "rotate": 4.9 },
     "Field 4A_bottom": { "x": 36.5, "y": 68.2, "width": 20.0, "height": 5.0, "rotate": 4.9 },
 
     # FIELD 4B → left/right
-    "Field 4B_left":  { "x": 55.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
-    "Field 4B_right": { "x": 65.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
+    "Field 4B_left":  { "x": 55.5, "y": 63, "width": 10.0, "height": 7.5, "rotate": 4.9 },
+    "Field 4B_right": { "x": 65.5, "y": 63, "width": 10.0, "height": 7.5, "rotate": 4.9 },
 }
 
 

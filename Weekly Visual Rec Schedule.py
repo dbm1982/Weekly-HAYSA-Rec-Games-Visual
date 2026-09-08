@@ -25,7 +25,7 @@ travel_towns = {
 def parse_team(raw_team):
     raw_team = raw_team.strip()
 
-    # Matches: Team Name (Coach-Color)
+    # Format: Team Name (Coach - Color)
     match = re.match(r"^(.*?)\s*\(([^()-]+)-([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -33,7 +33,7 @@ def parse_team(raw_team):
         color = match.group(3).strip()
         return f"{team_name} ({coach})", color
 
-    # Matches: Team Name (Color) — NO COACH
+    # Format: Team Name (Color)
     match = re.match(r"^(.*?)\s*\(([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -72,38 +72,22 @@ def format_field(raw_field):
     # Direct A/B fields
     match = re.match(r"H-Su(\d)([A-Z])$", core)
     if match:
-        num = match.group(1)
-        suffix = match.group(2)
-        return f"Field {num}{suffix}"
+        return f"Field {match.group(1)}{match.group(2)}"
 
     match = re.match(r"H-SJ(\d)([A-Z])$", core)
     if match:
-        num = match.group(1)
-        suffix = match.group(2)
-        return f"Field {num}{suffix}"
+        return f"Field {match.group(1)}{match.group(2)}"
 
-    # Bare fields → return Field 1, Field 2, etc.
+    # Bare fields
     match = re.match(r"H-Su(\d)$", core)
     if match:
-        num = match.group(1)
-        return f"Field {num}"
+        return f"Field {match.group(1)}"
 
     match = re.match(r"H-SJ(\d)$", core)
     if match:
-        num = match.group(1)
-        return f"Field {num}"
+        return f"Field {match.group(1)}"
 
-    # Fallback
-    if not raw_field or len(raw_field) < 5:
-        return raw_field
-
-    trimmed = raw_field[4:].split(",")[0].strip()
-    match = re.match(r"([A-Z]*)(\d+)([A-Z]*)", trimmed)
-    if match:
-        _, number, suffix = match.groups()
-        return f"Field {number}{suffix}" if suffix else f"Field {number}"
-
-    return f"Field {trimmed}"
+    return raw_field
 
 
 def field_sort_key(field_label):
@@ -136,10 +120,6 @@ def get_color_map_from_schedule(future_games):
     return auto_map
 
 
-def safe_color(c):
-    return color_map.get(c, "#DDDDDD")[1:]
-
-
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
 ics_text = requests.get(ical_url).text
@@ -165,17 +145,13 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
-    # Travel filter #1 — team names containing "Travel"
+    # Travel filters
     if "Travel" in team1_raw or "Travel" in team2_raw:
         continue
-
-    # Travel filter #2 — team names matching towns
     if team1_raw in travel_towns or team2_raw in travel_towns:
         continue
 
     division = extract_division(description)
-
-    # Travel filter #3 — division contains "Travel"
     if "Travel" in division:
         continue
 
@@ -220,13 +196,13 @@ for game_date in sorted(future_games.keys()):
     ):
         ws.append([time_label, field, team1, team2, group, division])
         ws[f"C{row_index}"].fill = PatternFill(
-            start_color=safe_color(color1),
-            end_color=safe_color(color1),
+            start_color=color_map[color1][1:],
+            end_color=color_map[color1][1:],
             fill_type="solid"
         )
         ws[f"D{row_index}"].fill = PatternFill(
-            start_color=safe_color(color2),
-            end_color=safe_color(color2),
+            start_color=color_map[color2][1:],
+            end_color=color_map[color2][1:],
             fill_type="solid"
         )
         row_index += 1
@@ -261,8 +237,6 @@ with open(html_file, "w", encoding="utf-8") as f:
 
     if not next_game_date:
         f.write("<h1>No upcoming Rec games found.</h1></body></html>")
-        print(f"HTML saved to: {html_file}")
-        print(f"Excel saved to: {excel_file}")
         exit(0)
 
     f.write(f"<h1>Next Rec game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
@@ -281,19 +255,13 @@ with open(html_file, "w", encoding="utf-8") as f:
         ):
             f.write("<div class='match-wrapper'>\n")
             f.write(
-                f"<div class='team-left' "
-                f"style='background-color:{color_map.get(color1, '#DDDDDD')}'>"
-                f"{team1}</div>\n"
+                f"<div class='team-left' style='background-color:{color_map[color1]}'>{team1}</div>\n"
             )
             f.write(
-                f"<div class='team-right' "
-                f"style='background-color:{color_map.get(color2, '#DDDDDD')}'>"
-                f"{team2}</div>\n"
+                f"<div class='team-right' style='background-color:{color_map[color2]}'>{team2}</div>\n"
             )
             f.write(f"<div class='division-label'>{division} — {group}</div>\n")
-            f.write(
-                f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n"
-            )
+            f.write(f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n")
             f.write("</div>\n")
 
         f.write("</div>\n")

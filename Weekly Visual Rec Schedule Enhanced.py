@@ -1,4 +1,4 @@
-AFimport requests, ssl, re
+import requests, ssl, re
 from ics import Calendar
 from datetime import datetime
 from collections import defaultdict

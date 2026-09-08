@@ -3,8 +3,20 @@
         body { font-family: sans-serif; background: #fff; padding: 20px; }
         .map-grid { display: flex; flex-wrap: wrap; gap: 20px; }
         .map-column { flex: 1; min-width: 300px; text-align: center; }
-        .map-container { position: relative; width: 100%; max-width: 400px; margin: auto; }
-        .field-map { width: 100%; display: block; }
+
+        /* FIX: force image to render at its true size */
+        .map-container {
+            position: relative;
+            width: 1113px;
+            height: 1590px;
+            margin: auto;
+        }
+        .field-map {
+            width: 1113px;
+            height: 1590px;
+            display: block;
+        }
+
         .match-overlay {
             position: absolute;
             font-size: 0.65em;
@@ -22,10 +34,10 @@
 <div class='map-grid'>
 <div class='map-column'><h2>8:30 AM</h2>
 <div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
-<div class='match-overlay' style='left:3.1%; top:71.3%; width:24.7%; height:19.1%; transform:rotate(-9deg);'><div class='team-left' style='background-color:#FCB03A'>Wm. Perry Auto Repair</div><div class='division-label'>3/4 Boys</div></div><div class='match-overlay' style='left:38.7%; top:15.2%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-left' style='background-color:#F2F3F4'>3/4 Girls Team 1</div><div class='division-label'>3/4 Girls</div></div><div class='match-overlay' style='left:38.7%; top:24.1%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-right' style='background-color:#F2F3F4'>Team 2</div><div class='division-label'>3/4 Girls</div></div><div class='match-overlay' style='left:37.0%; top:64.5%; width:25.5%; height:10.3%; transform:rotate(4.6deg);'><div class='team-left' style='background-color:#E88989'>Hornets Nest Solutions LLC</div><div class='division-label'>3/4 Boys</div></div></div></div>
+<div class='match-overlay' style='left:3.1%; top:71.3%; width:24.7%; height:19.1%; transform:rotate(-9deg);'><div class='team-left' style='background-color:#FCB03A'>Wm. Perry Auto Repair</div><div class='division-label'>3/4 Boys</div></div><div class='match-overlay' style='left:38.7%; top:15.2%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-left' style='background-color:#F2F3F4'>3/4 Girls Team 1</div><div class='division-label'>3/4 Girls</div></div><div class='match-overlay' style='left:38.7%; top:24.1%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-right' style='background-color:#F2F3F4'>3/4 Girls Team 2</div><div class='division-label'>3/4 Girls</div></div><div class='match-overlay' style='left:37.0%; top:64.5%; width:25.5%; height:10.3%; transform:rotate(4.6deg);'><div class='team-left' style='background-color:#E88989'>Hornets Nest Solutions LLC</div><div class='division-label'>3/4 Boys</div></div></div></div>
 <div class='map-column'><h2>9:45 AM</h2>
 <div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
-<div class='match-overlay' style='left:57.3%; top:15.2%; width:14.6%; height:8.9%; transform:rotate(0deg);'><div class='team-left' style='background-color:#F2F3F4'>5/6/7 Boys RecTeam 1</div><div class='division-label'>5/6/7 Boys</div></div><div class='match-overlay' style='left:57.3%; top:24.2%; width:14.6%; height:8.9%; transform:rotate(0deg);'><div class='team-right' style='background-color:#F2F3F4'>Team 2</div><div class='division-label'>5/6/7 Boys</div></div><div class='match-overlay' style='left:38.7%; top:15.2%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-left' style='background-color:#F2F3F4'>Team 2</div><div class='division-label'>5/6/7 Girls</div></div><div class='match-overlay' style='left:38.7%; top:24.1%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-right' style='background-color:#F2F3F4'>5/6/7 Girls Team 1</div><div class='division-label'>5/6/7 Girls</div></div></div></div>
+<div class='match-overlay' style='left:57.3%; top:15.2%; width:14.6%; height:8.9%; transform:rotate(0deg);'><div class='team-left' style='background-color:#F2F3F4'>5/6/7 Boys RecTeam 1</div><div class='division-label'>5/6/7 Boys</div></div><div class='match-overlay' style='left:57.3%; top:24.2%; width:14.6%; height:8.9%; transform:rotate(0deg);'><div class='team-right' style='background-color:#F2F3F4'>5/6/7 Boys RecTeam 2</div><div class='division-label'>5/6/7 Boys</div></div><div class='match-overlay' style='left:38.7%; top:15.2%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-left' style='background-color:#F2F3F4'>5/6/7 Girls Team 2</div><div class='division-label'>5/6/7 Girls</div></div><div class='match-overlay' style='left:38.7%; top:24.1%; width:14.8%; height:8.9%; transform:rotate(0deg);'><div class='team-right' style='background-color:#F2F3F4'>5/6/7 Girls Team 1</div><div class='division-label'>5/6/7 Girls</div></div></div></div>
 <div class='map-column'><h2>11:00 AM</h2>
 <div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
 <div class='match-overlay' style='left:33.6%; top:24.7%; width:20.0%; height:11.8%; transform:rotate(0deg);'><div class='team-left' style='background-color:#FCB03A'>Wm. Perry Trucking</div><div class='division-label'>1/2 Girls</div></div></div></div>

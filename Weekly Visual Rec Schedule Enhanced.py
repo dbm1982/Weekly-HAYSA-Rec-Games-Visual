@@ -18,8 +18,8 @@ travel_towns = {
 }
 
 # --- Fallback Colors ---
-DEFAULT_COLOR_1 = "#537d90"
-DEFAULT_COLOR_2 = "#ee820d"
+DEFAULT_COLOR_1 = "#0080ff" # Blue
+DEFAULT_COLOR_2 = "#ee820d" # Orange
 
 # --- FIELD POSITIONS (PERCENT-BASED, derived from pixels) ---
 # Image size: 1113 x 1590

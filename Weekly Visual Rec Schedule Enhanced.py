@@ -11,7 +11,7 @@ ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc0
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 
-# --- Travel Towns (second filter) ---
+# --- Travel Towns ---
 travel_towns = {
     "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
     "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington",
@@ -34,7 +34,7 @@ field_positions = {
     "Field 2A": { "x": 60.0, "y": 24.2, "width": 17.0, "height": 13.0 },
     "Field 2B": { "x": 60.0, "y": 15.7, "width": 17.0, "height": 13.0 },
 
-    # Field 3 (bare)
+    # Field 3
     "Field 3":  { "x": 15, "y": 75.5, "width": 14.5, "height": 19, "rotate": 7.5 },
 
     # Field 4 (bare) → same as Field 4A
@@ -45,12 +45,11 @@ field_positions = {
     "Field 4B": { "x": 55.5, "y": 69, "width": 20, "height": 10.5, "rotate": 4.9 },
 }
 
-
 # --- Helpers ---
 def parse_team(raw_team):
     raw_team = raw_team.strip()
 
-    # Matches: Team Name (Coach-Color)
+    # Format: Team Name (Coach - Color)
     match = re.match(r"^(.*?)\s*\(([^()-]+)-([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -58,14 +57,15 @@ def parse_team(raw_team):
         color = match.group(3).strip()
         return f"{team_name} ({coach})", color
 
-    # Travel or malformed → coach only
+    # Format: Team Name (Color)
     match = re.match(r"^(.*?)\s*\(([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
-        coach = match.group(2).strip()
-        return f"{team_name} ({coach})", "Gray"
+        color = match.group(2).strip()
+        return team_name, color
 
     return raw_team, "Gray"
+
 
 def extract_division(description):
     if not description:
@@ -87,35 +87,29 @@ def format_field(raw_field):
     # Direct A/B fields
     match = re.match(r"H-Su(\d)([A-Z])$", core)
     if match:
-        num = match.group(1)
-        suffix = match.group(2)
-        return f"Field {num}{suffix}"
+        return f"Field {match.group(1)}{match.group(2)}"
 
     match = re.match(r"H-SJ(\d)([A-Z])$", core)
     if match:
-        num = match.group(1)
-        suffix = match.group(2)
-        return f"Field {num}{suffix}"
+        return f"Field {match.group(1)}{match.group(2)}"
 
-    # Bare fields → return Field 1, Field 2, etc.
+    # Bare fields
     match = re.match(r"H-Su(\d)$", core)
     if match:
-        num = match.group(1)
-        return f"Field {num}"
+        return f"Field {match.group(1)}"
 
     match = re.match(r"H-SJ(\d)$", core)
     if match:
-        num = match.group(1)
-        return f"Field {num}"
+        return f"Field {match.group(1)}"
 
     return raw_field
-
 
 
 def time_sort_key(t):
     return datetime.strptime(t, "%I:%M %p")
 
-# --- Auto Color Detection ---
+
+# --- Auto Color Map ---
 def build_color_map(future_games):
     known_colors = {
         "Blue": "#4996D1", "Red": "#E88989", "Green": "#429964",
@@ -136,6 +130,7 @@ def build_color_map(future_games):
                         c, "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
                     )
     return auto_map
+
 
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -162,14 +157,13 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
+    # Travel filters
     if "Travel" in team1_raw or "Travel" in team2_raw:
         continue
-
     if team1_raw in travel_towns or team2_raw in travel_towns:
         continue
 
     division = extract_division(description)
-
     if "Travel" in division:
         continue
 
@@ -190,10 +184,6 @@ for event in calendar.events:
 
 # --- Auto Color Map ---
 color_map = build_color_map(future_games)
-
-# --- Determine next REC Saturday ---
-next_saturday = today + timedelta((5 - today.weekday()) % 7)
-games_this_sat = future_games.get(next_saturday, [])
 
 # --- Determine next REC game day ---
 next_game_date = next((d for d in sorted(future_games) if future_games[d]), None)
@@ -216,9 +206,6 @@ with open(output_html, "w", encoding="utf8") as f:
         .division-label { font-size: 0.75em; font-weight: bold; margin-top: 2px; }
     """)
     f.write("</style></head><body>\n")
-
-    if not games_this_sat:
-        f.write(f"<p style='color:#666;font-style:italic;font-size:0.85em;'>No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}</p>")
 
     if not next_game_date:
         f.write("<h1>No upcoming REC games found.</h1></body></html>")
@@ -249,16 +236,9 @@ with open(output_html, "w", encoding="utf8") as f:
             rotation = pos.get("rotate", 0)
             transform = f"rotate({rotation}deg)" if rotation else "none"
 
-            f.write(
-                f"<div class='match-overlay' "
-                f"style='left:{left};top:{top};width:{width};height:{height};transform:{transform};'>"
-            )
-            f.write(
-                f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>"
-            )
-            f.write(
-                f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>"
-            )
+            f.write(f"<div class='match-overlay' style='left:{left};top:{top};width:{width};height:{height};transform:{transform};'>")
+            f.write(f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>")
+            f.write(f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>")
             f.write(f"<div class='division-label'>{g['division']}</div>")
             f.write("</div>")
 

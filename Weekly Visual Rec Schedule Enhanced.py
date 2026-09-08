@@ -83,6 +83,7 @@ def format_field(raw_field):
 
     core = raw_field.split(",", 1)[0].strip()
 
+    # Direct A/B fields
     match = re.match(r"H-Su(\d)([A-Z])$", core)
     if match:
         num = match.group(1)
@@ -95,17 +96,19 @@ def format_field(raw_field):
         suffix = match.group(2)
         return f"Field {num}{suffix}"
 
+    # Bare fields → return Field 1, Field 2, etc.
     match = re.match(r"H-Su(\d)$", core)
     if match:
         num = match.group(1)
-        return f"Field {num}A"
+        return f"Field {num}"
 
     match = re.match(r"H-SJ(\d)$", core)
     if match:
         num = match.group(1)
-        return f"Field {num}A"
+        return f"Field {num}"
 
     return raw_field
+
 
 
 def time_sort_key(t):

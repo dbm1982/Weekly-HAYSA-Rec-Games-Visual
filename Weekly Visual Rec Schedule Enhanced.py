@@ -15,28 +15,24 @@ today = datetime.now(local_tz).date()
 travel_towns = {
     "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
     "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington",
-    "Quincy"  # Added because ICS contains Quincy Travel games
+    "Quincy"
 }
 
 # --- Field Map Coordinates ---
 field_positions = {
-    "Field 1":   { "x": 40.0, "y": 16.5, "width": 17.5, "height": 15.0 },
-    "Field 2":   { "x": 60.0, "y": 16.5, "width": 17.5, "height": 15.0 },
-    "Field 3":   { "x": 15, "y": 75.5, "width": 14.5, "height": 19, "rotate": 7.5 },
-    "Field 4":   { "x": 39.5, "y": 69, "width": 27, "height": 9.3, "rotate": 4.8 },
-    "Field 1B":  { "x": 40.0, "y": 15.7, "width": 17.0, "height": 13.0 },
-    "Field 2B":  { "x": 60.0, "y": 15.7, "width": 17.0, "height": 13.0 },
     "Field 1A":  { "x": 40.0, "y": 24.2, "width": 17.0, "height": 13.0 },
+    "Field 1B":  { "x": 40.0, "y": 15.7, "width": 17.0, "height": 13.0 },
     "Field 2A":  { "x": 60.0, "y": 24.2, "width": 17.0, "height": 13.0 },
-    "Field 4A":  { "x": 36.5, "y": 68, "width": 20, "height": 10.5, "rotate": 4.9 },
-    "Field 4B":  { "x": 55.5, "y": 69, "width": 20, "height": 10.5, "rotate": 4.9 },
+    "Field 2B":  { "x": 60.0, "y": 15.7, "width": 17.0, "height": 13.0 },
+    "Field 3":   { "x": 15,   "y": 75.5, "width": 14.5, "height": 19,  "rotate": 7.5 },
+    "Field 4A":  { "x": 36.5, "y": 68,   "width": 20,   "height": 10.5,"rotate": 4.9 },
+    "Field 4B":  { "x": 55.5, "y": 69,   "width": 20,   "height": 10.5,"rotate": 4.9 },
 }
 
 # --- Helpers ---
 def parse_team(raw_team):
     raw_team = raw_team.strip()
 
-    # Matches: Team Name (Coach-Color)
     match = re.match(r"^(.*?)\s*\(([^()-]+)-([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -44,7 +40,6 @@ def parse_team(raw_team):
         color = match.group(3).strip()
         return f"{team_name} ({coach})", color
 
-    # Travel or malformed → coach only
     match = re.match(r"^(.*?)\s*\(([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -69,28 +64,23 @@ def format_field(raw_field):
     if "H-SuSS" in raw_field:
         return "Snack Shack Area"
 
-    # Extract the core field code
     core = raw_field.split(",", 1)[0].strip()
 
-    # Direct A/B fields (correct ICS)
     match = re.match(r"H-Su(\d)([A-Z])$", core)
     if match:
         num = match.group(1)
         suffix = match.group(2)
         return f"Field {num}{suffix}"
 
-    # Direct Sean Joyce A/B fields
     match = re.match(r"H-SJ(\d)([A-Z])$", core)
     if match:
         num = match.group(1)
         suffix = match.group(2)
         return f"Field {num}{suffix}"
 
-    # Bare fields (missing A/B suffix)
     match = re.match(r"H-Su(\d)$", core)
     if match:
         num = match.group(1)
-        # Default to A for games (never practices)
         return f"Field {num}A"
 
     match = re.match(r"H-SJ(\d)$", core)
@@ -151,17 +141,14 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
-    # Travel filter #1 — team names containing "Travel"
     if "Travel" in team1_raw or "Travel" in team2_raw:
         continue
 
-    # Travel filter #2 — team names matching towns
     if team1_raw in travel_towns or team2_raw in travel_towns:
         continue
 
     division = extract_division(description)
 
-    # Travel filter #3 — division contains "Travel"
     if "Travel" in division:
         continue
 
@@ -241,9 +228,16 @@ with open(output_html, "w", encoding="utf8") as f:
             rotation = pos.get("rotate", 0)
             transform = f"rotate({rotation}deg)" if rotation else "none"
 
-            f.write(f"<div class='match-overlay' style='left:{left};top:{top};width:{width};height:{height};transform:{transform};'>")
-            f.write(f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>")
-            f.write(f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>")
+            f.write(
+                f"<div class='match-overlay' "
+                f"style='left:{left};top:{top};width:{width};height:{height};transform:{transform};'>"
+            )
+            f.write(
+                f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>"
+            )
+            f.write(
+                f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>"
+            )
             f.write(f"<div class='division-label'>{g['division']}</div>")
             f.write("</div>")
 

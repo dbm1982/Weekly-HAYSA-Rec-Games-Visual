@@ -16,35 +16,14 @@ today = datetime.now(local_tz).date()
 # --- Helpers ---
 
 def is_travel_team(raw_team: str) -> bool:
-    """
-    Travel:
-      Holbrook 5/6 Boys (Smith)
-    Rec:
-      Holbrook 5/6 Boys (Smith - Blue)
-    Rule: parentheses present, but only one part inside (coach only, no color).
-    """
     if "(" not in raw_team or ")" not in raw_team:
         return False
-
     inside = raw_team.split("(", 1)[1].split(")", 1)[0]
     parts = [p.strip() for p in inside.split("-")]
-
-    # One part → coach only → Travel
     return len(parts) == 1
 
 
 def parse_team(raw_team: str):
-    """
-    Parse team name + coach + color.
-
-    Rec example:
-      "Holbrook 5/6 Boys (Smith - Blue)"
-      -> "Holbrook 5/6 Boys (Smith)", "Blue"
-
-    Travel example:
-      "Holbrook 5/6 Boys (Smith)"
-      -> "Holbrook 5/6 Boys (Smith)", "Gray" (no color)
-    """
     name = raw_team.strip()
     color = "Gray"
 
@@ -58,7 +37,6 @@ def parse_team(raw_team: str):
             name = before.strip()
             return f"{name} ({coach})", color
         else:
-            # Travel or non‑color format: coach only
             coach = inside
             name = before.strip()
             return f"{name} ({coach})", "Gray"
@@ -86,17 +64,48 @@ def extract_division(description):
     return ""
 
 
+# ⭐⭐⭐ UNIFIED FIELD PARSER — DROP-IN REPLACEMENT ⭐⭐⭐
 def format_field(raw_field):
-    if "H-SuSS" in raw_field:
-        return "Snack Shack Area"
-    if not raw_field or len(raw_field) < 5:
+    if not raw_field:
         return raw_field
-    trimmed = raw_field[4:].split(",")[0].strip()
-    match = re.match(r"([A-Z]*)(\d+)([A-Z]*)", trimmed)
-    if match:
-        _, number, suffix = match.groups()
-        return f"Field {number}{suffix}" if suffix else f"Field {number}"
-    return f"Field {trimmed}"
+
+    core = raw_field.split(",", 1)[0].strip()
+
+    # Snack Shack
+    if core == "H-SuSS":
+        return "Snack Shack Area"
+
+    # Sumner A/B fields
+    m = re.match(r"^H-Su(\d)([A-Z])$", core)
+    if m:
+        num, suffix = m.groups()
+        return f"Field {num}{suffix}"
+
+    # Sumner full fields
+    m = re.match(r"^H-Su(\d)$", core)
+    if m:
+        num = m.group(1)
+        return f"Field {num}"
+
+    # Sean Joyce A/B fields
+    m = re.match(r"^H-SJ(\d)([A-Z])$", core)
+    if m:
+        num, suffix = m.groups()
+        return f"Field {num}{suffix}"
+
+    # Sean Joyce full fields
+    m = re.match(r"^H-SJ(\d)$", core)
+    if m:
+        num = m.group(1)
+        return f"Field {num}"
+
+    # External fields (travel opponents)
+    m = re.match(r"^[A-Z]+-(.+)$", core)
+    if m:
+        return f"Field {m.group(1)}"
+
+    return core
+# ⭐⭐⭐ END UNIFIED FIELD PARSER ⭐⭐⭐
 
 
 def field_sort_key(field_label):
@@ -121,7 +130,7 @@ def get_color_map_from_schedule(future_games):
     auto_map = {}
     for date, games in future_games.items():
         for g in games:
-            for c in (g[3], g[5]):  # color1, color2
+            for c in (g[3], g[5]):
                 if c not in auto_map:
                     auto_map[c] = known_colors.get(
                         c, "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
@@ -151,7 +160,6 @@ for event in calendar.events:
     location = event.location or ""
     description = event.description or ""
 
-    # Only games, not practices, and must have "vs."
     if "Practice" in name or "vs." not in name:
         continue
 
@@ -159,7 +167,6 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
-    # New Travel logic: based on parentheses content (coach only = Travel)
     if is_travel_team(team1_raw) or is_travel_team(team2_raw):
         continue
 

@@ -13,25 +13,14 @@ ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc0
 local_tz = pytz.timezone("America/New_York")
 today = datetime.now(local_tz).date()
 
+# --- Travel Towns (second filter) ---
+travel_towns = {
+    "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
+    "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington",
+    "Quincy"
+}
+
 # --- Helpers ---
-
-def is_travel_team(raw_team: str) -> bool:
-    """
-    Travel:
-      Holbrook 5/6 Boys (Smith)
-    Rec:
-      Holbrook 5/6 Boys (Smith - Blue)
-    Rule: parentheses present, but only one part inside (coach only, no color).
-    """
-    if "(" not in raw_team or ")" not in raw_team:
-        return False
-
-    inside = raw_team.split("(", 1)[1].split(")", 1)[0]
-    parts = [p.strip() for p in inside.split("-")]
-
-    # One part → coach only → Travel
-    return len(parts) == 1
-
 
 def parse_team(raw_team: str):
     """
@@ -58,7 +47,6 @@ def parse_team(raw_team: str):
             name = before.strip()
             return f"{name} ({coach})", color
         else:
-            # Travel or non‑color format: coach only
             coach = inside
             name = before.strip()
             return f"{name} ({coach})", "Gray"
@@ -89,6 +77,36 @@ def extract_division(description):
 def format_field(raw_field):
     if "H-SuSS" in raw_field:
         return "Snack Shack Area"
+
+    core = raw_field.split(",", 1)[0].strip()
+
+    # Su (Snack Shack) A/B
+    match = re.match(r"H-Su(\d)([A-Z])$", core)
+    if match:
+        num = match.group(1)
+        suffix = match.group(2)
+        return f"Field {num}{suffix}"
+
+    # SJ (Sean Joyce) A/B
+    match = re.match(r"H-SJ(\d)([A-Z])$", core)
+    if match:
+        num = match.group(1)
+        suffix = match.group(2)
+        return f"Field {num}{suffix}"
+
+    # Bare Su fields → default A
+    match = re.match(r"H-Su(\d)$", core)
+    if match:
+        num = match.group(1)
+        return f"Field {num}A"
+
+    # Bare SJ fields → default A
+    match = re.match(r"H-SJ(\d)$", core)
+    if match:
+        num = match.group(1)
+        return f"Field {num}A"
+
+    # Fallback
     if not raw_field or len(raw_field) < 5:
         return raw_field
     trimmed = raw_field[4:].split(",")[0].strip()
@@ -159,11 +177,19 @@ for event in calendar.events:
     team1_raw = team1_raw.strip()
     team2_raw = team2_raw.strip()
 
-    # New Travel logic: based on parentheses content (coach only = Travel)
-    if is_travel_team(team1_raw) or is_travel_team(team2_raw):
+    # Travel filter #1 — team names containing "Travel"
+    if "Travel" in team1_raw or "Travel" in team2_raw:
+        continue
+
+    # Travel filter #2 — team names matching towns
+    if team1_raw in travel_towns or team2_raw in travel_towns:
         continue
 
     division = extract_division(description)
+
+    # Travel filter #3 — division contains "Travel"
+    if "Travel" in division:
+        continue
 
     time_label = local_start.strftime("%I:%M %p").lstrip("0")
     team1, color1 = parse_team(team1_raw)

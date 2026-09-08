@@ -177,7 +177,7 @@ for game_date in sorted(future_games.keys()):
 if len(wb.sheetnames) > 1:
     del wb["Placeholder"]
 else:
-    ws_default.append(["No REC games found"])
+    ws_default.append(["No Rec games found"])
 
 wb.save(excel_file)
 
@@ -196,13 +196,13 @@ with open(html_file, "w", encoding="utf-8") as f:
     f.write("</style></head><body>\n")
 
     if not games_this_sat:
-        f.write(f"<p style='color:#666;font-style:italic;font-size:0.85em;'>No REC games scheduled for Saturday, {next_saturday.strftime('%B %d')}</p>")
+        f.write(f"<p style='color:#666;font-style:italic;font-size:0.85em;'>No Rec games scheduled for Saturday, {next_saturday.strftime('%B %d')}</p>")
 
     if not next_game_date:
-        f.write("<h1>No upcoming REC games found.</h1></body></html>")
+        f.write("<h1>No upcoming Rec games found.</h1></body></html>")
         exit(0)
 
-    f.write(f"<h1>Next REC game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+    f.write(f"<h1>Next Rec game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
 
     games = future_games[next_game_date]
     time_groups = defaultdict(list)

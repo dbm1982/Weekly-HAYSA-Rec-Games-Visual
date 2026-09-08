@@ -114,19 +114,25 @@ def extract_division(description):
 
 def format_field(raw_field):
     core = raw_field.split(",", 1)[0].strip()
+
+    # Sumner Fields (H-Su)
     match = re.match(r"H-Su(\d)([A-Z])$", core)
-    if match:
-        return f"Field {match.group(1)}{match.group(2)}"
-    match = re.match(r"H-SJ(\d)([A-Z])$", core)
     if match:
         return f"Field {match.group(1)}{match.group(2)}"
     match = re.match(r"H-Su(\d)$", core)
     if match:
         return f"Field {match.group(1)}"
+
+    # Sean Joyce Fields (H-SJ)
+    match = re.match(r"H-SJ(\d)([A-Z])$", core)
+    if match:
+        return f"Field {match.group(1)}{match.group(2)}"
     match = re.match(r"H-SJ(\d)$", core)
     if match:
         return f"Field {match.group(1)}"
+
     return raw_field
+
 
 def get_positions_for_field(field_name):
     mapping = {

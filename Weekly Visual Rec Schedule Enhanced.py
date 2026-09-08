@@ -24,45 +24,57 @@ DEFAULT_COLOR_2 = "#E8D0D0"   # soft red-gray
 
 # --- Field Map Coordinates ---
 field_positions = {
-    # FIELD 1 → TOP/BOTTOM
-    "Field 1_top":    { "x": 40.0, "y": 24.2, "width": 17.0, "height": 6.5 },
-    "Field 1_bottom": { "x": 40.0, "y": 30.7, "width": 17.0, "height": 6.5 },
+    # -----------------------------
+    # FIELD 1 (full field → top/bottom)
+    # -----------------------------
+    "Field 1_top":    { "x": 40.0, "y": 15.7, "width": 17.0, "height": 10.8 },
+    "Field 1_bottom": { "x": 40.0, "y": 26.5, "width": 17.0, "height": 10.8 },
 
-    # FIELD 1A → LEFT/RIGHT
+    # FIELD 1A → left/right
     "Field 1A_left":  { "x": 40.0, "y": 24.2, "width": 8.5, "height": 13.0 },
     "Field 1A_right": { "x": 48.5, "y": 24.2, "width": 8.5, "height": 13.0 },
 
-    # FIELD 1B → LEFT/RIGHT
+    # FIELD 1B → left/right
     "Field 1B_left":  { "x": 40.0, "y": 15.7, "width": 8.5, "height": 13.0 },
     "Field 1B_right": { "x": 48.5, "y": 15.7, "width": 8.5, "height": 13.0 },
 
-    # FIELD 2 → TOP/BOTTOM
-    "Field 2_top":    { "x": 60.0, "y": 24.2, "width": 17.0, "height": 6.5 },
-    "Field 2_bottom": { "x": 60.0, "y": 30.7, "width": 17.0, "height": 6.5 },
 
-    # FIELD 2A → LEFT/RIGHT
+    # -----------------------------
+    # FIELD 2 (full field → top/bottom)
+    # -----------------------------
+    "Field 2_top":    { "x": 60.0, "y": 15.7, "width": 17.0, "height": 10.8 },
+    "Field 2_bottom": { "x": 60.0, "y": 26.5, "width": 17.0, "height": 10.8 },
+
+    # FIELD 2A → left/right
     "Field 2A_left":  { "x": 60.0, "y": 24.2, "width": 8.5, "height": 13.0 },
     "Field 2A_right": { "x": 68.5, "y": 24.2, "width": 8.5, "height": 13.0 },
 
-    # FIELD 2B → LEFT/RIGHT
+    # FIELD 2B → left/right
     "Field 2B_left":  { "x": 60.0, "y": 15.7, "width": 8.5, "height": 13.0 },
     "Field 2B_right": { "x": 68.5, "y": 15.7, "width": 8.5, "height": 13.0 },
 
+
+    # -----------------------------
     # FIELD 3 (unchanged)
+    # -----------------------------
     "Field 3":  { "x": 15, "y": 75.5, "width": 14.5, "height": 19, "rotate": 7.5 },
 
-    # FIELD 4 → LEFT/RIGHT
-    "Field 4_left":  { "x": 36.5, "y": 68, "width": 10.0, "height": 10.5, "rotate": 4.9 },
-    "Field 4_right": { "x": 46.5, "y": 68, "width": 10.0, "height": 10.5, "rotate": 4.9 },
 
-    # FIELD 4A → TOP/BOTTOM
-    "Field 4A_top":    { "x": 36.5, "y": 68,   "width": 20.0, "height": 5.0, "rotate": 4.9 },
-    "Field 4A_bottom": { "x": 36.5, "y": 73.2, "width": 20.0, "height": 5.0, "rotate": 4.9 },
+    # -----------------------------
+    # FIELD 4 (left/right)
+    # -----------------------------
+    "Field 4_left":  { "x": 36.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
+    "Field 4_right": { "x": 46.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
 
-    # FIELD 4B → LEFT/RIGHT
-    "Field 4B_left":  { "x": 55.5, "y": 69, "width": 10.0, "height": 10.5, "rotate": 4.9 },
-    "Field 4B_right": { "x": 65.5, "y": 69, "width": 10.0, "height": 10.5, "rotate": 4.9 },
+    # FIELD 4A → top/bottom
+    "Field 4A_top":    { "x": 36.5, "y": 63,   "width": 20.0, "height": 5.0, "rotate": 4.9 },
+    "Field 4A_bottom": { "x": 36.5, "y": 68.2, "width": 20.0, "height": 5.0, "rotate": 4.9 },
+
+    # FIELD 4B → left/right
+    "Field 4B_left":  { "x": 55.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
+    "Field 4B_right": { "x": 65.5, "y": 63, "width": 10.0, "height": 10.5, "rotate": 4.9 },
 }
+
 
 # --- Helpers ---
 def parse_team(raw_team):

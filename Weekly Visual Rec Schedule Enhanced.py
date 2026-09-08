@@ -208,22 +208,32 @@ with open(output_html, "w", encoding="utf8") as f:
     f.write("<html><head><style>\n")
     f.write("""
         body { font-family: sans-serif; background: #fff; padding: 20px; }
-        .map-grid { display: block; }              /* stack, not flex */
-        .map-column { 
-            width: 100%; 
-            text-align: center; 
-            margin-bottom: 40px;                   /* space between images */
+    
+        /* Three maps side-by-side */
+        .map-grid { 
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            gap: 20px;                 /* spacing between maps */
+            flex-wrap: nowrap;
         }
     
+        .map-column { 
+            width: 33%;                /* each column gets 1/3 of the row */
+            text-align: center;
+        }
+    
+        /* Scaled map container */
         .map-container {
             position: relative;
-            width: 1113px;                         /* real image size */
-            height: 1590px;
-            margin: 0 auto;                        /* center on page */
+            width: 100%;               /* scale with column */
+            aspect-ratio: 1113 / 1590; /* preserve proportions */
+            margin: 0 auto;
         }
+    
         .field-map {
-            width: 1113px;
-            height: 1590px;
+            width: 100%;               /* scaled image */
+            height: auto;
             display: block;
         }
     
@@ -237,10 +247,21 @@ with open(output_html, "w", encoding="utf8") as f:
             box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             transform-origin: top left;
         }
-        .team-left, .team-right { font-weight: bold; padding: 6px 2px; color: #000; }
-        .division-label { font-size: 0.75em; font-weight: bold; margin-top: 2px; }
+    
+        .team-left, .team-right { 
+            font-weight: bold; 
+            padding: 6px 2px; 
+            color: #000; 
+        }
+    
+        .division-label { 
+            font-size: 0.75em; 
+            font-weight: bold; 
+            margin-top: 2px; 
+        }
     """)
     f.write("</style></head><body>\n")
+
 
 
     if not next_game_date:

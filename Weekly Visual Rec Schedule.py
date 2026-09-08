@@ -20,6 +20,10 @@ travel_towns = {
     "Quincy"
 }
 
+# --- Fallback colors for no-color teams ---
+DEFAULT_COLOR_1 = "#D0D8E8"   # soft blue-gray
+DEFAULT_COLOR_2 = "#E8D0D0"   # soft red-gray
+
 # --- Helpers ---
 
 def parse_team(raw_team):
@@ -112,12 +116,31 @@ def get_color_map_from_schedule(future_games):
     auto_map = {}
     for date, games in future_games.items():
         for g in games:
-            for c in (g[3], g[5]):
-                if c not in auto_map:
-                    auto_map[c] = known_colors.get(
-                        c, "#{:06x}".format(random.randint(0x444444, 0xDDDDDD))
-                    )
+            c1, c2 = g[3], g[5]
+
+            if c1 not in auto_map:
+                if c1 in known_colors:
+                    auto_map[c1] = known_colors[c1]
+                elif c1 == "Gray":
+                    auto_map[c1] = DEFAULT_COLOR_1
+                else:
+                    auto_map[c1] = DEFAULT_COLOR_1
+
+            if c2 not in auto_map:
+                if c2 in known_colors:
+                    auto_map[c2] = known_colors[c2]
+                elif c2 == "Gray":
+                    auto_map[c2] = DEFAULT_COLOR_2
+                else:
+                    auto_map[c2] = DEFAULT_COLOR_2
+
     return auto_map
+
+
+def safe_color(label, is_team1):
+    if label == "Gray":
+        return DEFAULT_COLOR_1 if is_team1 else DEFAULT_COLOR_2
+    return color_map.get(label, "#DDDDDD")
 
 
 # --- Load ICS ---
@@ -195,14 +218,18 @@ for game_date in sorted(future_games.keys()):
         key=lambda x: (datetime.strptime(x[0], "%I:%M %p"), field_sort_key(x[1]))
     ):
         ws.append([time_label, field, team1, team2, group, division])
+
+        c1_hex = safe_color(color1, True)[1:]
+        c2_hex = safe_color(color2, False)[1:]
+
         ws[f"C{row_index}"].fill = PatternFill(
-            start_color=color_map[color1][1:],
-            end_color=color_map[color1][1:],
+            start_color=c1_hex,
+            end_color=c1_hex,
             fill_type="solid"
         )
         ws[f"D{row_index}"].fill = PatternFill(
-            start_color=color_map[color2][1:],
-            end_color=color_map[color2][1:],
+            start_color=c2_hex,
+            end_color=c2_hex,
             fill_type="solid"
         )
         row_index += 1
@@ -237,6 +264,8 @@ with open(html_file, "w", encoding="utf-8") as f:
 
     if not next_game_date:
         f.write("<h1>No upcoming Rec games found.</h1></body></html>")
+        print(f"HTML saved to: {html_file}")
+        print(f"Excel saved to: {excel_file}")
         exit(0)
 
     f.write(f"<h1>Next Rec game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
@@ -255,10 +284,10 @@ with open(html_file, "w", encoding="utf-8") as f:
         ):
             f.write("<div class='match-wrapper'>\n")
             f.write(
-                f"<div class='team-left' style='background-color:{color_map[color1]}'>{team1}</div>\n"
+                f"<div class='team-left' style='background-color:{safe_color(color1, True)}'>{team1}</div>\n"
             )
             f.write(
-                f"<div class='team-right' style='background-color:{color_map[color2]}'>{team2}</div>\n"
+                f"<div class='team-right' style='background-color:{safe_color(color2, False)}'>{team2}</div>\n"
             )
             f.write(f"<div class='division-label'>{division} — {group}</div>\n")
             f.write(f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n")

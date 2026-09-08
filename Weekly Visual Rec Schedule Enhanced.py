@@ -20,14 +20,31 @@ travel_towns = {
 
 # --- Field Map Coordinates ---
 field_positions = {
-    "Field 1A":  { "x": 40.0, "y": 24.2, "width": 17.0, "height": 13.0 },
-    "Field 1B":  { "x": 40.0, "y": 15.7, "width": 17.0, "height": 13.0 },
-    "Field 2A":  { "x": 60.0, "y": 24.2, "width": 17.0, "height": 13.0 },
-    "Field 2B":  { "x": 60.0, "y": 15.7, "width": 17.0, "height": 13.0 },
-    "Field 3":   { "x": 15,   "y": 75.5, "width": 14.5, "height": 19,  "rotate": 7.5 },
-    "Field 4A":  { "x": 36.5, "y": 68,   "width": 20,   "height": 10.5,"rotate": 4.9 },
-    "Field 4B":  { "x": 55.5, "y": 69,   "width": 20,   "height": 10.5,"rotate": 4.9 },
+    # Field 1 (bare) → same as Field 1A
+    "Field 1":  { "x": 40.0, "y": 24.2, "width": 17.0, "height": 13.0 },
+
+    # Field 1A / 1B
+    "Field 1A": { "x": 40.0, "y": 24.2, "width": 17.0, "height": 13.0 },
+    "Field 1B": { "x": 40.0, "y": 15.7, "width": 17.0, "height": 13.0 },
+
+    # Field 2 (bare) → same as Field 2A
+    "Field 2":  { "x": 60.0, "y": 24.2, "width": 17.0, "height": 13.0 },
+
+    # Field 2A / 2B
+    "Field 2A": { "x": 60.0, "y": 24.2, "width": 17.0, "height": 13.0 },
+    "Field 2B": { "x": 60.0, "y": 15.7, "width": 17.0, "height": 13.0 },
+
+    # Field 3 (bare)
+    "Field 3":  { "x": 15, "y": 75.5, "width": 14.5, "height": 19, "rotate": 7.5 },
+
+    # Field 4 (bare) → same as Field 4A
+    "Field 4":  { "x": 36.5, "y": 68, "width": 20, "height": 10.5, "rotate": 4.9 },
+
+    # Field 4A / 4B
+    "Field 4A": { "x": 36.5, "y": 68, "width": 20, "height": 10.5, "rotate": 4.9 },
+    "Field 4B": { "x": 55.5, "y": 69, "width": 20, "height": 10.5, "rotate": 4.9 },
 }
+
 
 # --- Helpers ---
 def parse_team(raw_team):

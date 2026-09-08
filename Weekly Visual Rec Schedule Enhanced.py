@@ -41,12 +41,13 @@ field_positions = {
     "Field 4":  { "x": 36.5, "y": 68, "width": 20, "height": 10.5, "rotate": 4.9 },
 
     # Field 4A / 4B
-    "Field 4A": { "x": 36.5, "y": 68, "width": 20, "height": 10.5, "rotate": 4.9 },
-    "Field 4B": { "x": 55.5, "y": 69, "width": 20, "height": 10.5, "rotate": 4.9 },
+    "Field 4A": { "x": 36.5, "y": 68, "width": 10, "height": 10.5, "rotate": 4.9 },
+    "Field 4B": { "x": 55.5, "y": 69, "width": 10, "height": 10.5, "rotate": 4.9 },
 }
 
 # --- Helpers ---
 def parse_team(raw_team):
+    raw_team = raw_team.strip().rstrip(")")
     raw_team = raw_team.strip()
 
     # Format: Team Name (Coach - Color)

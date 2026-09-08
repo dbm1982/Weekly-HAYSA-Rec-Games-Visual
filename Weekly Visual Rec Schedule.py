@@ -33,12 +33,12 @@ def parse_team(raw_team):
         color = match.group(3).strip()
         return f"{team_name} ({coach})", color
 
-    # Travel or malformed → coach only
+    # Matches: Team Name (Color) — NO COACH
     match = re.match(r"^(.*?)\s*\(([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
-        coach = match.group(2).strip()
-        return f"{team_name} ({coach})", "Gray"
+        color = match.group(2).strip()
+        return team_name, color
 
     return raw_team, "Gray"
 

@@ -22,7 +22,7 @@ travel_towns = {
 
 # --- Helpers ---
 
-def parse_team(raw_team: str):
+def parse_team(raw_team):
     raw_team = raw_team.strip()
 
     # Matches: Team Name (Coach-Color)

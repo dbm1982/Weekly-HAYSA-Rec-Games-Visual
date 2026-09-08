@@ -1,4 +1,4 @@
-import requests, ssl, re
+AFimport requests, ssl, re
 from ics import Calendar
 from datetime import datetime
 from collections import defaultdict
@@ -64,25 +64,35 @@ field_positions = {
     },
 
     # -----------------------------
-    # FIELD 3 (rotated)
+    # FIELD 3 (rotated → top/bottom)
     # -----------------------------
-    "Field 3": {
-        "x": 3.1, "y": 71.3,
-        "width": 24.7, "height": 19.1,
+    "Field 3_top": {
+        "x": 16.8, "y": 71.2,
+        "width": 14.4, "height": 9.2,
+        "rotate": -9
+    },
+    "Field 3_bottom": {
+        "x": 13.3, "y": 80.4,
+        "width": 14.5, "height": 8.6,
         "rotate": -9
     },
 
     # -----------------------------
-    # FIELD 4 (rotated)
+    # FIELD 4 (rotated → top/bottom)
     # -----------------------------
-    "Field 4": {
-        "x": 37.0, "y": 64.5,
-        "width": 25.5, "height": 10.3,
+    "Field 4_top": {
+        "x": 37.4, "y": 64.7,
+        "width": 12.6, "height": 10.1,
+        "rotate": 4.6
+    },
+    "Field 4_bottom": {
+        "x": 49.2, "y": 66.1,
+        "width": 13.3, "height": 10.1,
         "rotate": 4.6
     },
 
     # -----------------------------
-    # PLACEHOLDERS (to be filled later)
+    # PLACEHOLDERS (unused)
     # -----------------------------
     "Field 1B": None,
     "Field 2A": None,

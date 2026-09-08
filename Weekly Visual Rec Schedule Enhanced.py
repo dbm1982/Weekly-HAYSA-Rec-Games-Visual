@@ -18,23 +18,25 @@ travel_towns = {
 }
 
 # --- Fallback Colors ---
-DEFAULT_COLOR_1 = "#D0D8E8"
-DEFAULT_COLOR_2 = "#E8D0D0"
+DEFAULT_COLOR_1 = "#537d90"
+DEFAULT_COLOR_2 = "#ee820d"
 
-# --- FIELD POSITIONS (PIXEL-BASED) ---
+# --- FIELD POSITIONS (PERCENT-BASED, derived from pixels) ---
+# Image size: 1113 x 1590
+
 field_positions = {
 
     # -----------------------------
     # FIELD 1 (full field → top/bottom)
     # -----------------------------
     "Field 1_top": {
-        "x": 430, "y": 242,
-        "width": 165, "height": 141,
+        "x": 38.7, "y": 15.2,
+        "width": 14.8, "height": 8.9,
         "rotate": 0
     },
     "Field 1_bottom": {
-        "x": 430, "y": 383,
-        "width": 165, "height": 141,
+        "x": 38.7, "y": 24.1,
+        "width": 14.8, "height": 8.9,
         "rotate": 0
     },
 
@@ -42,8 +44,8 @@ field_positions = {
     # FIELD 1A (full diamond)
     # -----------------------------
     "Field 1A": {
-        "x": 374, "y": 393,
-        "width": 223, "height": 188,
+        "x": 33.6, "y": 24.7,
+        "width": 20.0, "height": 11.8,
         "rotate": 0
     },
 
@@ -51,13 +53,13 @@ field_positions = {
     # FIELD 2 (full field → top/bottom)
     # -----------------------------
     "Field 2_top": {
-        "x": 638, "y": 242,
-        "width": 162, "height": 142,
+        "x": 57.3, "y": 15.2,
+        "width": 14.6, "height": 8.9,
         "rotate": 0
     },
     "Field 2_bottom": {
-        "x": 638, "y": 384,
-        "width": 162, "height": 142,
+        "x": 57.3, "y": 24.2,
+        "width": 14.6, "height": 8.9,
         "rotate": 0
     },
 
@@ -65,8 +67,8 @@ field_positions = {
     # FIELD 3 (rotated)
     # -----------------------------
     "Field 3": {
-        "x": 34, "y": 1133,
-        "width": 275, "height": 304,
+        "x": 3.1, "y": 71.3,
+        "width": 24.7, "height": 19.1,
         "rotate": -9
     },
 
@@ -74,8 +76,8 @@ field_positions = {
     # FIELD 4 (rotated)
     # -----------------------------
     "Field 4": {
-        "x": 412, "y": 1025,
-        "width": 284, "height": 164,
+        "x": 37.0, "y": 64.5,
+        "width": 25.5, "height": 10.3,
         "rotate": 4.6
     },
 
@@ -254,8 +256,8 @@ with open(output_html, "w", encoding="utf8") as f:
 
                 f.write(
                     f"<div class='match-overlay' style='"
-                    f"left:{pos['x']}px; top:{pos['y']}px; "
-                    f"width:{pos['width']}px; height:{pos['height']}px; "
+                    f"left:{pos['x']}%; top:{pos['y']}%; "
+                    f"width:{pos['width']}%; height:{pos['height']}%; "
                     f"transform:rotate({pos.get('rotate',0)}deg);'>"
                 )
 

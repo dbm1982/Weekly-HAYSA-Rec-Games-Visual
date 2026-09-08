@@ -208,22 +208,25 @@ with open(output_html, "w", encoding="utf8") as f:
     f.write("<html><head><style>\n")
     f.write("""
         body { font-family: sans-serif; background: #fff; padding: 20px; }
-        .map-grid { display: flex; flex-wrap: wrap; gap: 20px; }
-        .map-column { flex: 1; min-width: 300px; text-align: center; }
-
-        /* FIX: force image to render at its true size */
+        .map-grid { display: block; }              /* stack, not flex */
+        .map-column { 
+            width: 100%; 
+            text-align: center; 
+            margin-bottom: 40px;                   /* space between images */
+        }
+    
         .map-container {
             position: relative;
-            width: 1113px;
+            width: 1113px;                         /* real image size */
             height: 1590px;
-            margin: auto;
+            margin: 0 auto;                        /* center on page */
         }
         .field-map {
             width: 1113px;
             height: 1590px;
             display: block;
         }
-
+    
         .match-overlay {
             position: absolute;
             font-size: 0.65em;
@@ -238,6 +241,7 @@ with open(output_html, "w", encoding="utf8") as f:
         .division-label { font-size: 0.75em; font-weight: bold; margin-top: 2px; }
     """)
     f.write("</style></head><body>\n")
+
 
     if not next_game_date:
         f.write("<h1>No upcoming REC games found.</h1></body></html>")

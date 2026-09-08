@@ -34,12 +34,25 @@ field_positions = {
 
 # --- Helpers ---
 def parse_team(raw_team):
-    match = re.match(r".*?`\((.*?)\s*-\s*(.*?)\)`", raw_team)
+    raw_team = raw_team.strip()
+
+    # Matches: Team Name (Coach-Color)
+    match = re.match(r"^(.*?)\s*\(([^()-]+)-([^()]+)\)$", raw_team)
     if match:
-        coach = match.group(1).strip()
-        color = match.group(2).strip()
-        return coach, color
-    return raw_team.strip(), "Gray"
+        team_name = match.group(1).strip()
+        coach = match.group(2).strip()
+        color = match.group(3).strip()
+        return f"{team_name} ({coach})", color
+
+    # Travel or malformed → coach only
+    match = re.match(r"^(.*?)\s*\(([^()]+)\)$", raw_team)
+    if match:
+        team_name = match.group(1).strip()
+        coach = match.group(2).strip()
+        return f"{team_name} ({coach})", "Gray"
+
+    return raw_team, "Gray"
+
 
 def extract_division(description):
     if not description:
@@ -54,14 +67,38 @@ def extract_division(description):
 def format_field(raw_field):
     if "H-SuSS" in raw_field:
         return "Snack Shack Area"
-    if not raw_field or len(raw_field) < 5:
-        return raw_field
-    trimmed = raw_field[4:].split(",")[0].strip()
-    match = re.match(r"([A-Z]*)(\d+)([A-Z]*)", trimmed)
+
+    # Extract the core field code
+    core = raw_field.split(",", 1)[0].strip()
+
+    # Direct A/B fields (correct ICS)
+    match = re.match(r"H-Su(\d)([A-Z])$", core)
     if match:
-        _, number, suffix = match.groups()
-        return f"Field {number}{suffix}" if suffix else f"Field {number}"
-    return f"Field {trimmed}"
+        num = match.group(1)
+        suffix = match.group(2)
+        return f"Field {num}{suffix}"
+
+    # Direct Sean Joyce A/B fields
+    match = re.match(r"H-SJ(\d)([A-Z])$", core)
+    if match:
+        num = match.group(1)
+        suffix = match.group(2)
+        return f"Field {num}{suffix}"
+
+    # Bare fields (missing A/B suffix)
+    match = re.match(r"H-Su(\d)$", core)
+    if match:
+        num = match.group(1)
+        # Default to A for games (never practices)
+        return f"Field {num}A"
+
+    match = re.match(r"H-SJ(\d)$", core)
+    if match:
+        num = match.group(1)
+        return f"Field {num}A"
+
+    return raw_field
+
 
 def time_sort_key(t):
     return datetime.strptime(t, "%I:%M %p")

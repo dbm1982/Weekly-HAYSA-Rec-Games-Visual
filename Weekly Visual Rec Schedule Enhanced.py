@@ -50,6 +50,7 @@ field_positions = {
 def parse_team(raw_team):
     raw_team = raw_team.strip()
 
+    # Matches: Team Name (Coach-Color)
     match = re.match(r"^(.*?)\s*\(([^()-]+)-([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -57,6 +58,7 @@ def parse_team(raw_team):
         color = match.group(3).strip()
         return f"{team_name} ({coach})", color
 
+    # Travel or malformed → coach only
     match = re.match(r"^(.*?)\s*\(([^()]+)\)$", raw_team)
     if match:
         team_name = match.group(1).strip()
@@ -64,7 +66,6 @@ def parse_team(raw_team):
         return f"{team_name} ({coach})", "Gray"
 
     return raw_team, "Gray"
-
 
 def extract_division(description):
     if not description:

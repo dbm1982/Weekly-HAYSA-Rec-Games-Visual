@@ -21,7 +21,7 @@ travel_towns = {
 }
 
 # --- Fallback colors for no-color teams ---
-DEFAULT_COLOR_1 = "#537d90"
+DEFAULT_COLOR_1 = "#0080ff"
 DEFAULT_COLOR_2 = "#ee820d"
 
 # --- Helpers ---

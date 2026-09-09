@@ -45,12 +45,12 @@ field_positions = {
     # -----------------------------
     "Field 1A_left": {
         "x": 33.1, "y": 25.0,
-        "width": 12.3, "height": 8.1,
+        "width": 12.1, "height": 8.1,
         "rotate": 0
     },
     "Field 1A_right": {
-        "x": 45.4, "y": 25.7,
-        "width": 9.9, "height": 7.4,
+        "x": 45.4, "y": 25.0,
+        "width": 9.9, "height": 8.1,
         "rotate": 0
     },
     

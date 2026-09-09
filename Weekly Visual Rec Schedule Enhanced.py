@@ -69,10 +69,10 @@ field_positions = {
     "Field 3_top": {
         "x": 16.8, "y": 71.2,
         "width": 14.4, "height": 9.2,
-        "rotate": 2
+        "rotate": 3
     },
     "Field 3_bottom": {
-        "x": 13.3, "y": 80.4,
+        "x": 15.3, "y": 80.4,
         "width": 14.5, "height": 8.6,
         "rotate": 2
     },
@@ -81,12 +81,12 @@ field_positions = {
     # FIELD 4 (rotated → top/bottom)
     # -----------------------------
     "Field 4_top": {
-        "x": 37.4, "y": 64.7,
+        "x": 37.4, "y": 68,
         "width": 12.6, "height": 10.1,
         "rotate": 4.6
     },
     "Field 4_bottom": {
-        "x": 49.2, "y": 66.1,
+        "x": 49.2, "y": 68,
         "width": 13.3, "height": 10.1,
         "rotate": 4.6
     },

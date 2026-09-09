@@ -72,14 +72,14 @@ field_positions = {
     # FIELD 3 (rotated → top/bottom)
     # -----------------------------
     "Field 3_top": {
-        "x": 16.8, "y": 75.2,
+        "x": 16.8, "y": 74.8,
         "width": 14.4, "height": 9.2,
-        "rotate": 4.5
+        "rotate": 4.6
     },
     "Field 3_bottom": {
         "x": 15.5, "y": 83.4,
-        "width": 14.5, "height": 8.6,
-        "rotate": 3.5
+        "width": 14.5, "height": 8.8,
+        "rotate": 3.6
     },
 
     # -----------------------------

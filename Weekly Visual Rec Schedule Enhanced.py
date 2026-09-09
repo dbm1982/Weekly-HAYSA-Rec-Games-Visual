@@ -182,6 +182,7 @@ def build_color_map(future_games):
     return auto_map
 
 
+
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context
 ics_text = requests.get(ical_url).text
@@ -189,30 +190,51 @@ calendar = Calendar(ics_text)
 
 # --- Extract REC games ---
 future_games = defaultdict(list)
+
 for event in calendar.events:
     local_start = event.begin.datetime.astimezone(local_tz)
     game_date = local_start.date()
     if game_date < today:
         continue
+
     name = event.name
     location = event.location or ""
     description = event.description or ""
-    if "Practice" in name or "vs." not in name:
+
+    # Skip practices only
+    if "Practice" in name:
         continue
-    team1_raw, team2_raw = name.split("vs.")
-    team1_raw = team1_raw.strip()
-    team2_raw = team2_raw.strip()
-    if "Travel" in team1_raw or "Travel" in team2_raw:
+
+    # Allow Kindergarten, Kickers, 1/2 divisions even without "vs."
+    if "vs." not in name and not any(key in name for key in [
+        "Kindergarten", "Kickers", "1/2", "1/2 Girls", "1/2 Boys"
+    ]):
         continue
-    if team1_raw in travel_towns or team2_raw in travel_towns:
+
+    # Split teams if "vs." exists
+    if "vs." in name:
+        team1_raw, team2_raw = name.split("vs.")
+        team1_raw = team1_raw.strip()
+        team2_raw = team2_raw.strip()
+    else:
+        # Single-team formats (K, Kickers)
+        team1_raw = name.strip()
+        team2_raw = ""
+    
+    # Skip true travel teams ONLY if the entire name matches a travel town
+    if team1_raw.strip() in travel_towns or team2_raw.strip() in travel_towns:
         continue
+
+    # Skip travel divisions only
     division = extract_division(description)
     if "Travel" in division:
         continue
+
     time_label = local_start.strftime("%I:%M %p").lstrip("0")
     team1, color1 = parse_team(team1_raw)
-    team2, color2 = parse_team(team2_raw)
+    team2, color2 = parse_team(team2_raw) if team2_raw else ("", "Gray")
     field = format_field(location)
+
     future_games[game_date].append({
         "time": time_label,
         "field": field,

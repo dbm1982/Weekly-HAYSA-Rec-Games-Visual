@@ -81,7 +81,7 @@ field_positions = {
     # FIELD 4 (rotated → top/bottom)
     # -----------------------------
     "Field 4_top": {
-        "x": 37.4, "y": 68.5,
+        "x": 37.4, "y": 67.5,
         "width": 12.6, "height": 10.1,
         "rotate": 4.6
     },

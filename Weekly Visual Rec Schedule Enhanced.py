@@ -171,15 +171,16 @@ def build_color_map(future_games):
         for g in games:
             for c in (g["color1"], g["color2"]):
                 if c not in auto_map:
-                    if c in known_colors:
-                        auto_map[c] = known_colors[c]
-                    elif c == "Gray":
-                        # Match basic view behavior
+                    if c == "Gray":
+                        # Match basic view behavior: use DEFAULT_COLOR_1
                         auto_map[c] = DEFAULT_COLOR_1
+                    elif c in known_colors:
+                        auto_map[c] = known_colors[c]
                     else:
                         auto_map[c] = DEFAULT_COLOR_1
 
     return auto_map
+
 
 
 

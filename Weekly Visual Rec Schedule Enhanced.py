@@ -170,6 +170,7 @@ def get_positions_for_field(field_name):
     mapping = {
         "Field 1": ["Field 1_top", "Field 1_bottom"],
         "Field 1A": ["Field 1A_left", "Field 1A_right"],
+        "Field 1B": ["Field 1B_left", "Field 1B_right"],
         "Field 2": ["Field 2_top", "Field 2_bottom"],
         "Field 3": ["Field 3_top", "Field 3_bottom"],
         "Field 4": ["Field 4_top", "Field 4_bottom"]

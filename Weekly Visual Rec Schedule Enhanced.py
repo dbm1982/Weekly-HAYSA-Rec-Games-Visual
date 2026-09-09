@@ -164,13 +164,23 @@ def build_color_map(future_games):
         "Navy": "#001F3F", "Royal Blue": "#4169E1",
         "Light Blue": "#ADD8E6", "Dark Green": "#006400",
     }
+
     auto_map = {}
+
     for date, games in future_games.items():
         for g in games:
             for c in (g["color1"], g["color2"]):
                 if c not in auto_map:
-                    auto_map[c] = known_colors.get(c, DEFAULT_COLOR_1 if c != "Gray" else "#F2F3F4")
+                    if c in known_colors:
+                        auto_map[c] = known_colors[c]
+                    elif c == "Gray":
+                        # Match basic view behavior
+                        auto_map[c] = DEFAULT_COLOR_1
+                    else:
+                        auto_map[c] = DEFAULT_COLOR_1
+
     return auto_map
+
 
 # --- Load ICS ---
 ssl._create_default_https_context = ssl._create_unverified_context

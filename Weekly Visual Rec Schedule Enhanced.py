@@ -53,6 +53,23 @@ field_positions = {
         "width": 9.9, "height": 8.1,
         "rotate": 0
     },
+
+    # -----------------------------
+    # FIELD 1B (full diamond)
+    # -----------------------------
+    
+    "Field 1B_left": {
+        "x": 32.8, "y": 15.6,
+        "width": 12.6, "height": 9.4,
+        "rotate": 0
+    },
+    "Field 1B_right": {
+        "x": 45.4, "y": 15.4,
+        "width": 10.3, "height": 9.6,
+        "rotate": 0
+    },
+
+
     
     # -----------------------------
     # FIELD 2 (full field → top/bottom)

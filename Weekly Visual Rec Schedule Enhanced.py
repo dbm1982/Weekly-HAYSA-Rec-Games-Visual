@@ -69,12 +69,12 @@ field_positions = {
     "Field 3_top": {
         "x": 16.8, "y": 75.2,
         "width": 14.4, "height": 9.2,
-        "rotate": 4.4
+        "rotate": 4.5
     },
     "Field 3_bottom": {
-        "x": 15.3, "y": 83.4,
+        "x": 15.5, "y": 83.4,
         "width": 14.5, "height": 8.6,
-        "rotate": 3.4
+        "rotate": 3.5
     },
 
     # -----------------------------

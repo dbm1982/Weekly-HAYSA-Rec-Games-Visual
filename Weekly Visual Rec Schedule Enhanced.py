@@ -85,6 +85,40 @@ field_positions = {
         "rotate": 0
     },
 
+
+
+    # -----------------------------
+    # FIELD 2A (full diamond)
+    # -----------------------------
+    "Field 2A_left": {
+        "x": 56.2, "y": 25.3,
+        "width": 8.6, "height": 7.9,
+        "rotate": 0
+    },
+    "Field 2A_right": {
+        "x": 64.8, "y": 24.6,
+        "width": 11.8, "height": 8.6,
+        "rotate": 0
+    },
+
+
+    # -----------------------------
+    # FIELD 2B (full diamond)
+    # -----------------------------
+    
+    "Field 2B_left": {
+        "x": 32.8, "y": 15.6,
+        "width": 12.6, "height": 9.4,
+        "rotate": 0
+    },
+    "Field 2B_right": {
+        "x": 45.4, "y": 15.4,
+        "width": 10.3, "height": 9.6,
+        "rotate": 0
+    },
+
+
+    
     # -----------------------------
     # FIELD 3 (rotated → top/bottom)
     # -----------------------------
@@ -166,16 +200,8 @@ def format_field(raw_field):
     return raw_field
 
 
-def get_positions_for_field(field_name):
-    mapping = {
-        "Field 1": ["Field 1_top", "Field 1_bottom"],
-        "Field 1A": ["Field 1A_left", "Field 1A_right"],
-        "Field 1B": ["Field 1B_left", "Field 1B_right"],
-        "Field 2": ["Field 2_top", "Field 2_bottom"],
-        "Field 3": ["Field 3_top", "Field 3_bottom"],
-        "Field 4": ["Field 4_top", "Field 4_bottom"]
-    }
-    return mapping.get(field_name, [])
+"Field 2A": ["Field 2A_left", "Field 2A_right"],
+
 
 def build_color_map(future_games):
     known_colors = {

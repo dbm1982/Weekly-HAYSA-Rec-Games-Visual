@@ -156,7 +156,7 @@ def get_positions_for_field(field_name):
 
 def build_color_map(future_games):
     known_colors = {
-        "Blue": "#4996D1", "Red": "#E88989", "Green": "#429964",
+        "Blue": "#4996D1", "Red": "#dc4949", "Green": "#429964",
         "Orange": "#FCB03A", "Berry": "#E8DAEF", "Gray": "#F2F3F4",
         "Black": "#000000", "White": "#FFFFFF", "Yellow": "#FFEB3B",
         "Purple": "#9B59B6", "Maroon": "#800000", "Teal": "#008080",

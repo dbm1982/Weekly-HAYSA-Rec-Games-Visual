@@ -43,12 +43,17 @@ field_positions = {
     # -----------------------------
     # FIELD 1A (full diamond)
     # -----------------------------
-    "Field 1A": {
-        "x": 33.6, "y": 24.7,
-        "width": 20.0, "height": 11.8,
+    "Field 1A_left": {
+        "x": 33.1, "y": 25.0,
+        "width": 12.3, "height": 8.1,
         "rotate": 0
     },
-
+    "Field 1A_right": {
+        "x": 45.4, "y": 25.7,
+        "width": 9.9, "height": 7.4,
+        "rotate": 0
+    },
+    
     # -----------------------------
     # FIELD 2 (full field → top/bottom)
     # -----------------------------

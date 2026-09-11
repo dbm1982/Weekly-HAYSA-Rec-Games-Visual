@@ -112,7 +112,7 @@ field_positions = {
         "rotate": 0
     },
     "Field 2B_right": {
-        "x": 45.4, "y": 15.4,
+        "x": 45.4, "y": 15.6,
         "width": 10.3, "height": 9.6,
         "rotate": 0
     },
@@ -362,13 +362,19 @@ with open(output_html, "w", encoding="utf8") as f:
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-            height: 22px;           /* FIXED HEIGHT */
-            line-height: 22px;      /* vertically centers text */
-            font-size: 0.75em;      /* consistent text size */
-            padding: 0;             /* remove variable padding */
+            min-height: 22px;        /* baseline uniform size */
+            line-height: 22px;       /* vertically centers short names */
+            font-size: 0.75em;
+            padding: 0 4px;          /* small horizontal padding */
             margin: 0;
-            overflow: hidden;       /* prevents weird stretching */
+            display: flex;           /* allows vertical centering */
+            align-items: center;     /* centers text vertically */
+            justify-content: center; /* centers text horizontally */
+            white-space: nowrap;     /* keeps names on one line */
+            overflow: hidden;        /* prevents overflow */
+            text-overflow: ellipsis; /* adds "..." when too long */
         }
+
 
     
         .division-label { 

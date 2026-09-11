@@ -346,11 +346,17 @@ with open(output_html, "w", encoding="utf8") as f:
             transform-origin: top left;
         }
     
-        .team-left, .team-right { 
-            font-weight: bold; 
-            padding: 6px 2px; 
-            color: #000; 
+        .team-left, .team-right {
+            font-weight: bold;
+            color: #000;
+            height: 22px;           /* FIXED HEIGHT */
+            line-height: 22px;      /* vertically centers text */
+            font-size: 0.75em;      /* consistent text size */
+            padding: 0;             /* remove variable padding */
+            margin: 0;
+            overflow: hidden;       /* prevents weird stretching */
         }
+
     
         .division-label { 
             font-size: 0.75em; 

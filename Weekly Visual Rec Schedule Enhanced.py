@@ -146,7 +146,7 @@ field_positions = {
         "width": 13.3, "height": 10.1,
         "rotate": 4.6
     }
-        }
+}
     
 # --- Helpers ---
 def parse_team(raw_team):

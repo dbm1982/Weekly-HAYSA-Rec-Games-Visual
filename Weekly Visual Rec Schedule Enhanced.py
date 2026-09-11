@@ -125,6 +125,19 @@ field_positions = {
     },
 
     # -----------------------------
+    # FIELD 4 (rotated → top/bottom)
+    # -----------------------------
+    "Field 4_top": {
+        "x": 37, "y": 68,
+        "width": 7, "height": 10,
+        "rotate": 5
+    },
+    "Field 4_bottom": {
+        "x": 49, "y": 69,
+        "width": 7, "height": 10,
+        "rotate": 5
+    }
+}
 
     
 # --- Helpers ---

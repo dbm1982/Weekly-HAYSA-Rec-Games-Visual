@@ -128,13 +128,13 @@ field_positions = {
     # FIELD 4 (rotated → top/bottom)
     # -----------------------------
     "Field 4_top": {
-        "x": 37, "y": 68,
-        "width": 7, "height": 10,
+        "x": 35, "y": 68,
+        "width": 15, "height": 7,
         "rotate": 5
     },
     "Field 4_bottom": {
-        "x": 49, "y": 69,
-        "width": 7, "height": 10,
+        "x": 55, "y": 69,
+        "width": 15, "height": 7,
         "rotate": 5
     },
 
@@ -144,7 +144,7 @@ field_positions = {
 
     # 4B = top diamond
     "Field 4B_left": {
-        "x": 37, "y": 60,
+        "x": 35, "y": 60,
         "width": 10, "height": 6,
         "rotate": 5
     },

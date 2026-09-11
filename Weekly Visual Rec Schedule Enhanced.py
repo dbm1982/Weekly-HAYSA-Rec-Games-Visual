@@ -30,13 +30,13 @@ field_positions = {
     # FIELD 1 (full field → top/bottom)
     # -----------------------------
     "Field 1_top": {
-        "x": 35, "y": 15,
-        "width": 12, "height": 9,
+        "x": 40, "y": 16,
+        "width": 12, "height": 8,
         "rotate": 0
     },
     "Field 1_bottom": {
-        "x": 50, "y": 24,
-        "width": 12, "height": 9,
+        "x": 40, "y": 25,
+        "width": 12, "height": 8,
         "rotate": 0
     },
 
@@ -72,12 +72,12 @@ field_positions = {
     # FIELD 2 (full field → top/bottom)
     # -----------------------------
     "Field 2_top": {
-        "x": 58, "y": 16,
+        "x": 63, "y": 16,
         "width": 10, "height": 9,
         "rotate": 0
     },
     "Field 2_bottom": {
-        "x": 58, "y": 25,
+        "x": 63, "y": 25,
         "width": 10, "height": 9,
         "rotate": 0
     },
@@ -114,26 +114,26 @@ field_positions = {
     # FIELD 3 (rotated → top/bottom)
     # -----------------------------
     "Field 3_top": {
-        "x": 17, "y": 75,
+        "x": 17, "y": 74,
         "width": 16, "height": 10,
         "rotate": 7
     },
     "Field 3_bottom": {
         "x": 15, "y": 85,
         "width": 16, "height": 10,
-        "rotate": 5.5
+        "rotate": 6
     },
 
     # -----------------------------
     # FIELD 4 (rotated → top/bottom)
     # -----------------------------
     "Field 4_top": {
-        "x": 50, "y": 60,
+        "x": 36, "y": 68,
         "width": 14, "height": 7,
         "rotate": 5
     },
     "Field 4_bottom": {
-        "x": 50, "y": 68,
+        "x": 55, "y": 68,
         "width": 14, "height": 7,
         "rotate": 5
     },
@@ -144,25 +144,25 @@ field_positions = {
 
     # 4B = top diamond
     "Field 4B_left": {     # Left field top
-        "x": 36, "y": 65,
-        "width": 15, "height": 6,
+        "x": 36, "y": 70,
+        "width": 13, "height": 6,
         "rotate": 5
     },
-    "Field 4B_right": {
-        "x": 49, "y": 70,
-        "width": 100, "height": 6,
+    "Field 4B_right": {     # Right field top
+        "x": 51, "y": 70,
+        "width": 13, "height": 6,
         "rotate": 5
     },
 
     # 4A = bottom diamond
-    "Field 4A_left": {
+    "Field 4A_left": {      # Left field bottom
         "x": 33, "y": 72,
-        "width": 10, "height": 12,
+        "width": 10, "height": 8,
         "rotate": 5
     },
-    "Field 4A_right": {
-        "x": 49, "y": 72,
-        "width": 10, "height": 12,
+    "Field 4A_right": {     # Right field bottom
+        "x": 51, "y": 74,
+        "width": 10, "height": 8,
         "rotate": 5
     },
 }

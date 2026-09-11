@@ -30,34 +30,33 @@ field_positions = {
     # FIELD 1 (full field → top/bottom)
     # -----------------------------
     "Field 1_top": {
-        "x": 38.7, "y": 15.2,
-        "width": 14.8, "height": 8.9,
+        "x": 39, "y": 15,
+        "width": 15, "height": 9,
         "rotate": 0
     },
     "Field 1_bottom": {
-        "x": 38.7, "y": 24.1,
-        "width": 14.8, "height": 8.9,
+        "x": 39, "y": 24,
+        "width": 15, "height": 9,
         "rotate": 0
     },
 
     # -----------------------------
-    # FIELD 1A (full diamond)
+    # FIELD 1A (bottom-left diamond)
     # -----------------------------
     "Field 1A_left": {
-        "x": 35, "y": 25.0,
+        "x": 35, "y": 25,
         "width": 10, "height": 6,
         "rotate": 0
     },
     "Field 1A_right": {
-        "x": 46, "y": 25.0,
+        "x": 46, "y": 25,
         "width": 10, "height": 6,
         "rotate": 0
     },
 
     # -----------------------------
-    # FIELD 1B (full diamond)
+    # FIELD 1B (top-left diamond)
     # -----------------------------
-    
     "Field 1B_left": {
         "x": 35, "y": 16,
         "width": 10, "height": 6,
@@ -69,26 +68,22 @@ field_positions = {
         "rotate": 0
     },
 
-
-    
     # -----------------------------
     # FIELD 2 (full field → top/bottom)
     # -----------------------------
     "Field 2_top": {
         "x": 58, "y": 16,
-        "width": 10, "height": 8.9,
+        "width": 10, "height": 9,
         "rotate": 0
     },
     "Field 2_bottom": {
         "x": 58, "y": 25,
-        "width": 10, "height": 8.9,
+        "width": 10, "height": 9,
         "rotate": 0
     },
 
-
-
     # -----------------------------
-    # FIELD 2A (full diamond)
+    # FIELD 2A (bottom-right diamond)
     # -----------------------------
     "Field 2A_left": {
         "x": 57, "y": 25,
@@ -101,52 +96,36 @@ field_positions = {
         "rotate": 0
     },
 
-
     # -----------------------------
-    # FIELD 2B (full diamond)
+    # FIELD 2B (top-right diamond)
     # -----------------------------
-    
     "Field 2B_left": {
-        "x": 35, "y": 16,
+        "x": 57, "y": 16,
         "width": 10, "height": 6,
         "rotate": 0
     },
     "Field 2B_right": {
-        "x": 45, "y": 16,
+        "x": 68, "y": 16,
         "width": 10, "height": 6,
         "rotate": 0
     },
-    
 
-    
     # -----------------------------
     # FIELD 3 (rotated → top/bottom)
     # -----------------------------
     "Field 3_top": {
-        "x": 16.8, "y": 74.8,
-        "width": 14.4, "height": 9.2,
-        "rotate": 4.6
+        "x": 17, "y": 75,
+        "width": 14, "height": 9,
+        "rotate": 5
     },
     "Field 3_bottom": {
-        "x": 15.5, "y": 83.4,
-        "width": 14.5, "height": 8.8,
-        "rotate": 3.6
+        "x": 16, "y": 83,
+        "width": 14, "height": 9,
+        "rotate": 4
     },
 
     # -----------------------------
-    # FIELD 4 (rotated → top/bottom)
-    # -----------------------------
-    "Field 4_top": {
-        "x": 37.4, "y": 67.7,
-        "width": 7, "height": 10.1,
-        "rotate": 4.7
-    },
-    "Field 4_bottom": {
-        "x": 49.2, "y": 68.5,
-        "width": 7, "height": 10.1,
-        "rotate": 4.7
-    }
-}
+
     
 # --- Helpers ---
 def parse_team(raw_team):

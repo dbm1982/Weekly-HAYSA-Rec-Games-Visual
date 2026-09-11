@@ -162,12 +162,20 @@ def parse_team(raw_team):
 def extract_division(description):
     if not description:
         return ""
+
+    # Standard divisions: "3/4 Boys", "5/6 Girls", "7/8 Boys Travel"
     match = re.search(r"(\d+(?:/\d+)*\s+(Boys|Girls)(?:\s+Travel)?)", description)
     if match:
         return match.group(1)
-    if "Kindergarten" in description:
+
+    # Kindergarten variants
+    if any(k in description for k in [
+        "Kindergarten", "Kinder", "K Grade", "PreK/K", "KG"
+    ]):
         return "Kindergarten"
+
     return ""
+
 
 
 def get_positions_for_field(field_name):
@@ -270,9 +278,10 @@ for event in calendar.events:
 
     # Allow Kindergarten, Kickers, 1/2 divisions even without "vs."
     if "vs." not in name and not any(key in name for key in [
-        "Kindergarten", "Kickers", "1/2", "1/2 Girls", "1/2 Boys"
+        "Kindergarten", "Kickers", "1/2", "3/4", "5/6", "7/8"
     ]):
         continue
+
 
     # Split teams if "vs." exists
     if "vs." in name:

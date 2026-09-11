@@ -138,34 +138,35 @@ field_positions = {
         "rotate": 5
     },
 
-        # -----------------------------
+    # -----------------------------
     # FIELD 4A / 4B (diamonds on Field 4)
     # -----------------------------
-    "Field 4A_left": {
-        "x": 37, "y": 69,
-        "width": 10, "height": 6,
-        "rotate": 5
-    },
-    "Field 4A_right": {
-        "x": 49, "y": 69,
-        "width": 10, "height": 6,
-        "rotate": 5
-    },
 
+    # 4B = top diamond
     "Field 4B_left": {
-        "x": 37, "y": 61,
+        "x": 37, "y": 60,
         "width": 10, "height": 6,
         "rotate": 5
     },
     "Field 4B_right": {
-        "x": 49, "y": 61,
+        "x": 49, "y": 60,
         "width": 10, "height": 6,
         "rotate": 5
     },
 
-
-    
+    # 4A = bottom diamond
+    "Field 4A_left": {
+        "x": 37, "y": 72,
+        "width": 10, "height": 6,
+        "rotate": 5
+    },
+    "Field 4A_right": {
+        "x": 49, "y": 72,
+        "width": 10, "height": 6,
+        "rotate": 5
+    },
 }
+
 
     
 # --- Helpers ---

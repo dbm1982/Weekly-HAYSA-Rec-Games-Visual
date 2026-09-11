@@ -50,7 +50,7 @@ field_positions = {
     },
     "Field 1A_right": {
         "x": 45.4, "y": 25.0,
-        "width": 9.9, "height": 8.1,
+        "width": 9.9, "height": 9.6,
         "rotate": 0
     },
 
@@ -59,13 +59,13 @@ field_positions = {
     # -----------------------------
     
     "Field 1B_left": {
-        "x": 32.8, "y": 15.6,
-        "width": 12.6, "height": 9.4,
+        "x": 33.1, "y": 15.6,
+        "width": 12.1, "height": 8.1,
         "rotate": 0
     },
     "Field 1B_right": {
         "x": 45.4, "y": 15.4,
-        "width": 10.3, "height": 9.6,
+        "width": 9.9, "height": 9.6,
         "rotate": 0
     },
 
@@ -145,18 +145,9 @@ field_positions = {
         "x": 49.2, "y": 68.5,
         "width": 13.3, "height": 10.1,
         "rotate": 4.6
-    },
+    }
 
-    # -----------------------------
-    # PLACEHOLDERS (unused)
-    # -----------------------------
-    "Field 1B": None,
-    "Field 2A": None,
-    "Field 2B": None,
-    "Field 4A": None,
-    "Field 4B": None
-}
-
+    
 # --- Helpers ---
 def parse_team(raw_team):
     raw_team = raw_team.strip()
@@ -177,6 +168,31 @@ def extract_division(description):
     if "Kindergarten" in description:
         return "Kindergarten"
     return ""
+
+
+def get_positions_for_field(field_name):
+    """
+    Returns the list of position keys for a given field.
+    Supports top/bottom fields and left/right diamond fields.
+    """
+
+    mapping = {
+        # Full fields split into top/bottom
+        "Field 1": ["Field 1_top", "Field 1_bottom"],
+        "Field 2": ["Field 2_top", "Field 2_bottom"],
+        "Field 3": ["Field 3_top", "Field 3_bottom"],
+        "Field 4": ["Field 4_top", "Field 4_bottom"],
+
+        # Diamond fields split left/right
+        "Field 1A": ["Field 1A_left", "Field 1A_right"],
+        "Field 1B": ["Field 1B_left", "Field 1B_right"],
+        "Field 2A": ["Field 2A_left", "Field 2A_right"],
+        "Field 2B": ["Field 2B_left", "Field 2B_right"],
+    }
+
+    return mapping.get(field_name, [])
+
+
 
 def format_field(raw_field):
     core = raw_field.split(",", 1)[0].strip()

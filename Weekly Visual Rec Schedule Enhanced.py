@@ -30,12 +30,12 @@ field_positions = {
     # FIELD 1 (full field → top/bottom)
     # -----------------------------
     "Field 1_top": {
-        "x": 40, "y": 16,
+        "x": 42, "y": 16,
         "width": 12, "height": 8,
         "rotate": 0
     },
     "Field 1_bottom": {
-        "x": 40, "y": 25,
+        "x": 42, "y": 25,
         "width": 12, "height": 8,
         "rotate": 0
     },
@@ -72,13 +72,13 @@ field_positions = {
     # FIELD 2 (full field → top/bottom)
     # -----------------------------
     "Field 2_top": {
-        "x": 63, "y": 16,
-        "width": 10, "height": 9,
+        "x": 62, "y": 16,
+        "width": 12, "height": 8,
         "rotate": 0
     },
     "Field 2_bottom": {
-        "x": 63, "y": 25,
-        "width": 10, "height": 9,
+        "x": 62, "y": 25,
+        "width": 12, "height": 8,
         "rotate": 0
     },
 
@@ -128,13 +128,13 @@ field_positions = {
     # FIELD 4 (rotated → top/bottom)
     # -----------------------------
     "Field 4_top": {
-        "x": 36, "y": 68,
-        "width": 14, "height": 7,
+        "x": 38, "y": 67,
+        "width": 14, "height": 5,
         "rotate": 5
     },
     "Field 4_bottom": {
-        "x": 55, "y": 68,
-        "width": 14, "height": 7,
+        "x": 52, "y": 69,
+        "width": 14, "height": 5,
         "rotate": 5
     },
 
@@ -144,25 +144,25 @@ field_positions = {
 
     # 4B = top diamond
     "Field 4B_left": {     # Left field top
-        "x": 36, "y": 65,
-        "width": 13, "height": 4,
+        "x": 36, "y": 68,
+        "width": 13, "height": 5,
         "rotate": 5
     },
     "Field 4B_right": {     # Right field top
-        "x": 51, "y": 65,
-        "width": 13, "height": 4,
+        "x": 51, "y": 68,
+        "width": 13, "height": 5,
         "rotate": 5
     },
 
     # 4A = bottom diamond
     "Field 4A_left": {      # Left field bottom
         "x": 36, "y": 72,
-        "width": 13, "height": 4,
+        "width": 13, "height": 5,
         "rotate": 5
     },
     "Field 4A_right": {     # Right field bottom
         "x": 51, "y": 74,
-        "width": 13, "height": 4,
+        "width": 13, "height": 5,
         "rotate": 5
     },
 }

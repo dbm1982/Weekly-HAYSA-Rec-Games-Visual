@@ -200,9 +200,6 @@ def format_field(raw_field):
     return raw_field
 
 
-"Field 2A": ["Field 2A_left", "Field 2A_right"],
-
-
 def build_color_map(future_games):
     known_colors = {
         "Blue": "#4996D1", "Red": "#dc4949", "Green": "#429964",

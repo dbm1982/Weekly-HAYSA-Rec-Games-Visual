@@ -185,18 +185,18 @@ def get_positions_for_field(field_name):
     """
 
     mapping = {
-        # Full fields split into top/bottom
         "Field 1": ["Field 1_top", "Field 1_bottom"],
         "Field 2": ["Field 2_top", "Field 2_bottom"],
         "Field 3": ["Field 3_top", "Field 3_bottom"],
         "Field 4": ["Field 4_top", "Field 4_bottom"],
-
-        # Diamond fields split left/right
+    
         "Field 1A": ["Field 1A_left", "Field 1A_right"],
         "Field 1B": ["Field 1B_left", "Field 1B_right"],
         "Field 2A": ["Field 2A_left", "Field 2A_right"],
         "Field 2B": ["Field 2B_left", "Field 2B_right"],
+        "Field 4B": ["Field 4B_left", "Field 4B_right"],
     }
+
 
     return mapping.get(field_name, [])
 

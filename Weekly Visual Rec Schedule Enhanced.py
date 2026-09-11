@@ -92,12 +92,12 @@ field_positions = {
     # -----------------------------
     "Field 2A_left": {
         "x": 56.2, "y": 25.3,
-        "width": 8.6, "height": 7.9,
+        "width": 8.6, "height": 7.5,
         "rotate": 0
     },
     "Field 2A_right": {
-        "x": 64.8, "y": 24.6,
-        "width": 11.8, "height": 8.6,
+        "x": 64.8, "y": 25.3,
+        "width": 11.8, "height": 7.5,
         "rotate": 0
     },
 
@@ -107,13 +107,13 @@ field_positions = {
     # -----------------------------
     
     "Field 2B_left": {
-        "x": 32.8, "y": 15.6,
-        "width": 12.6, "height": 9.4,
+        "x": 34.8, "y": 15.6,
+        "width": 11.8, "height": 9.4,
         "rotate": 0
     },
     "Field 2B_right": {
-        "x": 45.4, "y": 15.6,
-        "width": 10.3, "height": 9.6,
+        "x": 46.6, "y": 15.6,
+        "width": 11.8, "height": 9.6,
         "rotate": 0
     },
 
@@ -138,13 +138,13 @@ field_positions = {
     # -----------------------------
     "Field 4_top": {
         "x": 37.4, "y": 67.7,
-        "width": 12.6, "height": 10.1,
-        "rotate": 4.6
+        "width": 7, "height": 10.1,
+        "rotate": 4.7
     },
     "Field 4_bottom": {
         "x": 49.2, "y": 68.5,
-        "width": 13.3, "height": 10.1,
-        "rotate": 4.6
+        "width": 7, "height": 10.1,
+        "rotate": 4.7
     }
 }
     

@@ -45,12 +45,12 @@ field_positions = {
     # -----------------------------
     "Field 1A_left": {
         "x": 33.1, "y": 25.0,
-        "width": 12.1, "height": 8.1,
+        "width": 10, "height": 6,
         "rotate": 0
     },
     "Field 1A_right": {
         "x": 45.4, "y": 25.0,
-        "width": 9.9, "height": 9.6,
+        "width": 10, "height": 6,
         "rotate": 0
     },
 
@@ -59,13 +59,13 @@ field_positions = {
     # -----------------------------
     
     "Field 1B_left": {
-        "x": 33.1, "y": 15.6,
-        "width": 12.1, "height": 8.1,
+        "x": 35, "y": 16,
+        "width": 10, "height": 6,
         "rotate": 0
     },
     "Field 1B_right": {
-        "x": 45.4, "y": 15.4,
-        "width": 9.9, "height": 9.6,
+        "x": 45, "y": 16,
+        "width": 10, "height": 6,
         "rotate": 0
     },
 
@@ -91,13 +91,13 @@ field_positions = {
     # FIELD 2A (full diamond)
     # -----------------------------
     "Field 2A_left": {
-        "x": 56.2, "y": 25.3,
-        "width": 8.6, "height": 7.5,
+        "x": 57, "y": 25,
+        "width": 10, "height": 6,
         "rotate": 0
     },
     "Field 2A_right": {
-        "x": 64.8, "y": 25.3,
-        "width": 11.8, "height": 7.5,
+        "x": 67, "y": 25,
+        "width": 10, "height": 6,
         "rotate": 0
     },
 
@@ -107,16 +107,16 @@ field_positions = {
     # -----------------------------
     
     "Field 2B_left": {
-        "x": 34.8, "y": 15.6,
-        "width": 11.8, "height": 9.4,
+        "x": 35, "y": 16,
+        "width": 10, "height": 6,
         "rotate": 0
     },
     "Field 2B_right": {
-        "x": 46.6, "y": 15.6,
-        "width": 11.8, "height": 9.6,
+        "x": 45, "y": 16,
+        "width": 10, "height": 6,
         "rotate": 0
     },
-
+    
 
     
     # -----------------------------

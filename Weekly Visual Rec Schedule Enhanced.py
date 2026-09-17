@@ -92,7 +92,7 @@ field_positions = {
     },
     "Field 2A_right": {
         "x": 68, "y": 25,
-        "width": 10=2, "height": 6,
+        "width": 102, "height": 6,
         "rotate": 0
     },
 

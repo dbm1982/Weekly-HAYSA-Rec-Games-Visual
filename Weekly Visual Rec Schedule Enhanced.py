@@ -86,12 +86,12 @@ field_positions = {
     # FIELD 2A (bottom-right diamond)
     # -----------------------------
     "Field 2A_left": {
-        "x": 57, "y": 25,
+        "x": 57, "y": 23,
         "width": 13, "height": 6,
         "rotate": 0
     },
     "Field 2A_right": {
-        "x": 70, "y": 25,
+        "x": 70, "y": 23,
         "width": 13, "height": 6,
         "rotate": 0
     },

@@ -369,30 +369,28 @@ with open(output_html, "w", encoding="utf8") as f:
     f.write("""
         body { font-family: sans-serif; background: #fff; padding: 20px; }
     
-        /* Three maps side-by-side */
         .map-grid { 
             display: flex;
             flex-direction: row;
             justify-content: center;
-            gap: 20px;                 /* spacing between maps */
+            gap: 20px;
             flex-wrap: nowrap;
         }
     
         .map-column { 
-            width: 33%;                /* each column gets 1/3 of the row */
+            width: 33%;
             text-align: center;
         }
     
-        /* Scaled map container */
         .map-container {
             position: relative;
-            width: 100%;               /* scale with column */
-            aspect-ratio: 1113 / 1590; /* preserve proportions */
+            width: 100%;
+            aspect-ratio: 1113 / 1590;
             margin: 0 auto;
         }
     
         .field-map {
-            width: 100%;               /* scaled image */
+            width: 100%;
             height: auto;
             display: block;
         }
@@ -411,42 +409,36 @@ with open(output_html, "w", encoding="utf8") as f:
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-        
-            /* Scales with block size */
-            font-size: 1.1vw;          /* responsive text */
-            padding: 0.5vw;            /* scales with text */
-        
-            min-height: 2.2vw;         /* scales with block height */
+    
+            font-size: 1.1vw;
+            padding: 0.5vw;
+            min-height: 2.2vw;
+    
             margin: 0;
-        
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-        
+    
             line-height: 1.2em;
             white-space: normal;
-            word-break: break-word;    /* prevents overflow */
-            hyphens: auto;             /* cleaner wrapping */
+            word-break: break-word;
+            hyphens: auto;
             overflow: hidden;
         }
-
-
-
-
     
         .division-label { 
             font-size: 0.75em; 
             font-weight: bold; 
             margin-top: 2px; 
         }
+    
         @media print {
             .match-overlay {
                 transform: scale(1.35) rotate(var(--rotate));
                 transform-origin: top left;
             }
-}
-
+        }
     """)
     f.write("</style></head><body>\n")
 

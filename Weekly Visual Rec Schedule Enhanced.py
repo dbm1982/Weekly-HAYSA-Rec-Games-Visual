@@ -14,7 +14,7 @@ today = datetime.now(local_tz).date()
 travel_towns = {
     "Stoughton", "Sharon", "Raynham", "Bridgewater", "Mansfield",
     "Canton", "Foxboro", "Easton", "Taunton", "Whitman", "Abington",
-    "Quincy"
+    "Quincy", "Weymouth"
 }
 
 # --- Fallback Colors ---

@@ -44,12 +44,12 @@ field_positions = {
     # FIELD 1A (bottom-left diamond)
     # -----------------------------
     "Field 1A_left": {
-        "x": 32, "y": 25,
+        "x": 32, "y": 24,
         "width": 13, "height": 6,
         "rotate": 0
     },
     "Field 1A_right": {
-        "x": 45, "y": 25,
+        "x": 45, "y": 24,
         "width": 13, "height": 6,
         "rotate": 0
     },
@@ -86,12 +86,12 @@ field_positions = {
     # FIELD 2A (bottom-right diamond)
     # -----------------------------
     "Field 2A_left": {
-        "x": 57, "y": 23,
+        "x": 57, "y": 24,
         "width": 13, "height": 6,
         "rotate": 0
     },
     "Field 2A_right": {
-        "x": 70, "y": 23,
+        "x": 70, "y": 24,
         "width": 13, "height": 6,
         "rotate": 0
     },

@@ -411,18 +411,26 @@ with open(output_html, "w", encoding="utf8") as f:
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-            min-height: 22px;
-            font-size: 0.75em;
-            padding: 2px 4px;
+        
+            /* Scales with block size */
+            font-size: 1.1vw;          /* responsive text */
+            padding: 0.5vw;            /* scales with text */
+        
+            min-height: 2.2vw;         /* scales with block height */
             margin: 0;
+        
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            line-height: 1.1em;      /* allows wrapping */
-            white-space: normal;     /* enables wrapping */
-            overflow: hidden;        /* prevents overflow */
+        
+            line-height: 1.2em;
+            white-space: normal;
+            word-break: break-word;    /* prevents overflow */
+            hyphens: auto;             /* cleaner wrapping */
+            overflow: hidden;
         }
+
 
 
 

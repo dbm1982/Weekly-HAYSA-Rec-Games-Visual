@@ -161,7 +161,7 @@ field_positions = {
         "rotate": 5
     },
     "Field 4A_right": {     # Right field bottom
-        "x": 50, "y": 73,
+        "x": 52, "y": 73,
         "width": 13, "height": 5,
         "rotate": 5
     },

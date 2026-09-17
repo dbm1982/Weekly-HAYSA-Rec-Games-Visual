@@ -199,6 +199,23 @@ def extract_division(description):
 
 
 
+def is_travel_team(name):
+    name = name.lower()
+
+    # Must contain a grade pattern like 3/4 or 5/6/7 or 9/10/11/12
+    has_grade = bool(re.search(r"\d+(?:/\d+)*", name))
+
+    # Must contain gender
+    has_gender = ("boys" in name) or ("girls" in name)
+
+    # Must contain a coach name in parentheses
+    has_coach = bool(re.search(r"\([^()]+\)", name))
+
+    # Rec teams NEVER have all three; Travel teams ALWAYS do
+    return has_grade and has_gender and has_coach
+
+
+
 def get_positions_for_field(field_name):
     mapping = {
         "Field 1": ["Field 1_top", "Field 1_bottom"],

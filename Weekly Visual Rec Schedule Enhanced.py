@@ -440,6 +440,13 @@ with open(output_html, "w", encoding="utf8") as f:
             font-weight: bold; 
             margin-top: 2px; 
         }
+        @media print {
+            .match-overlay {
+                transform: scale(1.35) rotate(var(--rotate));
+                transform-origin: top left;
+            }
+}
+
     """)
     f.write("</style></head><body>\n")
 

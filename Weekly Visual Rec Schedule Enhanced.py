@@ -310,6 +310,11 @@ for event in calendar.events:
         # Single-team formats (K, Kickers)
         team1_raw = name.strip()
         team2_raw = ""
+
+    # Skip travel teams based on naming structure
+    if is_travel_team(team1_raw) or is_travel_team(team2_raw):
+        continue
+
     
     # Skip true travel teams ONLY if the entire name matches a travel town
     if team1_raw.strip() in travel_towns or team2_raw.strip() in travel_towns:

@@ -475,8 +475,18 @@ with open(output_html, "w", encoding="utf8") as f:
 
     
             .division-label {
-                font-size: 12px;
+                font-size: 10px;
+                font-weight: bold;
+                padding: 2px 0;
+            
+                white-space: nowrap;
+                overflow: hidden;
+            
+                display: flex;              /* center vertically */
+                align-items: center;        /* center vertically */
+                justify-content: center;    /* center horizontally */
             }
+
         }
     """)
 

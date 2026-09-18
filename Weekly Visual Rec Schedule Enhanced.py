@@ -414,9 +414,9 @@ with open(output_html, "w", encoding="utf8") as f:
             font-weight: bold;
             color: #000;
         
-            font-size: 11px;        /* FIXED size — predictable */
-            padding: 3px;           /* FIXED padding */
-            line-height: 1.15;      /* FIXED line height */
+            font-size: 12px;        /* FIXED size — stable */
+            padding: 4px;           /* FIXED padding */
+            line-height: 1.2;       /* FIXED line height */
         
             display: flex;
             align-items: center;
@@ -425,15 +425,9 @@ with open(output_html, "w", encoding="utf8") as f:
             text-align: center;
             word-break: break-word;
             hyphens: auto;
-            overflow: hidden;       /* prevents spillover */
+            overflow: hidden;
         }
 
-    
-        .division-label { 
-            font-size: 0.75em; 
-            font-weight: bold; 
-            margin-top: 2px; 
-        }
     
         /* PRINT MODE — large, clean, full-page */
         @media print {

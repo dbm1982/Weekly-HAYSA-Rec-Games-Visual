@@ -414,19 +414,20 @@ with open(output_html, "w", encoding="utf8") as f:
             font-weight: bold;
             color: #000;
         
-            font-size: 12px;        /* FIXED size — stable */
-            padding: 4px;           /* FIXED padding */
-            line-height: 1.2;       /* FIXED line height */
+            font-size: 12px;
+            padding: 3px;
+            line-height: 1.2;
         
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;              /* important: not flex */
+            width: 100%;                 /* required for ellipsis */
+        
+            white-space: nowrap;         /* no wrapping */
+            overflow: hidden;            /* hide overflow */
+            text-overflow: ellipsis;     /* show "..." */
         
             text-align: center;
-            word-break: break-word;
-            hyphens: auto;
-            overflow: hidden;
         }
+
 
     
         /* PRINT MODE — large, clean, full-page */

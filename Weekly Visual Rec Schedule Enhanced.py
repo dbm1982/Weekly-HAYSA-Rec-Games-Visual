@@ -35,36 +35,8 @@ field_positions = {
         "rotate": 0
     },
     "Field 1_bottom": {
-        "x": 40, "y": 25,
+        "x": 39, "y": 23,
         "width": 12, "height": 8,
-        "rotate": 0
-    },
-
-    # -----------------------------
-    # FIELD 1A (bottom-left diamond)
-    # -----------------------------
-    "Field 1A_left": {
-        "x": 32, "y": 24,
-        "width": 13, "height": 6,
-        "rotate": 0
-    },
-    "Field 1A_right": {
-        "x": 45, "y": 24,
-        "width": 13, "height": 6,
-        "rotate": 0
-    },
-
-    # -----------------------------
-    # FIELD 1B (top-left diamond)
-    # -----------------------------
-    "Field 1B_left": {
-        "x": 32, "y": 16,
-        "width": 13, "height": 6,
-        "rotate": 0
-    },
-    "Field 1B_right": {
-        "x": 45, "y": 16,
-        "width": 13, "height": 6,
         "rotate": 0
     },
 
@@ -77,22 +49,53 @@ field_positions = {
         "rotate": 0
     },
     "Field 2_bottom": {
-        "x": 61, "y": 25,
+        "x": 60, "y": 23,
         "width": 12, "height": 8,
         "rotate": 0
     },
+
+
+    
+    # -----------------------------
+    # FIELD 1A (bottom-left diamond)
+    # -----------------------------
+    "Field 1A_left": {
+        "x": 32, "y": 24,
+        "width": 10, "height": 6,
+        "rotate": 0
+    },
+    "Field 1A_right": {
+        "x": 43, "y": 24,
+        "width": 10, "height": 6,
+        "rotate": 0
+    },
+
+    # -----------------------------
+    # FIELD 1B (top-left diamond)
+    # -----------------------------
+    "Field 1B_left": {
+        "x": 32, "y": 17,
+        "width": 12, "height": 7,
+        "rotate": 0
+    },
+    "Field 1B_right": {
+        "x": 43, "y": 17,
+        "width": 12, "height": 7,
+        "rotate": 0
+    },
+
 
     # -----------------------------
     # FIELD 2A (bottom-right diamond)
     # -----------------------------
     "Field 2A_left": {
-        "x": 58, "y": 24,
-        "width": 13, "height": 6,
+        "x": 56, "y": 25,
+        "width": 10, "height": 7,
         "rotate": 0
     },
     "Field 2A_right": {
-        "x": 71, "y": 24,
-        "width": 13, "height": 6,
+        "x": 71, "y": 25,
+        "width": 10, "height": 7,
         "rotate": 0
     },
 
@@ -100,13 +103,13 @@ field_positions = {
     # FIELD 2B (top-right diamond)
     # -----------------------------
     "Field 2B_left": {
-        "x": 58, "y": 16,
-        "width": 13, "height": 6,
+        "x": 56, "y": 16,
+        "width": 10, "height": 7,
         "rotate": 0
     },
     "Field 2B_right": {
-        "x": 71, "y": 16,
-        "width": 13, "height": 6,
+        "x": 71, "y": 17,
+        "width": 10, "height": 7,
         "rotate": 0
     },
 

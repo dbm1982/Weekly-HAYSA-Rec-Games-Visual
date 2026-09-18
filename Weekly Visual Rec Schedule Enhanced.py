@@ -470,10 +470,10 @@ with open(output_html, "w", encoding="utf8") as f:
 
 
     if not next_game_date:
-        f.write("<h1>No upcoming REC games found.</h1></body></html>")
+        f.write("<h1>No upcoming Rec games found.</h1></body></html>")
         exit(0)
 
-    f.write(f"<h1>Next Rec game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+    f.write(f"<h1>Game Day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
 
     games = future_games[next_game_date]
     games_by_block = defaultdict(list)

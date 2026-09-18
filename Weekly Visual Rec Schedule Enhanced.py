@@ -367,7 +367,11 @@ image_path = "assets/field_map.jpeg"
 with open(output_html, "w", encoding="utf8") as f:
     f.write("<html><head><style>\n")
     f.write("""
-        body { font-family: sans-serif; background: #fff; padding: 20px; }
+        body { 
+            font-family: sans-serif; 
+            background: #fff; 
+            padding: 20px; 
+        }
     
         .map-grid { 
             display: flex;
@@ -397,7 +401,6 @@ with open(output_html, "w", encoding="utf8") as f:
     
         .match-overlay {
             position: absolute;
-            font-size: 0.65em;
             background: white;
             border: 0.5px solid black;
             text-align: center;
@@ -406,29 +409,27 @@ with open(output_html, "w", encoding="utf8") as f:
             transform-origin: top left;
         }
     
+        /* SCREEN MODE — compact for embedding */
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-        
-            /* Much smaller responsive text */
-            font-size: 0.55vw;          /* previously 1.1vw — cut in half */
-            padding: 0.25vw;            /* previously 0.5vw — also cut in half */
-        
-            min-height: 1.4vw;          /* previously 2.2vw — smaller blocks */
+    
+            font-size: 0.55vw;      /* compact responsive text */
+            padding: 0.25vw;
+            min-height: 1.4vw;
+    
             margin: 0;
-        
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-        
+    
             line-height: 1.15em;
             white-space: normal;
             word-break: break-word;
             hyphens: auto;
             overflow: hidden;
         }
-
     
         .division-label { 
             font-size: 0.75em; 
@@ -436,13 +437,41 @@ with open(output_html, "w", encoding="utf8") as f:
             margin-top: 2px; 
         }
     
+        /* PRINT MODE — large, clean, full-page */
         @media print {
-            .match-overlay {
-                transform: scale(1.35) rotate(var(--rotate));
+    
+            body {
+                margin: 0;
+                padding: 0;
+            }
+    
+            .map-grid {
+                flex-direction: column;   /* stack vertically for full-page print */
+                gap: 40px;
+            }
+    
+            .map-column {
+                width: 100%;              /* full width on paper */
+            }
+    
+            .map-container {
+                transform: scale(1.45);   /* enlarge map for 8×11 */
                 transform-origin: top left;
+                margin-bottom: 40px;
+            }
+    
+            .team-left, .team-right {
+                font-size: 14px;          /* readable print size */
+                padding: 6px;
+                min-height: 22px;
+            }
+    
+            .division-label {
+                font-size: 12px;
             }
         }
     """)
+
     f.write("</style></head><body>\n")
 
 

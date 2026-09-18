@@ -409,9 +409,12 @@ with open(output_html, "w", encoding="utf8") as f:
             transform-origin: top left;
         
             display: grid;
-            grid-template-rows: 20px 20px auto;   /* two fixed blocks + division */
+            grid-template-rows: 20px 20px auto;
             row-gap: 2px;
+        
+            min-height: 45px;   /* REQUIRED for uniform layout */
         }
+
     
         /* SCREEN MODE — compact for embedding */
         .team-left, .team-right {

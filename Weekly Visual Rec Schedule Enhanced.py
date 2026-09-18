@@ -60,13 +60,13 @@ field_positions = {
     # FIELD 1 (far left fields (top & bottom))
     # -----------------------------
     "Field 1B_left": {
-        "x": 32, "y": 17,
+        "x": 30, "y": 17,
         "width": 8, "height": 7,
         "rotate": 0
     },
     
     "Field 1A_left": {
-        "x": 32, "y": 24,
+        "x": 30, "y": 24,
         "width": 8, "height": 7,
         "rotate": 0
     },
@@ -77,14 +77,14 @@ field_positions = {
     # -----------------------------
     
     "Field 1B_right": {
-        "x": 43, "y": 17,
+        "x": 45, "y": 17,
         "width": 8, "height": 7,
         "rotate": 0
     },
     
     
     "Field 1A_right": {
-        "x": 43, "y": 24,
+        "x": 45, "y": 24,
         "width": 8, "height": 7,
         "rotate": 0
     },

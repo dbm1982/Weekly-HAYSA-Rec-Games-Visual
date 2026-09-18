@@ -458,6 +458,17 @@ with open(output_html, "w", encoding="utf8") as f:
                 padding: 6px;
                 min-height: 22px;
             }
+
+            .match-overlay {
+                position: absolute;
+                background: white;
+                border: 0.5px solid black;
+                text-align: center;
+                padding: 4px 2px;
+                box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+                transform-origin: top left;
+            }
+
     
             .division-label {
                 font-size: 12px;

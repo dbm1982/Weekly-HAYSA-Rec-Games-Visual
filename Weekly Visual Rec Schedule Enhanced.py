@@ -413,23 +413,21 @@ with open(output_html, "w", encoding="utf8") as f:
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-    
-            font-size: 0.55vw;      /* compact responsive text */
-            padding: 0.25vw;
-            min-height: 1.4vw;
-    
-            margin: 0;
+        
+            font-size: 11px;        /* FIXED size — predictable */
+            padding: 3px;           /* FIXED padding */
+            line-height: 1.15;      /* FIXED line height */
+        
             display: flex;
             align-items: center;
             justify-content: center;
+        
             text-align: center;
-    
-            line-height: 1.15em;
-            white-space: normal;
             word-break: break-word;
             hyphens: auto;
-            overflow: hidden;
+            overflow: hidden;       /* prevents spillover */
         }
+
     
         .division-label { 
             font-size: 0.75em; 

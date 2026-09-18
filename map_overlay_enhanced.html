@@ -42,32 +42,37 @@
             transform-origin: top left;
         
             display: grid;
-            grid-template-rows: 32px 32px auto;   /* two fixed-height blocks + division */
+            grid-template-rows: 32px 32px auto;
             row-gap: 2px;
         
-            overflow: hidden;   /* prevents spillover */
+            overflow: hidden;
+        
+            min-width: 90px;   /* critical for wrapping */
         }
-
-
-
-    
-        /* SCREEN MODE — compact for embedding */
+        
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
         
             font-size: 12px;
             padding: 3px;
-            line-height: 1.2;
+            line-height: 1.15;
         
-            display: block;              /* important: not flex */
-            width: 100%;                 /* required for ellipsis */
+            display: block;
+            max-width: 100%;
+            height: 32px;
         
-            white-space: nowrap;         /* no wrapping */
-            overflow: hidden;            /* hide overflow */
-            text-overflow: ellipsis;     /* show "..." */
-        
+            white-space: normal;     /* allow wrapping */
+            overflow: hidden;        /* clip after 2 lines */
             text-align: center;
+        }
+        
+        .division-label {
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 0;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
 

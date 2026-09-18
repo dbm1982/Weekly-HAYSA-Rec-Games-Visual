@@ -30,12 +30,12 @@ field_positions = {
     # FIELD 1 (full field → top/bottom)
     # -----------------------------
     "Field 1_top": {
-        "x": 40, "y": 16,
+        "x": 37, "y": 16,
         "width": 12, "height": 8,
         "rotate": 0
     },
     "Field 1_bottom": {
-        "x": 39, "y": 23,
+        "x": 37, "y": 23,
         "width": 12, "height": 8,
         "rotate": 0
     },
@@ -44,12 +44,12 @@ field_positions = {
     # FIELD 2 (full field → top/bottom)
     # -----------------------------
     "Field 2_top": {
-        "x": 61, "y": 16,
+        "x": 59, "y": 16,
         "width": 12, "height": 8,
         "rotate": 0
     },
     "Field 2_bottom": {
-        "x": 60, "y": 23,
+        "x": 59, "y": 23,
         "width": 12, "height": 8,
         "rotate": 0
     },
@@ -57,61 +57,72 @@ field_positions = {
 
     
     # -----------------------------
-    # FIELD 1A (bottom-left diamond)
-    # -----------------------------
-    "Field 1A_left": {
-        "x": 32, "y": 24,
-        "width": 10, "height": 6,
-        "rotate": 0
-    },
-    "Field 1A_right": {
-        "x": 43, "y": 24,
-        "width": 10, "height": 6,
-        "rotate": 0
-    },
-
-    # -----------------------------
-    # FIELD 1B (top-left diamond)
+    # FIELD 1 (far left fields (top & bottom))
     # -----------------------------
     "Field 1B_left": {
         "x": 32, "y": 17,
-        "width": 12, "height": 7,
+        "width": 8, "height": 7,
         "rotate": 0
     },
+    
+    "Field 1A_left": {
+        "x": 32, "y": 24,
+        "width": 8, "height": 7,
+        "rotate": 0
+    },
+
+
+    # -----------------------------
+    # FIELD 1B (Field one - right fields (top & bottom))
+    # -----------------------------
+    
     "Field 1B_right": {
         "x": 43, "y": 17,
-        "width": 12, "height": 7,
+        "width": 8, "height": 7,
         "rotate": 0
     },
-
-
-    # -----------------------------
-    # FIELD 2A (bottom-right diamond)
-    # -----------------------------
-    "Field 2A_left": {
-        "x": 56, "y": 25,
-        "width": 10, "height": 7,
-        "rotate": 0
-    },
-    "Field 2A_right": {
-        "x": 71, "y": 25,
-        "width": 10, "height": 7,
+    
+    
+    "Field 1A_right": {
+        "x": 43, "y": 24,
+        "width": 8, "height": 7,
         "rotate": 0
     },
 
     # -----------------------------
-    # FIELD 2B (top-right diamond)
+    # FIELD 2A (Field 2 - left fields (top & bottom))
     # -----------------------------
     "Field 2B_left": {
-        "x": 56, "y": 16,
-        "width": 10, "height": 7,
+        "x": 56, "y": 17,
+        "width": 8, "height": 7,
         "rotate": 0
     },
+    
+    "Field 2A_left": {
+        "x": 56, "y": 24,
+        "width": 8, "height": 7,
+        "rotate": 0
+    },
+    
+
+    # -----------------------------
+    # FIELD 2B (Field 2 - right fields (top & bottom))
+    # -----------------------------
+
     "Field 2B_right": {
         "x": 71, "y": 17,
-        "width": 10, "height": 7,
+        "width": 8, "height": 7,
         "rotate": 0
     },
+
+    
+    "Field 2A_right": {
+        "x": 71, "y": 24,
+        "width": 8, "height": 7,
+        "rotate": 0
+    },
+
+
 
     # -----------------------------
     # FIELD 3 (rotated → top/bottom)

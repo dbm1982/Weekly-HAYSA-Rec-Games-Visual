@@ -42,9 +42,14 @@
             transform-origin: top left;
         
             display: grid;
-            grid-template-rows: 20px 20px auto;   /* two fixed blocks + division */
+            grid-template-rows: 20px 20px auto;
             row-gap: 2px;
+        
+            min-height: 45px;   /* prevents collapse */
+            min-width: 60px;    /* prevents text overflow */
         }
+
+
     
         /* SCREEN MODE — compact for embedding */
         .team-left, .team-right {

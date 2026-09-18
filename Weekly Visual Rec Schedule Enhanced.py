@@ -412,8 +412,10 @@ with open(output_html, "w", encoding="utf8") as f:
             grid-template-rows: 20px 20px auto;
             row-gap: 2px;
         
-            min-height: 45px;   /* REQUIRED for uniform layout */
+            min-height: 45px;   /* prevents collapse */
+            min-width: 60px;    /* prevents text overflow */
         }
+
 
     
         /* SCREEN MODE — compact for embedding */

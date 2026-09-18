@@ -409,12 +409,12 @@ with open(output_html, "w", encoding="utf8") as f:
             transform-origin: top left;
         
             display: grid;
-            grid-template-rows: 20px 20px auto;
+            grid-template-rows: 32px 32px auto;   /* two fixed-height blocks + division */
             row-gap: 2px;
         
-            min-height: 45px;   /* prevents collapse */
-            min-width: 60px;    /* prevents text overflow */
+            overflow: hidden;   /* prevents spillover */
         }
+
 
 
     

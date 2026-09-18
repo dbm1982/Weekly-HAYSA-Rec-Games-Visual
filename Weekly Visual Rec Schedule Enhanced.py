@@ -398,15 +398,19 @@ with open(output_html, "w", encoding="utf8") as f:
             height: auto;
             display: block;
         }
-    
+
         .match-overlay {
             position: absolute;
             background: white;
             border: 0.5px solid black;
             text-align: center;
-            padding: 4px 2px;
+            padding: 0;
             box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             transform-origin: top left;
+        
+            display: grid;
+            grid-template-rows: 20px 20px auto;   /* two fixed blocks + division */
+            row-gap: 2px;
         }
     
         /* SCREEN MODE — compact for embedding */
@@ -457,16 +461,6 @@ with open(output_html, "w", encoding="utf8") as f:
                 font-size: 14px;          /* readable print size */
                 padding: 6px;
                 min-height: 22px;
-            }
-
-            .match-overlay {
-                position: absolute;
-                background: white;
-                border: 0.5px solid black;
-                text-align: center;
-                padding: 4px 2px;
-                box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-                transform-origin: top left;
             }
 
     

@@ -268,7 +268,7 @@ with open(html_file, "w", encoding="utf-8") as f:
         print(f"Excel saved to: {excel_file}")
         exit(0)
 
-    f.write(f"<h1>Next Rec game day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
+    f.write(f"<h1>Game Day: {next_game_date.strftime('%A, %B %d')}</h1>\n")
 
     games = future_games[next_game_date]
     time_groups = defaultdict(list)

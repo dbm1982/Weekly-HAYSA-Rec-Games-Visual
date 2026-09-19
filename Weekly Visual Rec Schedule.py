@@ -1,5 +1,5 @@
-import requests
-from ics import Calendar
+
+Calendar
 from datetime import datetime, timedelta
 import re, ssl, pytz
 from collections import defaultdict
@@ -191,7 +191,7 @@ for event in calendar.events:
 # --- Auto Color Map ---
 color_map = get_color_map_from_schedule(future_games)
 
-# --- Determine next REC Saturday ---
+# --- Determine next Rec Saturday ---
 next_saturday = today + timedelta((5 - today.weekday()) % 7)
 games_this_sat = future_games.get(next_saturday, [])
 

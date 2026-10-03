@@ -439,28 +439,23 @@ with open(output_html, "w", encoding="utf8") as f:
             font-weight: bold;
             color: #000;
         
-            /* Auto-shrink text */
-            font-size: clamp(10px, 1.2vw, 14px);
+            /* MAGIC: auto-shrink text to fit inside fixed-height box */
+            font-size: min(14px, 3vw);
         
             padding: 3px;
             line-height: 1.1;
         
-            display: block;
-            max-width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         
-            /* Allow height to expand for wrapped text */
-            min-height: 32px;
-            height: auto;
-        
-            /* Allow wrapping */
-            white-space: normal;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        
-            /* Prevent overflow beyond the box */
+            width: 100%;
+            height: 32px;       /* your fixed box height */
             overflow: hidden;
         
             text-align: center;
+            white-space: nowrap;        /* prevent wrapping */
+            text-overflow: ellipsis;    /* optional: fade-out if extremely long */
         }
 
         

@@ -65,13 +65,13 @@ field_positions = {
     # -----------------------------
     "Field 1B_left": {
         "x": 30, "y": 17,
-        "width": 8, "height": 7,
+        "width": 7, "height": 7,
         "rotate": 0
     },
     
     "Field 1A_left": {
         "x": 30, "y": 24,
-        "width": 8, "height": 7,
+        "width": 7, "height": 7,
         "rotate": 0
     },
 
@@ -82,14 +82,14 @@ field_positions = {
     
     "Field 1B_right": {
         "x": 45, "y": 17,
-        "width": 8, "height": 7,
+        "width": 7, "height": 7,
         "rotate": 0
     },
     
     
     "Field 1A_right": {
         "x": 45, "y": 24,
-        "width": 8, "height": 7,
+        "width": 7, "height": 7,
         "rotate": 0
     },
 
@@ -137,9 +137,9 @@ field_positions = {
         "rotate": 7
     },
     "Field 3_bottom": {
-        "x": 15, "y": 85,
+        "x": 15, "y": 84,
         "width": 16, "height": 10,
-        "rotate": 6
+        "rotate": 4
     },
 
     # -----------------------------
@@ -147,12 +147,12 @@ field_positions = {
     # -----------------------------
     "Field 4_top": {  # Left field
         "x": 38, "y": 67.5,
-        "width": 14, "height": 7,
+        "width": 12, "height": 7,
         "rotate": 5
     },
     "Field 4_bottom": {   # Right field
         "x": 53, "y": 68.5,
-        "width": 14, "height": 7,
+        "width": 12, "height": 7,
         "rotate": 5
     },
 
@@ -163,12 +163,12 @@ field_positions = {
     # 4B = top diamond
     "Field 4B_left": {     # Top Left field
         "x": 36, "y": 67,
-        "width": 13, "height": 6,
+        "width": 12, "height": 6,
         "rotate": 5
     },
     "Field 4B_right": {     # Right field top
         "x": 52, "y": 68,
-        "width": 13, "height": 6,
+        "width": 12, "height": 6,
         "rotate": 5
     },
 

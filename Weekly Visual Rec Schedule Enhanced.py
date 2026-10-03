@@ -399,10 +399,12 @@ with open(output_html, "w", encoding="utf8") as f:
             flex-wrap: nowrap;
         }
     
-        .map-column { 
-            width: 33%;
+        .map-column {
+            width: 1113px;      /* EXACT width of one full map */
+            flex: 0 0 1113px;   /* Prevent shrinking or wrapping */
             text-align: center;
         }
+
     
         .map-container {
             position: relative;

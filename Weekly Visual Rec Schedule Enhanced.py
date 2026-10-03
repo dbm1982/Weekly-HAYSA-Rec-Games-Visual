@@ -411,7 +411,7 @@ with open(output_html, "w", encoding="utf8") as f:
         .map-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 1113 / 1590;
+            aspect-ratio: 1113 / 700;
             margin: 0 auto;
         }
     

@@ -596,6 +596,31 @@ with open(output_html, "w", encoding="utf8") as f:
 
         f.write("</div></div>\n")
 
-    f.write("</div></body></html>")
+        f.write("</div>\n")
 
-print(f"Overlay saved to: {output_html}")
+        # Add shrink-to-fit script so team names always fit inside boxes
+        f.write("""
+    <script>
+    function shrinkToFit(el) {
+        let max = 14;   // starting font size
+        let min = 6;    // minimum readable size
+        let size = max;
+    
+        el.style.fontSize = size + "px";
+    
+        // shrink until the wrapped text fits vertically
+        while (size > min && el.scrollHeight > el.clientHeight) {
+            size -= 1;
+            el.style.fontSize = size + "px";
+        }
+    }
+    
+    document.querySelectorAll('.team-left, .team-right').forEach(el => {
+        shrinkToFit(el);
+    });
+    </script>
+    </body></html>
+    """)
+    
+    print(f"Overlay saved to: {output_html}")
+

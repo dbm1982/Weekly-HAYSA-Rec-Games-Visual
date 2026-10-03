@@ -54,9 +54,7 @@
             font-weight: bold;
             color: #000;
         
-            /* MAGIC: auto-shrink text to fit inside fixed-height box */
-            font-size: min(14px, 3vw);
-        
+            font-size: 14px;   /* JS will shrink this */
             padding: 3px;
             line-height: 1.1;
         
@@ -65,13 +63,13 @@
             justify-content: center;
         
             width: 100%;
-            height: 32px;       /* your fixed box height */
+            height: 32px;      /* fixed box height */
             overflow: hidden;
         
             text-align: center;
-            white-space: nowrap;        /* prevent wrapping */
-            text-overflow: ellipsis;    /* optional: fade-out if extremely long */
+            white-space: nowrap;        /* no wrapping */
         }
+
 
         
         .division-label {

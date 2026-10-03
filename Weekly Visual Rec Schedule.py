@@ -1,3 +1,4 @@
+import requests, ssl, re
 from ics import Calendar, Event
 from datetime import datetime, timedelta
 import re, ssl, pytz
@@ -5,6 +6,7 @@ from collections import defaultdict
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 import random
+import pytz
 
 # --- ICS Feed ---
 ical_url = "https://calendar.google.com/calendar/ical/6bl9ubrc8vssoqi0jm1l7ljpc05ngqrt%40import.calendar.google.com/public/basic.ics"

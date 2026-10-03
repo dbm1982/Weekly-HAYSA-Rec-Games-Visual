@@ -400,9 +400,9 @@ with open(output_html, "w", encoding="utf8") as f:
         }
     
         .map-column {
-            width: 1113px;      /* EXACT width of one full map */
-            flex: 0 0 1113px;   /* Prevent shrinking or wrapping */
+            width: 33%;
             text-align: center;
+            flex: 0 0 33%;   /* <-- THIS is the magic line */
         }
 
     

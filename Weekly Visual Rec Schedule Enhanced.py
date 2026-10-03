@@ -567,67 +567,70 @@ with open(output_html, "w", encoding="utf8") as f:
     for g in games:
         games_by_block[g["time"]].append(g)
 
-   f.write("<div class='map-grid'>\n")
-    
+        f.write("<div class='map-grid'>\n")
+
     for block in sorted(games_by_block.keys(), key=lambda t: datetime.strptime(t, "%I:%M %p")):
         f.write(f"<div class='map-column'><h2>{block}</h2>\n")
         f.write(f"<div class='map-container'><img src='{image_path}' class='field-map'>\n")
-    
+
         for g in games_by_block[block]:
             positions = get_positions_for_field(g["field"])
             if not positions:
                 continue
-    
+
             for idx, pos_key in enumerate(positions):
                 pos = field_positions.get(pos_key)
                 if not pos:
                     continue
-    
+
                 f.write(
                     f"<div class='match-overlay' style='"
                     f"left:{pos['x']}%; top:{pos['y']}%; "
                     f"width:{pos['width']}%; height:{pos['height']}%; "
                     f"transform:rotate({pos.get('rotate',0)}deg);'>"
                 )
-    
+
                 if idx == 0:
-                    f.write(f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>")
+                    f.write(
+                        f"<div class='team-left' style='background-color:{color_map[g['color1']]}'>{g['team1']}</div>"
+                    )
                 else:
-                    f.write(f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>")
-    
+                    f.write(
+                        f"<div class='team-right' style='background-color:{color_map[g['color2']]}'>{g['team2']}</div>"
+                    )
+
                 f.write(f"<div class='division-label'>{g['division']}</div>")
-                f.write("</div>")   # close match-overlay
-    
+                f.write("</div>")  # close match-overlay
+
         f.write("</div>")        # close map-container
         f.write("</div>\n")      # close map-column
-    
-    f.write("</div>")            # <-- close map-grid AFTER the loop
 
-        f.write("</div>\n")
+    f.write("</div>\n")         # close map-grid
 
-        # Add shrink-to-fit script so team names always fit inside boxes
-        f.write("""
-    <script>
-    function shrinkToFit(el) {
-        let max = 14;   // starting font size
-        let min = 6;    // minimum readable size
-        let size = max;
-    
+    # Add shrink-to-fit script
+    f.write("""
+<script>
+function shrinkToFit(el) {
+    let max = 14;
+    let min = 6;
+    let size = max;
+
+    el.style.fontSize = size + "px";
+
+    while (size > min && el.scrollHeight > el.clientHeight) {
+        size -= 1;
         el.style.fontSize = size + "px";
-    
-        // shrink until the wrapped text fits vertically
-        while (size > min && el.scrollHeight > el.clientHeight) {
-            size -= 1;
-            el.style.fontSize = size + "px";
-        }
     }
-    
-    document.querySelectorAll('.team-left, .team-right').forEach(el => {
-        shrinkToFit(el);
-    });
-    </script>
-    </body></html>
-    """)
+}
+
+document.querySelectorAll('.team-left, .team-right').forEach(el => {
+    shrinkToFit(el);
+});
+</script>
+</body></html>
+""")
+
+
     
     print(f"Overlay saved to: {output_html}")
 

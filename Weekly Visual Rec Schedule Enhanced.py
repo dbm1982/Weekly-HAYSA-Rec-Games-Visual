@@ -64,13 +64,13 @@ field_positions = {
     # FIELD 1 (far left fields (top & bottom))
     # -----------------------------
     "Field 1B_left": {
-        "x": 30, "y": 17,
+        "x": 28, "y": 17,
         "width": 6, "height": 7,
         "rotate": 0
     },
     
     "Field 1A_left": {
-        "x": 30, "y": 24,
+        "x": 28, "y": 24,
         "width": 6, "height": 7,
         "rotate": 0
     },
@@ -81,15 +81,15 @@ field_positions = {
     # -----------------------------
     
     "Field 1B_right": {
-        "x": 45, "y": 17,
-        "width": 7, "height": 7,
+        "x": 44, "y": 17,
+        "width": 6, "height": 7,
         "rotate": 0
     },
     
     
     "Field 1A_right": {
-        "x": 45, "y": 24,
-        "width": 7, "height": 7,
+        "x": 44, "y": 24,
+        "width": 6, "height": 7,
         "rotate": 0
     },
 
@@ -97,13 +97,13 @@ field_positions = {
     # FIELD 2A (Field 2 - left fields (top & bottom))
     # -----------------------------
     "Field 2B_left": {
-        "x": 59, "y": 17,
+        "x": 58, "y": 17,
         "width": 7, "height": 7,
         "rotate": 0
     },
     
     "Field 2A_left": {
-        "x": 59, "y": 24,
+        "x": 58, "y": 24,
         "width": 7, "height": 7,
         "rotate": 0
     },
@@ -163,24 +163,24 @@ field_positions = {
     # 4B = top diamond
     "Field 4B_left": {     # Top Left field
         "x": 36.5, "y": 67,
-        "width": 12, "height": 6,
+        "width": 12, "height": 7,
         "rotate": 5
     },
     "Field 4B_right": {     # Bottom left field
-        "x": 36, "y": 73,
-        "width": 12, "height": 6,
+        "x": 35.5, "y": 73,
+        "width": 12, "height": 7,
         "rotate": 5
     },
 
     # 4A = bottom diamond
     "Field 4A_left": {      # Top Right field
         "x": 55, "y": 68,
-        "width": 12, "height": 6,
+        "width": 12, "height": 7,
         "rotate": 5
     },
     "Field 4A_right": {     # Bottom Right field
-        "x": 54.5, "y": 74,
-        "width": 12, "height": 6,
+        "x": 54, "y": 74,
+        "width": 12, "height": 7,
         "rotate": 5
     },
 }

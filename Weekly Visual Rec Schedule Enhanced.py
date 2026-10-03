@@ -438,25 +438,27 @@ with open(output_html, "w", encoding="utf8") as f:
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-        
-            /* MAGIC: auto-shrink text to fit inside fixed-height box */
-            font-size: min(14px, 3vw);
-        
+
+            /* Start large — JS will shrink this */
+            font-size: 14px;
             padding: 3px;
             line-height: 1.1;
-        
+
             display: flex;
             align-items: center;
             justify-content: center;
-        
-            width: 100%;
-            height: 32px;       /* your fixed box height */
-            overflow: hidden;
-        
             text-align: center;
-            white-space: nowrap;        /* prevent wrapping */
-            text-overflow: ellipsis;    /* optional: fade-out if extremely long */
+
+            width: 100%;
+            height: 32px;      /* fixed box height */
+
+            overflow: hidden;
+
+            /* Allow wrapping so shrinker can work */
+            white-space: normal;
+            word-break: break-word;
         }
+
 
         
         .division-label {

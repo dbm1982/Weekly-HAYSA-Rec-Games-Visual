@@ -171,4 +171,30 @@
 <div class='map-column'><h2>11:00 AM</h2>
 <div class='map-container'><img src='assets/field_map.jpeg' class='field-map'>
 <div class='match-overlay' style='left:36%; top:73%; width:13%; height:6%; transform:rotate(5deg);'><div class='team-left' style='background-color:#429964'>Holbrook Community Center</div><div class='division-label'>Kindergarten</div></div><div class='match-overlay' style='left:52%; top:74%; width:13%; height:6%; transform:rotate(5deg);'><div class='team-right' style='background-color:#dc4949'>The Red House Academy</div><div class='division-label'>Kindergarten</div></div><div class='match-overlay' style='left:56%; top:17%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-left' style='background-color:#4996D1'>Brockton Rox</div><div class='division-label'>1/2 Boys</div></div><div class='match-overlay' style='left:71%; top:17%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-right' style='background-color:#FCB03A'>Nielsen Eye Center</div><div class='division-label'>1/2 Boys</div></div><div class='match-overlay' style='left:56%; top:24%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-left' style='background-color:#429964'>www.slamyourday.com</div><div class='division-label'>1/2 Boys</div></div><div class='match-overlay' style='left:71%; top:24%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-right' style='background-color:#dc4949'>The Sean Joyce Foundation</div><div class='division-label'>1/2 Boys</div></div><div class='match-overlay' style='left:30%; top:17%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-left' style='background-color:#4996D1'>Edwards Built Pavements</div><div class='division-label'>1/2 Girls</div></div><div class='match-overlay' style='left:45%; top:17%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-right' style='background-color:#FCB03A'>Wm. Perry Trucking</div><div class='division-label'>1/2 Girls</div></div><div class='match-overlay' style='left:30%; top:24%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-left' style='background-color:#429964'>Troupe Waste & Recycling</div><div class='division-label'>1/2 Girls</div></div><div class='match-overlay' style='left:45%; top:24%; width:8%; height:7%; transform:rotate(0deg);'><div class='team-right' style='background-color:#dc4949'>Abington Bank</div><div class='division-label'>1/2 Girls</div></div><div class='match-overlay' style='left:36%; top:67%; width:13%; height:6%; transform:rotate(5deg);'><div class='team-left' style='background-color:#4996D1'>Avon Septic and Pumping</div><div class='division-label'>Kindergarten</div></div><div class='match-overlay' style='left:52%; top:68%; width:13%; height:6%; transform:rotate(5deg);'><div class='team-right' style='background-color:#FCB03A'>Undercover Undercoaters Bridgewater</div><div class='division-label'>Kindergarten</div></div></div></div>
-</div></body></html>
+</div>
+    
+    
+    <script>
+function shrinkToFit(el) {
+    let max = 14;   // starting font size
+    let min = 6;    // minimum readable size
+    let size = max;
+
+    el.style.fontSize = size + "px";
+
+    // shrink until the wrapped text fits vertically
+    while (size > min && el.scrollHeight > el.clientHeight) {
+        size -= 1;
+        el.style.fontSize = size + "px";
+    }
+}
+
+document.querySelectorAll('.team-left, .team-right').forEach(el => {
+    shrinkToFit(el);
+});
+</script>
+
+    
+    </body></html>
+
+

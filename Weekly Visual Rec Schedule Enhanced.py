@@ -65,13 +65,13 @@ field_positions = {
     # -----------------------------
     "Field 1B_left": {
         "x": 30, "y": 17,
-        "width": 7, "height": 7,
+        "width": 6, "height": 7,
         "rotate": 0
     },
     
     "Field 1A_left": {
         "x": 30, "y": 24,
-        "width": 7, "height": 7,
+        "width": 6, "height": 7,
         "rotate": 0
     },
 
@@ -97,13 +97,13 @@ field_positions = {
     # FIELD 2A (Field 2 - left fields (top & bottom))
     # -----------------------------
     "Field 2B_left": {
-        "x": 56, "y": 17,
+        "x": 59, "y": 17,
         "width": 8, "height": 7,
         "rotate": 0
     },
     
     "Field 2A_left": {
-        "x": 56, "y": 24,
+        "x": 59, "y": 24,
         "width": 8, "height": 7,
         "rotate": 0
     },
@@ -114,7 +114,7 @@ field_positions = {
     # -----------------------------
 
     "Field 2B_right": {
-        "x": 71, "y": 17,
+        "x": 74, "y": 17,
         "width": 8, "height": 7,
         "rotate": 0
     },
@@ -122,7 +122,7 @@ field_positions = {
     
     "Field 2A_right": {
         "x": 71, "y": 24,
-        "width": 8, "height": 7,
+        "width": 4, "height": 7,
         "rotate": 0
     },
 
@@ -139,7 +139,7 @@ field_positions = {
     "Field 3_bottom": {
         "x": 15, "y": 84,
         "width": 16, "height": 10,
-        "rotate": 4
+        "rotate": 6
     },
 
     # -----------------------------
@@ -161,24 +161,24 @@ field_positions = {
     # -----------------------------
 
     # 4B = top diamond
-    "Field 4B_left": {     # Top Left field (blue)
+    "Field 4B_left": {     # Top Left field
         "x": 36, "y": 67,
         "width": 12, "height": 6,
         "rotate": 5
     },
-    "Field 4B_right": {     # Right field top (yellow)
+    "Field 4B_right": {     # Right field top
         "x": 36, "y": 73,
         "width": 13, "height": 6,
         "rotate": 5
     },
 
     # 4A = bottom diamond
-    "Field 4A_left": {      # Bottom Left field (green)
+    "Field 4A_left": {      # Bottom Left field
         "x": 52, "y": 68,
         "width": 12, "height": 6,
         "rotate": 5
     },
-    "Field 4A_right": {     # Bottom Right field (red)
+    "Field 4A_right": {     # Bottom Right field
         "x": 52, "y": 74,
         "width": 13, "height": 6,
         "rotate": 5

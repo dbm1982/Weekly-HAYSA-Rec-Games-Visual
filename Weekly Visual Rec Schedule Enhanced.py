@@ -397,7 +397,9 @@ with open(output_html, "w", encoding="utf8") as f:
             justify-content: center;
             gap: 20px;
             flex-wrap: nowrap;
+            align-items: flex-start;   /* <-- THIS fixes the layout */
         }
+
     
         .map-column {
             width: 33%;

@@ -1,8 +1,11 @@
-from ics import Calendar, Event
 import requests, ssl, re
-from ics import Calendar
-from datetime import datetime
+from ics import Calendar, Event
+from datetime import datetime, timedelta
+import re, ssl, pytz
 from collections import defaultdict
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill
+import random
 import pytz
 
 # --- ICS Feed ---

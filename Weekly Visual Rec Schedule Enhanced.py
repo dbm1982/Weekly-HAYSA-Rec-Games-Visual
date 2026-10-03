@@ -462,10 +462,19 @@ with open(output_html, "w", encoding="utf8") as f:
         .division-label {
             font-size: 10px;
             font-weight: bold;
-            padding: 2px 0;
+        
+            /* Center vertically + horizontally */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        
+            padding: 0 2px;
+        
             white-space: nowrap;
             overflow: hidden;
+            text-align: center;
         }
+
 
 
     

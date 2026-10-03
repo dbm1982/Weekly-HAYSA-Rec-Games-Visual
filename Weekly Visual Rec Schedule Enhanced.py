@@ -1,3 +1,4 @@
+from ics import Calendar, Event
 import requests, ssl, re
 from ics import Calendar
 from datetime import datetime

@@ -101,10 +101,32 @@
             }
     
             .team-left, .team-right {
-                font-size: 14px;          /* readable print size */
-                padding: 6px;
-                min-height: 22px;
+                font-weight: bold;
+                color: #000;
+            
+                /* Auto-shrink text based on available space */
+                font-size: clamp(8px, 1.2vw, 14px);
+            
+                padding: 3px;
+                line-height: 1.1;
+            
+                display: block;
+                max-width: 100%;
+                height: 32px;
+            
+                /* Allow wrapping */
+                white-space: normal;
+            
+                /* Prevent overflow */
+                overflow: hidden;
+            
+                /* Improve wrapping behavior */
+                word-break: break-word;
+                overflow-wrap: break-word;
+            
+                text-align: center;
             }
+
 
     
             .division-label {

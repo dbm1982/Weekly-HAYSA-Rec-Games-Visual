@@ -54,18 +54,30 @@
             font-weight: bold;
             color: #000;
         
-            font-size: 12px;
+            /* Auto-shrink text */
+            font-size: clamp(10px, 1.2vw, 14px);
+        
             padding: 3px;
-            line-height: 1.15;
+            line-height: 1.1;
         
             display: block;
             max-width: 100%;
-            height: 32px;
         
-            white-space: normal;     /* allow wrapping */
-            overflow: hidden;        /* clip after 2 lines */
+            /* Allow height to expand for wrapped text */
+            min-height: 32px;
+            height: auto;
+        
+            /* Allow wrapping */
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        
+            /* Prevent overflow beyond the box */
+            overflow: hidden;
+        
             text-align: center;
         }
+
         
         .division-label {
             font-size: 10px;

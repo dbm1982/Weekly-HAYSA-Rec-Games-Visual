@@ -1,5 +1,4 @@
-
-Calendar
+from ics import Calendar, Event
 from datetime import datetime, timedelta
 import re, ssl, pytz
 from collections import defaultdict

@@ -70,7 +70,7 @@ field_positions = {
     },
     
     "Field 1A_left": {
-        "x": 28, "y": 24,
+        "x": 28, "y": 26,
         "width": 6, "height": 7,
         "rotate": 0
     },
@@ -88,7 +88,7 @@ field_positions = {
     
     
     "Field 1A_right": {
-        "x": 44, "y": 24,
+        "x": 44, "y": 26,
         "width": 6, "height": 7,
         "rotate": 0
     },
@@ -103,7 +103,7 @@ field_positions = {
     },
     
     "Field 2A_left": {
-        "x": 58, "y": 24,
+        "x": 58, "y": 26,
         "width": 7, "height": 7,
         "rotate": 0
     },
@@ -121,7 +121,7 @@ field_positions = {
 
     
     "Field 2A_right": {
-        "x": 74, "y": 24,
+        "x": 74, "y": 26,
         "width": 7, "height": 7,
         "rotate": 0
     },

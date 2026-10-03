@@ -98,13 +98,13 @@ field_positions = {
     # -----------------------------
     "Field 2B_left": {
         "x": 58, "y": 17,
-        "width": 7, "height": 7,
+        "width": 5, "height": 7,
         "rotate": 0
     },
     
     "Field 2A_left": {
         "x": 58, "y": 25,
-        "width": 7, "height": 7,
+        "width": 5, "height": 7,
         "rotate": 0
     },
     
@@ -115,14 +115,14 @@ field_positions = {
 
     "Field 2B_right": {
         "x": 74, "y": 17,
-        "width": 7, "height": 7,
+        "width": 5, "height": 7,
         "rotate": 0
     },
 
     
     "Field 2A_right": {
         "x": 74, "y": 25,
-        "width": 7, "height": 7,
+        "width": 5, "height": 7,
         "rotate": 0
     },
 

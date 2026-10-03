@@ -438,26 +438,26 @@ with open(output_html, "w", encoding="utf8") as f:
         .team-left, .team-right {
             font-weight: bold;
             color: #000;
-
-            /* Start large — JS will shrink this */
-            font-size: 14px;
+        
+            font-size: 14px;   /* JS will shrink this */
             padding: 3px;
             line-height: 1.1;
-
+        
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-
+        
             width: 100%;
             height: 32px;      /* fixed box height */
-
+        
             overflow: hidden;
-
+        
             /* Allow wrapping so shrinker can work */
             white-space: normal;
             word-break: break-word;
         }
+
 
 
         

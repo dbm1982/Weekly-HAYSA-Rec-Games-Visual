@@ -290,7 +290,26 @@ with open(html_file, "w", encoding="utf-8") as f:
             f.write(
                 f"<div class='team-right' style='background-color:{safe_color(color2, False)}'>{team2}</div>\n"
             )
-            f.write(f"<div class='division-label'>{division} — {group}</div>\n")
+            # --- Clean division/group to avoid duplication ---
+            clean_div = division.strip()
+            clean_group = group.strip()
+            
+            # Normalize for comparison (case-insensitive, collapse spaces)
+            norm_div = re.sub(r"\s+", " ", clean_div.lower())
+            norm_group = re.sub(r"\s+", " ", clean_group.lower())
+            
+            # If group already appears inside division, drop group
+            if clean_group and norm_group in norm_div:
+                clean_group = ""
+            
+            # Build final label
+            if clean_div and clean_group:
+                final_label = f"{clean_div}, {clean_group}"
+            else:
+                final_label = clean_div or clean_group
+            
+            f.write(f"<div class='division-label'>{final_label}</div>\n")
+
             f.write(f"<div style='font-size:0.75em; margin-top:4px;'>Field: {field}</div>\n")
             f.write("</div>\n")
 

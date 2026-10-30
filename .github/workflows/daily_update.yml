@@ -1,177 +1,83 @@
-name: Daily Game Layout Update
+- name: Create combined print view
+  run: |
+    cat > print.html << 'EOF'
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Game Day Print View</title>
 
-on:
-  schedule:
-    - cron: '0 10 * * *'  # 6:00 AM EDT
-  workflow_dispatch:
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 5px;
+          padding: 0;
+        }
 
-jobs:
-  run-script:
-    runs-on: ubuntu-latest
+        h1 {
+          font-size: 18px;
+          margin: 5px 0;
+          text-align: center;
+        }
 
-    steps:
-    - name: Checkout repo with PAT
-      uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.GH_PAT }}
+        iframe {
+          width: 100%;
+          border: none;
+          display: block;
+        }
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+        /*
+         * Tune these two numbers only
+         */
+        .schedule {
+          height: 1300px;
+        }
 
-    - name: Install dependencies
-      run: |
-        pip install requests ics pytz openpyxl
+        .map {
+          height: 2200px;
+        }
 
-    - name: Run original layout generator
-      run: python "Weekly Visual Rec Schedule.py"
+        hr {
+          margin: 5px 0;
+          border: 0;
+          border-top: 1px solid #ccc;
+        }
 
-    - name: Run enhanced layout generator
-      run: python "Weekly Visual Rec Schedule Enhanced.py"
+        @media print {
+          body {
+            margin: 0;
+            zoom: 0.80;
+          }
 
-    - name: Create combined print view
-      run: |
-        cat > print.html << 'EOF'
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Game Day Print View</title>
+          h1 {
+            margin: 2px 0;
+          }
 
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              margin: 5px;
-              padding: 0;
-            }
+          hr {
+            margin: 2px 0;
+          }
+        }
+      </style>
+    </head>
 
-            h1 {
-              font-size: 18px;
-              margin: 6px 0;
-              text-align: center;
-            }
+    <body>
 
-            iframe {
-              width: 100%;
-              border: none;
-              display: block;
-              overflow: hidden;
-            }
+      <h1>Game Schedule</h1>
 
-            .schedule,
-            .map {
-              width: 100%;
-            }
+      <iframe
+        class="schedule"
+        src="index.html">
+      </iframe>
 
-            hr {
-              margin: 8px 0;
-              border: 0;
-              border-top: 1px solid #ccc;
-            }
+      <hr>
 
-            @media print {
-              body {
-                margin: 0;
-              }
+      <h1>Field Layout Map</h1>
 
-              h1 {
-                margin: 4px 0;
-              }
+      <iframe
+        class="map"
+        src="map_overlay_enhanced.html">
+      </iframe>
 
-              hr {
-                margin: 4px 0;
-              }
-
-              iframe {
-                page-break-inside: avoid;
-              }
-            }
-          </style>
-        </head>
-
-        <body>
-
-          <h1>Game Schedule</h1>
-
-          <iframe
-            id="scheduleFrame"
-            class="schedule"
-            src="index.html">
-          </iframe>
-
-          <hr>
-
-          <h1>Field Layout Map</h1>
-
-          <iframe
-            id="mapFrame"
-            class="map"
-            src="map_overlay_enhanced.html">
-          </iframe>
-
-          <script>
-            function resizeIframe(iframe) {
-              try {
-                const body =
-                  iframe.contentWindow.document.body;
-
-                const html =
-                  iframe.contentWindow.document.documentElement;
-
-                const height = Math.max(
-                  body.scrollHeight,
-                  body.offsetHeight,
-                  html.clientHeight,
-                  html.scrollHeight,
-                  html.offsetHeight
-                );
-
-                iframe.style.height = height + 'px';
-              } catch (e) {
-                console.log(e);
-              }
-            }
-
-            window.addEventListener('load', () => {
-              document
-                .querySelectorAll('iframe')
-                .forEach(frame => {
-                  frame.addEventListener('load', () => {
-                    resizeIframe(frame);
-
-                    setTimeout(() => {
-                      resizeIframe(frame);
-                    }, 500);
-                  });
-                });
-            });
-          </script>
-
-        </body>
-        </html>
-        EOF
-
-    - name: List generated files (debug)
-      run: ls -R .
-
-    - name: Commit and push updated HTML
-      env:
-        GH_TOKEN: ${{ secrets.GH_PAT }}
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "github-actions@github.com"
-
-        # Stage only the files that actually exist
-        [ -f index.html ] && git add index.html
-        [ -f map_overlay_enhanced.html ] && git add map_overlay_enhanced.html
-        [ -f map_overlay.html ] && git add map_overlay.html
-        [ -f print.html ] && git add print.html
-
-        git diff --cached --quiet || git commit -m "🔄 Daily update: original + enhanced overlays"
-
-        git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
-        git push origin main
-
-    - name: Show Git identity
-      run: git config --list
+    </body>
+    </html>
+    EOF

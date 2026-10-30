@@ -64,11 +64,11 @@ jobs:
              */
 
             .schedule {
-              height: 1200px;
+              height: 1000px;
             }
 
             .map {
-              height: 2200px;
+              height: 1000px;
             }
 
             hr {

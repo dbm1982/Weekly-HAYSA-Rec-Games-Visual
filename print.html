@@ -12,25 +12,32 @@
     }
 
     h1 {
-      text-align: center;
-      margin: 8px 0;
       font-size: 18px;
+      margin: 6px 0;
+      text-align: center;
+    }
+
+    iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      overflow: hidden;
+    }
+
+    .schedule,
+    .map {
+      width: 100%;
     }
 
     hr {
-      margin: 10px 0;
-      border: none;
+      margin: 8px 0;
+      border: 0;
       border-top: 1px solid #ccc;
-    }
-
-    .section {
-      width: 100%;
     }
 
     @media print {
       body {
         margin: 0;
-        zoom: 0.85;
       }
 
       h1 {
@@ -38,7 +45,11 @@
       }
 
       hr {
-        margin: 6px 0;
+        margin: 4px 0;
+      }
+
+      iframe {
+        page-break-inside: avoid;
       }
     }
   </style>
@@ -46,41 +57,60 @@
 
 <body>
 
-  <div id="schedule-section" class="section">
-    <h1>Game Schedule</h1>
-  </div>
+  <h1>Game Schedule</h1>
+
+  <iframe
+    id="scheduleFrame"
+    class="schedule"
+    src="index.html">
+  </iframe>
 
   <hr>
 
-  <div id="map-section" class="section">
-    <h1>Field Layout Map</h1>
-  </div>
+  <h1>Field Layout Map</h1>
+
+  <iframe
+    id="mapFrame"
+    class="map"
+    src="map_overlay_enhanced.html">
+  </iframe>
 
   <script>
-    async function loadContent() {
+    function resizeIframe(iframe) {
+      try {
+        const body =
+          iframe.contentWindow.document.body;
 
-      const scheduleHtml = await fetch('index.html')
-        .then(r => r.text());
+        const html =
+          iframe.contentWindow.document.documentElement;
 
-      const mapHtml = await fetch('map_overlay_enhanced.html')
-        .then(r => r.text());
+        const height = Math.max(
+          body.scrollHeight,
+          body.offsetHeight,
+          html.clientHeight,
+          html.scrollHeight,
+          html.offsetHeight
+        );
 
-      const scheduleBody =
-        scheduleHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1]
-        || scheduleHtml;
-
-      const mapBody =
-        mapHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1]
-        || mapHtml;
-
-      document.getElementById('schedule-section')
-        .insertAdjacentHTML('beforeend', scheduleBody);
-
-      document.getElementById('map-section')
-        .insertAdjacentHTML('beforeend', mapBody);
+        iframe.style.height = height + 'px';
+      } catch (e) {
+        console.log(e);
+      }
     }
 
-    loadContent();
+    window.addEventListener('load', () => {
+      document
+        .querySelectorAll('iframe')
+        .forEach(frame => {
+          frame.addEventListener('load', () => {
+            resizeIframe(frame);
+
+            setTimeout(() => {
+              resizeIframe(frame);
+            }, 500);
+          });
+        });
+    });
   </script>
 
 </body>

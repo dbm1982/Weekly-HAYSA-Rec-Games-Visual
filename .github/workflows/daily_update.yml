@@ -1,83 +1,142 @@
-- name: Create combined print view
-  run: |
-    cat > print.html << 'EOF'
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset="utf-8">
-      <title>Game Day Print View</title>
+name: Daily Game Layout Update
 
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 5px;
-          padding: 0;
-        }
+on:
+  schedule:
+    - cron: '0 10 * * *'  # 6:00 AM EDT
+  workflow_dispatch:
 
-        h1 {
-          font-size: 18px;
-          margin: 5px 0;
-          text-align: center;
-        }
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
 
-        iframe {
-          width: 100%;
-          border: none;
-          display: block;
-        }
+    steps:
+    - name: Checkout repo with PAT
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GH_PAT }}
 
-        /*
-         * Tune these two numbers only
-         */
-        .schedule {
-          height: 1300px;
-        }
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
-        .map {
-          height: 2200px;
-        }
+    - name: Install dependencies
+      run: |
+        pip install requests ics pytz openpyxl
 
-        hr {
-          margin: 5px 0;
-          border: 0;
-          border-top: 1px solid #ccc;
-        }
+    - name: Run original layout generator
+      run: python "Weekly Visual Rec Schedule.py"
 
-        @media print {
-          body {
-            margin: 0;
-            zoom: 0.80;
-          }
+    - name: Run enhanced layout generator
+      run: python "Weekly Visual Rec Schedule Enhanced.py"
 
-          h1 {
-            margin: 2px 0;
-          }
+    - name: Create combined print view
+      run: |
+        cat > print.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Game Day Print View</title>
 
-          hr {
-            margin: 2px 0;
-          }
-        }
-      </style>
-    </head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 5px;
+              padding: 0;
+            }
 
-    <body>
+            h1 {
+              text-align: center;
+              font-size: 18px;
+              margin: 5px 0;
+            }
 
-      <h1>Game Schedule</h1>
+            iframe {
+              width: 100%;
+              border: none;
+              display: block;
+            }
 
-      <iframe
-        class="schedule"
-        src="index.html">
-      </iframe>
+            /*
+             * These are the only numbers you'll likely
+             * ever need to tune.
+             */
 
-      <hr>
+            .schedule {
+              height: 1300px;
+            }
 
-      <h1>Field Layout Map</h1>
+            .map {
+              height: 2200px;
+            }
 
-      <iframe
-        class="map"
-        src="map_overlay_enhanced.html">
-      </iframe>
+            hr {
+              margin: 5px 0;
+              border: 0;
+              border-top: 1px solid #ccc;
+            }
 
-    </body>
-    </html>
-    EOF
+            @media print {
+
+              body {
+                margin: 0;
+                zoom: 0.80;
+              }
+
+              h1 {
+                margin: 2px 0;
+              }
+
+              hr {
+                margin: 2px 0;
+              }
+            }
+          </style>
+        </head>
+
+        <body>
+
+          <h1>Game Schedule</h1>
+
+          <iframe
+            class="schedule"
+            src="index.html">
+          </iframe>
+
+          <hr>
+
+          <h1>Field Layout Map</h1>
+
+          <iframe
+            class="map"
+            src="map_overlay_enhanced.html">
+          </iframe>
+
+        </body>
+        </html>
+        EOF
+
+    - name: List generated files (debug)
+      run: ls -R .
+
+    - name: Commit and push updated HTML
+      env:
+        GH_TOKEN: ${{ secrets.GH_PAT }}
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+
+        # Stage only the files that actually exist
+        [ -f index.html ] && git add index.html
+        [ -f map_overlay_enhanced.html ] && git add map_overlay_enhanced.html
+        [ -f map_overlay.html ] && git add map_overlay.html
+        [ -f print.html ] && git add print.html
+
+        git diff --cached --quiet || git commit -m "🔄 Daily update: original + enhanced overlays"
+
+        git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+        git push origin main
+
+    - name: Show Git identity
+      run: git config --list

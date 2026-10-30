@@ -22,12 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install requests ics pytz openpyxl pypdf
-
-    - name: Install Chromium
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y chromium-browser
+        pip install requests ics pytz openpyxl
 
     - name: Run original layout generator
       run: python "Weekly Visual Rec Schedule.py"
@@ -35,45 +30,68 @@ jobs:
     - name: Run enhanced layout generator
       run: python "Weekly Visual Rec Schedule Enhanced.py"
 
-    - name: Create printable PDF
+    - name: Create combined print view
       run: |
-        cat > create_pdf.py << 'EOF'
-        from pathlib import Path
-        from pypdf import PdfWriter
-        import subprocess
+        cat > print.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Game Day Print View</title>
 
-        html_files = [
-            "map_overlay.html",
-            "map_overlay_enhanced.html"
-        ]
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 20px;
+            }
 
-        generated_pdfs = []
+            h1 {
+              margin-bottom: 20px;
+            }
 
-        for html in html_files:
-            if Path(html).exists():
-                pdf = html.replace(".html", ".pdf")
+            iframe {
+              width: 100%;
+              border: none;
+              display: block;
+            }
 
-                subprocess.run([
-                    "chromium-browser",
-                    "--headless",
-                    "--disable-gpu",
-                    f"--print-to-pdf={pdf}",
-                    f"file://{Path(html).resolve()}"
-                ], check=True)
+            .schedule {
+              height: 1800px;
+            }
 
-                generated_pdfs.append(pdf)
+            .map {
+              height: 2500px;
+            }
 
-        if generated_pdfs:
-            writer = PdfWriter()
+            .page-break {
+              page-break-before: always;
+              margin-top: 40px;
+            }
 
-            for pdf in generated_pdfs:
-                writer.append(pdf)
+            @media print {
+              body {
+                margin: 0;
+              }
 
-            with open("Daily_Game_Layouts.pdf", "wb") as f:
-                writer.write(f)
+              .page-break {
+                page-break-before: always;
+              }
+            }
+          </style>
+        </head>
+
+        <body>
+
+          <h1>Game Schedule</h1>
+          <iframe class="schedule" src="index.html"></iframe>
+
+          <div class="page-break"></div>
+
+          <h1>Field Layout Map</h1>
+          <iframe class="map" src="map_overlay_enhanced.html"></iframe>
+
+        </body>
+        </html>
         EOF
-
-        python create_pdf.py
 
     - name: List generated files (debug)
       run: ls -R .
@@ -89,7 +107,7 @@ jobs:
         [ -f index.html ] && git add index.html
         [ -f map_overlay_enhanced.html ] && git add map_overlay_enhanced.html
         [ -f map_overlay.html ] && git add map_overlay.html
-        [ -f Daily_Game_Layouts.pdf ] && git add Daily_Game_Layouts.pdf
+        [ -f print.html ] && git add print.html
 
         git diff --cached --quiet || git commit -m "🔄 Daily update: original + enhanced overlays"
 

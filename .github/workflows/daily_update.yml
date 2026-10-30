@@ -22,13 +22,58 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install requests ics pytz openpyxl
+        pip install requests ics pytz openpyxl pypdf
+
+    - name: Install Chromium
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y chromium-browser
 
     - name: Run original layout generator
       run: python "Weekly Visual Rec Schedule.py"
 
     - name: Run enhanced layout generator
       run: python "Weekly Visual Rec Schedule Enhanced.py"
+
+    - name: Create printable PDF
+      run: |
+        cat > create_pdf.py << 'EOF'
+        from pathlib import Path
+        from pypdf import PdfWriter
+        import subprocess
+
+        html_files = [
+            "map_overlay.html",
+            "map_overlay_enhanced.html"
+        ]
+
+        generated_pdfs = []
+
+        for html in html_files:
+            if Path(html).exists():
+                pdf = html.replace(".html", ".pdf")
+
+                subprocess.run([
+                    "chromium-browser",
+                    "--headless",
+                    "--disable-gpu",
+                    f"--print-to-pdf={pdf}",
+                    f"file://{Path(html).resolve()}"
+                ], check=True)
+
+                generated_pdfs.append(pdf)
+
+        if generated_pdfs:
+            writer = PdfWriter()
+
+            for pdf in generated_pdfs:
+                writer.append(pdf)
+
+            with open("Daily_Game_Layouts.pdf", "wb") as f:
+                writer.write(f)
+        EOF
+
+        python create_pdf.py
 
     - name: List generated files (debug)
       run: ls -R .
@@ -44,6 +89,7 @@ jobs:
         [ -f index.html ] && git add index.html
         [ -f map_overlay_enhanced.html ] && git add map_overlay_enhanced.html
         [ -f map_overlay.html ] && git add map_overlay.html
+        [ -f Daily_Game_Layouts.pdf ] && git add Daily_Game_Layouts.pdf
 
         git diff --cached --quiet || git commit -m "🔄 Daily update: original + enhanced overlays"
 

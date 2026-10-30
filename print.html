@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Day Print View</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    iframe {
+      width: 100%;
+      border: none;
+      display: block;
+    }
+
+    .schedule {
+      height: 1800px;
+    }
+
+    .map {
+      height: 2500px;
+    }
+
+    .page-break {
+      page-break-before: always;
+      margin-top: 40px;
+    }
+
+    @media print {
+      body {
+        margin: 0;
+      }
+
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Game Schedule</h1>
+  <iframe class="schedule" src="index.html"></iframe>
+
+  <div class="page-break"></div>
+
+  <h1>Field Layout Map</h1>
+  <iframe class="map" src="map_overlay_enhanced.html"></iframe>
+
+</body>
+</html>

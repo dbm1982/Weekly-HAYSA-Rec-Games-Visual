@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>Game Day Print View</title>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 5px;
+      padding: 0;
     }
 
     h1 {
-      margin-bottom: 20px;
+      font-size: 18px;
+      margin: 4px 0;
+      text-align: center;
     }
 
     iframe {
@@ -19,26 +23,38 @@
       display: block;
     }
 
+    /* Compact schedule section */
     .schedule {
-      height: 1800px;
+      height: 700px;
     }
 
+    /* Compact map section */
     .map {
-      height: 2500px;
+      height: 900px;
     }
 
-    .page-break {
-      page-break-before: always;
-      margin-top: 40px;
+    hr {
+      margin: 5px 0;
+      border: 0;
+      border-top: 1px solid #ccc;
     }
 
     @media print {
       body {
         margin: 0;
+        zoom: 0.80;
       }
 
-      .page-break {
-        page-break-before: always;
+      h1 {
+        margin: 2px 0;
+      }
+
+      hr {
+        margin: 2px 0;
+      }
+
+      iframe {
+        page-break-inside: avoid;
       }
     }
   </style>
@@ -47,12 +63,18 @@
 <body>
 
   <h1>Game Schedule</h1>
-  <iframe class="schedule" src="index.html"></iframe>
+  <iframe
+    class="schedule"
+    src="index.html">
+  </iframe>
 
-  <div class="page-break"></div>
+  <hr>
 
   <h1>Field Layout Map</h1>
-  <iframe class="map" src="map_overlay_enhanced.html"></iframe>
+  <iframe
+    class="map"
+    src="map_overlay_enhanced.html">
+  </iframe>
 
 </body>
 </html>

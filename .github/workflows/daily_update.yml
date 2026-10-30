@@ -47,49 +47,33 @@ jobs:
             }
 
             h1 {
-              font-size: 18px;
-              margin: 4px 0;
               text-align: center;
-            }
-
-            iframe {
-              width: 100%;
-              border: none;
-              display: block;
-            }
-
-            /* Compact schedule section */
-            .schedule {
-              height: 700px;
-            }
-
-            /* Compact map section */
-            .map {
-              height: 900px;
+              margin: 8px 0;
+              font-size: 18px;
             }
 
             hr {
-              margin: 5px 0;
-              border: 0;
+              margin: 10px 0;
+              border: none;
               border-top: 1px solid #ccc;
+            }
+
+            .section {
+              width: 100%;
             }
 
             @media print {
               body {
                 margin: 0;
-                zoom: 0.80;
+                zoom: 0.85;
               }
 
               h1 {
-                margin: 2px 0;
+                margin: 4px 0;
               }
 
               hr {
-                margin: 2px 0;
-              }
-
-              iframe {
-                page-break-inside: avoid;
+                margin: 6px 0;
               }
             }
           </style>
@@ -97,19 +81,42 @@ jobs:
 
         <body>
 
-          <h1>Game Schedule</h1>
-          <iframe
-            class="schedule"
-            src="index.html">
-          </iframe>
+          <div id="schedule-section" class="section">
+            <h1>Game Schedule</h1>
+          </div>
 
           <hr>
 
-          <h1>Field Layout Map</h1>
-          <iframe
-            class="map"
-            src="map_overlay_enhanced.html">
-          </iframe>
+          <div id="map-section" class="section">
+            <h1>Field Layout Map</h1>
+          </div>
+
+          <script>
+            async function loadContent() {
+
+              const scheduleHtml = await fetch('index.html')
+                .then(r => r.text());
+
+              const mapHtml = await fetch('map_overlay_enhanced.html')
+                .then(r => r.text());
+
+              const scheduleBody =
+                scheduleHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1]
+                || scheduleHtml;
+
+              const mapBody =
+                mapHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1]
+                || mapHtml;
+
+              document.getElementById('schedule-section')
+                .insertAdjacentHTML('beforeend', scheduleBody);
+
+              document.getElementById('map-section')
+                .insertAdjacentHTML('beforeend', mapBody);
+            }
+
+            loadContent();
+          </script>
 
         </body>
         </html>

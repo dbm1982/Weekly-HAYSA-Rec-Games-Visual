@@ -391,27 +391,25 @@ with open(output_html, "w", encoding="utf8") as f:
             padding: 20px; 
         }
     
-        .map-grid { 
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
+        .map-grid {
+            display: grid;
             gap: 20px;
-            flex-wrap: nowrap;
-            align-items: flex-start;   /* <-- THIS fixes the layout */
+            grid-template-columns: repeat(
+                var(--column-count),
+                minmax(0, 1fr)
+            );
         }
-
-    
+        
         .map-column {
-            width: 33%;
+            width: 100%;
             text-align: center;
-            flex: 0 0 33%;   /* <-- THIS is the magic line */
         }
 
     
         .map-container {
             position: relative;
             width: 100%;
-            aspect-ratio: 1113 / 700;
+            aspect-ratio: 1113 / 1590;
             margin: 0 auto;
         }
     
@@ -493,7 +491,7 @@ with open(output_html, "w", encoding="utf8") as f:
             }
     
             .map-grid {
-                flex-direction: column;   /* stack vertically for full-page print */
+                grid-template-columns: 1fr;
                 gap: 40px;
             }
     
@@ -567,7 +565,12 @@ with open(output_html, "w", encoding="utf8") as f:
     for g in games:
         games_by_block[g["time"]].append(g)
 
-        f.write("<div class='map-grid'>\n")
+    column_count = len(games_by_block)
+    
+    f.write(
+        f"<div class='map-grid' "
+        f"style='--column-count:{column_count};'>\n"
+    )
 
     for block in sorted(games_by_block.keys(), key=lambda t: datetime.strptime(t, "%I:%M %p")):
         f.write(f"<div class='map-column'><h2>{block}</h2>\n")
